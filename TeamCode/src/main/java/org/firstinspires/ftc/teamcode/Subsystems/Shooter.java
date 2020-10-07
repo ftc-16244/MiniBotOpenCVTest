@@ -32,7 +32,7 @@ public class Shooter {
 
         shooterleft.setDirection(DcMotor.Direction.FORWARD);
     }
-    public void shootMiddlegoal(){
+    public void shootMiddlegoal(){ 
 
     }
 }
