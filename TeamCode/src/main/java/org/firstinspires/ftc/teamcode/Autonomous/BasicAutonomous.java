@@ -109,6 +109,7 @@ public class BasicAutonomous extends LinearOpMode {
 
         drivetrain.init(hardwareMap);
         wobble.init(hardwareMap);
+        shooter.init(hardwareMap);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
