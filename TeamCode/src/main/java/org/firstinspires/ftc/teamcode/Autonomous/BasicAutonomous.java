@@ -201,8 +201,14 @@ public class BasicAutonomous extends LinearOpMode {
         switch(Square){
             case BLUE_A: // This is the basic op mode. Put real paths in designated opmodes
                 telemetry.addData("Going to RED A", "Target Zone");
-                gyroDrive(DRIVE_SPEED, 65.0, 0.0, 10);    // Drive FWD 110 inches
-
+                gyroDrive(DRIVE_SPEED, 56.0, 0.0, 10);    // Drive FWD 110 inches
+                gyroTurn(TURN_SPEED,-10,4);
+                //Start Shooter
+                shooter.shootoneRingHigh();
+                shooter.flipperForward();
+                sleep(250);
+                shooter.flipperBackward();
+                sleep(250);
                 wobble.GripperOpen();
                 wobble.ArmExtend();
                 break;
