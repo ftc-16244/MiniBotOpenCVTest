@@ -235,6 +235,7 @@ public class BasicAutonomous extends LinearOpMode {
                 wobble.GripperOpen();
                 wobble.ArmExtend();
                 break;
+                
         }
 
 
