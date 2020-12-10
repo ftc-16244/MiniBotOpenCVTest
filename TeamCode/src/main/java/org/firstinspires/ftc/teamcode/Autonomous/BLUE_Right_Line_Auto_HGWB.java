@@ -149,12 +149,7 @@ public class BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
         drivetime.reset(); // reset because time starts when TF starts and time is up before we can call gyroDrive
         // Drive paths are initially all the same to get to the shooter location
         gyroDrive(DRIVE_SPEED, 55.0, 0.0, 10);
-<<<<<<< HEAD
-        gyroTurn(TURN_SPEED,10,3);
-        // gyroTurn(TURN_SPEED,10,3); Need to change this angle for the right line start point
-=======
-        gyroTurn(TURN_SPEED,10,3); //Need to change this angle for the right line start point
->>>>>>> master
+
         mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
         shoot3Rings(mShooterState, autoShootTimeAllowed);   // call method to start shooter and launch 3 rings. pass shooter state in case it is needed
         drivetime.reset(); // reset because time starts when TF starts and time is up before we can call gyroDrive
@@ -165,28 +160,14 @@ public class BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
         switch(Square){
             case BLUE_A: // no rings. 3 tiles (24 inches per tile) forward and 2 tiles to the left from start
                 telemetry.addData("Going to BLUE A", "Target Zone");
-<<<<<<< HEAD
-                gyroDrive(DRIVE_SPEED, 24,10,3);
-                gyroTurn(TURN_SPEED,90,3);
-                gyroDrive(DRIVE_SPEED, 24, 90, 5);
-=======
-                gyroDrive(DRIVE_SPEED, 24, 10,3);
-                gyroTurn(TURN_SPEED,90,3);
-                gyroDrive(DRIVE_SPEED, 21, 90.0, 5);
->>>>>>> master
+
                 sleep(1000);
                 wobble.GripperOpen();
                 wobble.ArmExtend();
                 break;
             case BLUE_B: // one ring  4 tiles straight ahead
                 telemetry.addData("Going to BLUE B", "Target Zone");
-<<<<<<< HEAD
-                gyroDrive(DRIVE_SPEED, 24, 10, 5);
-=======
-                //gyroTurn(TURN_SPEED, -10,3);
-                gyroDrive(DRIVE_SPEED, 24.0, 10.0, 5);
-                //gyroTurn(TURN_SPEED,90,3);
->>>>>>> master
+
                 sleep(1000);
                 wobble.GripperOpen();
                 wobble.ArmContract();
@@ -196,31 +177,12 @@ public class BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 break;
             case BLUE_C: // four rings. 5 tiles forward and one tile to the left.
                 telemetry.addData("Going to BLUE C", "Target Zone");
-<<<<<<< HEAD
-                gyroDrive(DRIVE_SPEED, 65,10,3);
-                gyroTurn(TURN_SPEED,90,3);
-                gyroDrive(DRIVE_SPEED, 18, 90, 5);
-=======
-                gyroDrive(DRIVE_SPEED, 65, 20,3);
-                //gyroTurn(TURN_SPEED,90,3);
-                //gyroDrive(DRIVE_SPEED, 18, 90.0, 5);
->>>>>>> master
-                sleep(1000);
 
-                wobble.GripperOpen();
-                wobble.ArmExtend();
-                //sleep(1000);
-                drivetime.reset();
-<<<<<<< HEAD
-                gyroDrive(DRIVE_SPEED, -24, 90, 5);
-                gyroTurn(TURN_SPEED,10,3);
-                gyroDrive(DRIVE_SPEED, -40,10,3);
-=======
                 // change gyroDrive(DRIVE_SPEED, -32.0, 10, 5);
                 gyroDrive(DRIVE_SPEED, -40, 20,3);
                 //gyroTurn(TURN_SPEED,-20,3);
                 //gyroDrive(DRIVE_SPEED,-40,10,3);
->>>>>>> master
+
                 break;
         }
 
