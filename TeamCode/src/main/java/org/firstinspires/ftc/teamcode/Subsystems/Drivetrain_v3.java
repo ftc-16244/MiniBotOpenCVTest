@@ -58,7 +58,7 @@ public class Drivetrain_v3 {
             // not in teleop means autonomous so encoders are needed
             // IMU us also needed
             if (!inTeleOp) {
-               // BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+               //BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
                 //parameters.mode                = BNO055IMU.SensorMode.IMU;
                 //parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
