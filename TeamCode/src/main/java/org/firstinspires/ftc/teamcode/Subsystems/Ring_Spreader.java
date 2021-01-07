@@ -13,9 +13,9 @@ public class Ring_Spreader {
     private static final double spreaderDown=.45;
 
     public void init(HardwareMap hwMap)  {
-        ringSpreader     = hwMap.get(Servo.class, "Left_Flipper");
+        ringSpreader     = hwMap.get(Servo.class, "Ring_Spreader");
         ringSpreaderUp();
-        
+
     }
 
     public void ringSpreaderUp() {
