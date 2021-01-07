@@ -24,6 +24,7 @@ import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain_v3;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Subsystems.Ring_Spreader;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 
@@ -48,6 +49,7 @@ public class BasicAutonomous extends LinearOpMode {
     public Wobblegoal           wobble      = new Wobblegoal();
     public Elevator             elevator    = new Elevator();
     public Orientation          lastAngles  = new Orientation();
+    public Ring_Spreader        m_Ring_Spreader = new Ring_Spreader();
 
     // Timers and time limits for each timer
     public ElapsedTime          PIDtimer    = new ElapsedTime(); // PID loop timer

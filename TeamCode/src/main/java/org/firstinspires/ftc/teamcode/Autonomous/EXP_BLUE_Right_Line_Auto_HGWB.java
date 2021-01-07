@@ -242,7 +242,8 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 break;
             case BLUE_C: // four rings. 5 tiles forward and one tile to the left.
                 telemetry.addData("Going to BLUE C", "Target Zone");
-                gyroDrive(DRIVE_SPEED, 65, 20,3);
+                gyroTurn(TURN_SPEED *.5,20,2);
+                gyroDrive(DRIVE_SPEED, 54, 20,3);
                 //gyroTurn(TURN_SPEED,90,3);
                 //gyroDrive(DRIVE_SPEED, 18, 90.0, 5);
                 sleep(1000);
@@ -252,7 +253,12 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 //sleep(1000);
                 drivetime.reset();
                 // change gyroDrive(DRIVE_SPEED, -32.0, 10, 5);
-                gyroDrive(DRIVE_SPEED, -40, 20,3);
+                gyroDrive(DRIVE_SPEED, -92, 20,3);
+                gyroTurn(TURN_SPEED,70,2);
+                gyroTurn(TURN_SPEED*.5,90,2);
+                gyroDrive(DRIVE_SPEED,30,90,2);
+                gyroDrive(DRIVE_SPEED,-18,90,2);
+                gyroTurn(TURN_SPEED*0.5,70,2);
                 wobble.ArmContract();
                 //gyroTurn(TURN_SPEED,-20,3);
                 //gyroDrive(DRIVE_SPEED,-40,10,3);
