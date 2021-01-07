@@ -24,6 +24,7 @@ import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain_v3;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Subsystems.Ring_Spreader;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 
@@ -48,6 +49,7 @@ public class BasicAutonomous extends LinearOpMode {
     public Wobblegoal           wobble      = new Wobblegoal();
     public Elevator             elevator    = new Elevator();
     public Orientation          lastAngles  = new Orientation();
+    public Ring_Spreader        m_Ring_Spreader = new Ring_Spreader();
 
     // Timers and time limits for each timer
     public ElapsedTime          PIDtimer    = new ElapsedTime(); // PID loop timer
@@ -133,8 +135,10 @@ public class BasicAutonomous extends LinearOpMode {
         drivetrain.init(hardwareMap);
         wobble.init(hardwareMap);
         shooter.init(hardwareMap);
+
         intake.init(hardwareMap);
         elevator.init(hardwareMap);
+
 
 
         // intake.init(hardwareMap); not necessary in Auto at this time
@@ -143,6 +147,7 @@ public class BasicAutonomous extends LinearOpMode {
         // move implements to start position. Note, 18x18x18 inch cube has to be maintained
         // until start is pressed. Position servos and motors here so human error and set-up is not
         // as critical. Team needs to focus on robot alignment to the field.
+
 
         shooter.shooterReload(); // reload = flipper back, stacker mostly down, shooter off
         // nothing here for wobble goal yet. Gravity will take care of most of it.
@@ -249,9 +254,11 @@ public class BasicAutonomous extends LinearOpMode {
         switch(Square){
             case BLUE_A: // no rings. 3 tiles (24 inches per tile) forward and one tile to the left from start
                 telemetry.addData("Going to RED A", "Target Zone");
+
                 gyroTurn(TURN_SPEED*.5,20,3);
                 gyroDrive(DRIVE_SPEED, 8.0, 20.0, 5);
                 sleep(1000);
+
                 wobble.GripperOpen();
                 wobble.ArmExtend();
                 break;
@@ -277,6 +284,7 @@ public class BasicAutonomous extends LinearOpMode {
                 drivetime.reset();
                 gyroDrive(DRIVE_SPEED, -48.0, 0, 5);
                 break;
+                
         }
 
 

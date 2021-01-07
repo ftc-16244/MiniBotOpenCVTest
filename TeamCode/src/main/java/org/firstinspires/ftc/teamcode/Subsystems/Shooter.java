@@ -133,6 +133,7 @@ public class Shooter {
 
     }
 
+
     public void shoot_N_rings(int rings) throws InterruptedException {
         int ShotCount = 0;
         while (ShotCount<rings)  {
@@ -148,6 +149,7 @@ public class Shooter {
 
         }
         shooterOff(); // turn off when we exit the loop
+
     }
 }
 
