@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.Test;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Ring_Spreader;
-
+@TeleOp(name="Spreader Test", group="Linear Opmode")
 public class Ring_Spreader_Test extends LinearOpMode {
     public Ring_Spreader m_Ring_Spreader = new Ring_Spreader();
 
@@ -35,4 +36,5 @@ public class Ring_Spreader_Test extends LinearOpMode {
             }
 
         }
+    }
 }
