@@ -32,6 +32,7 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
     private static  final double        extraRingShootTimeAllowed   = 2; //  timer for shooting the single ring unique to this opMode
     private static  final double        autoShootTimeAllowed        = 4;//
     private static final  double        autoRingCollectTimeAllowed  = 0.6; // time allowed to let the single ring to get picked up
+    private static final double         autoRingCollectTimeAllowed_C = 2;
     private static final double         shooterStartUpTimeAllowed   = 1.25;
     public static final double          DRIVE_SPEED                 = 0.70;     // Nominal speed for better accuracy.
 
@@ -153,8 +154,10 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
 
         drivetime.reset(); // reset because time starts when TF starts and time is up before we can call gyroDrive
         // Drive paths are initially all the same to get to the shooter location
-        gyroDrive(DRIVE_SPEED, 54.0, 0.0, 10);
-        //gyroDrive(DRIVE_SPEED*.5, 4.0, 0.0, 10);// 54 total
+        //gyroDrive(DRIVE_SPEED, 54.0, 0.0, 10);
+
+        gyroDrive(DRIVE_SPEED, 45.0, 0.0, 10);// 54 total
+        gyroDrive(DRIVE_SPEED*.6, 10.0, 0.0, 10);// 54 total
         gyroTurn(TURN_SPEED,10,3); //Need to change this angle for the right line start point
         mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
         shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
@@ -251,21 +254,32 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 telemetry.addData("Going to BLUE C", "Target Zone");
                 gyroTurn(TURN_SPEED *.5,20,2);
                 gyroDrive(DRIVE_SPEED, 54, 20,3);
-                //gyroTurn(TURN_SPEED,90,3);
-                //gyroDrive(DRIVE_SPEED, 18, 90.0, 5);
-                sleep(1000);
-
                 wobble.GripperOpen();
+                sleep(500);
                 wobble.ArmExtend();
                 //sleep(1000);
                 drivetime.reset();
                 // change gyroDrive(DRIVE_SPEED, -32.0, 10, 5);
-                gyroDrive(DRIVE_SPEED, -92, 20,3);
-                gyroTurn(TURN_SPEED,70,2);
-                gyroTurn(TURN_SPEED*.5,90,2);
-                gyroDrive(DRIVE_SPEED,30,90,2);
-                gyroDrive(DRIVE_SPEED,-18,90,2);
-                gyroTurn(TURN_SPEED*0.5,70,2);
+                gyroDrive(DRIVE_SPEED, -26, 20,3);
+                gyroTurn(TURN_SPEED,120,2);
+                gyroTurn(TURN_SPEED*.5,180,2);
+                gyroDrive(DRIVE_SPEED,33,180,2);
+                drivetime.reset();
+                // guroDrive with ring collection included
+                gyroDriveandCollectRings(DRIVE_SPEED*.4,14,180,10);
+                gyroDriveandCollectRings(DRIVE_SPEED*.7,-20,180,10);
+                gyroTurn(TURN_SPEED,35,3);
+                gyroTurn(TURN_SPEED*.4,0,2);
+                shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
+                try {
+                    shooter.shoot_N_rings(3);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                drivetime.reset();
+                gyroDrive(DRIVE_SPEED, 5, 0,3);
+                //gyroDrive(DRIVE_SPEED,-18,90,2);
+                //gyroTurn(TURN_SPEED*0.5,70,2);
                 wobble.ArmContract();
                 //gyroTurn(TURN_SPEED,-20,3);
                 //gyroDrive(DRIVE_SPEED,-40,10,3);
