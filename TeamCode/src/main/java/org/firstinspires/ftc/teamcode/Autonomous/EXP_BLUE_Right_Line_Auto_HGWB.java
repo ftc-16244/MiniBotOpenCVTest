@@ -56,6 +56,7 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
         shooter.init(hardwareMap);
         intake.init(hardwareMap);
         elevator.init(hardwareMap);
+        m_Ring_Spreader.init(hardwareMap);
 
         // move implements to start position. Note, 18x18x18 inch cube has to be maintained
         // until start is pressed. Position servos and motors here so human error and set-up is not
@@ -86,7 +87,7 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
 
         // make sure the gyro is calibrated before continuing
         while (!isStopRequested() && !drivetrain.imu.isGyroCalibrated())  {
-            sleep(50);
+            sleep(100);
             idle();
         }
 
@@ -156,8 +157,8 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
         // Drive paths are initially all the same to get to the shooter location
         //gyroDrive(DRIVE_SPEED, 54.0, 0.0, 10);
 
-        gyroDrive(DRIVE_SPEED, 45.0, 0.0, 10);// 54 total
-        gyroDrive(DRIVE_SPEED*.6, 10.0, 0.0, 10);// 54 total
+        gyroDrive(DRIVE_SPEED, 54.0, 0.0, 10);// 54 total
+        //gyroDrive(DRIVE_SPEED*.6, 10.0, 0.0, 10);// 54 total
         gyroTurn(TURN_SPEED,10,3); //Need to change this angle for the right line start point
         mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
         shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
@@ -176,19 +177,19 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
         switch(Square){
             case BLUE_A: // no rings. 3 tiles (24 inches per tile) forward and 2 tiles to the left from start
                 telemetry.addData("Going to BLUE A", "Target Zone");
-                gyroTurn(TURN_SPEED*.75,45,2);
-                gyroTurn(TURN_SPEED*.4,60,2);
+                gyroTurn(TURN_SPEED,45,2);
+                gyroTurn(TURN_SPEED*.4,60,3);
                 gyroDrive(DRIVE_SPEED,27,60,4);
                sleep(500);
                 wobble.GripperSuperOpen();
                 sleep(500);
                 wobble.ArmExtend();
                 sleep(500);
-
+                wobble.lowerWobbleClamp();
                 drivetime.reset();
-                gyroDrive(DRIVE_SPEED,-4,60,4);
+                gyroDrive(DRIVE_SPEED*.5,-4,60,4);
 
-                gyroTurn(TURN_SPEED, 155,3);
+                gyroTurn(TURN_SPEED, 155,4);
                 gyroTurn(TURN_SPEED*.33, 180,3);
 
                 gyroDrive(DRIVE_SPEED*.7,36,180,4);
@@ -197,24 +198,28 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 gyroDrive(DRIVE_SPEED*5,6.5,158,2);
 
                 wobble.ArmExtend();
+
                 sleep(500);
                 wobble.GripperClose();
-                sleep(500);
+                sleep(1000);
 
-                gyroDrive(DRIVE_SPEED,-52,153,2);
+                drivetime.reset();
+                gyroDrive(DRIVE_SPEED,-53,153,2); // backup with 2nd wobble goal
                 gyroTurn(TURN_SPEED*.5,90,3);
                 gyroDrive(DRIVE_SPEED,14,90,2);
-                wobble.GripperOpen();
+                wobble.GripperSuperOpen();
                 sleep(250);
-                gyroDrive(DRIVE_SPEED,-3,90,2);
+                wobble.raiseWobbleClamp();
+                sleep(250);
+                gyroDrive(DRIVE_SPEED,-6,90,2);
                 wobble.ArmContract();
-                sleep(250);
+
 
                 break;
             case BLUE_B: // one ring  4 tiles straight ahead
                 telemetry.addData("Going to BLUE B", "Target Zone");
                 //gyroTurn(TURN_SPEED, -10,3);
-                gyroDrive(DRIVE_SPEED, 26.0, 10.0, 5);
+                gyroDrive(DRIVE_SPEED, 24.0, 10.0, 5);
                 //gyroTurn(TURN_SPEED,90,3);
                 sleep(500);
                 wobble.GripperOpen();
@@ -225,22 +230,19 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 wobble.ArmContract();
                 drivetime.reset();
                 gyroTurn(TURN_SPEED*0.45,150,4);
-                gyroTurn(TURN_SPEED*0.3,170,3);
+                gyroTurn(TURN_SPEED*0.35,170,3);
 
                 gyroDrive(DRIVE_SPEED*.7, 28, 170, 5);
-
-                mRingCollectionState = RingCollectionState.COLLECT; // change collector state to get ready to pick up rings
-                collectRingsInAuto_A(mRingCollectionState, autoRingCollectTimeAllowed);// switch to method to drive and collect (no encoders)
-                drivetime.reset();
-                gyroTurn(TURN_SPEED*.7,20,3); //turn fast most of the way
-                gyroTurn(TURN_SPEED*.35,0,3);// turn slow to be accurate. Need to une PIDSs better instead
-                gyroDrive(DRIVE_SPEED*.8,13,0,3); // drive forward to shoot
-                //   //mShooterState = ShooterState.STATE_SHOOTER_ACTIVE; // set shooter to active again
+                gyroDriveandCollectRings(DRIVE_SPEED,8,170,2);
+                intake.Intakeon();
+                elevator.ElevatorSpeedfast();
+                gyroTurn(TURN_SPEED*.7,25,3); //turn fast most of the way
+                gyroTurn(TURN_SPEED*.4,0,3);// turn slow to be accurate. Need to une PIDSs better instead
+                gyroDrive(DRIVE_SPEED*.7, 12, 0, 3);
                 intake.Intakeoff();
                 elevator.Elevatoroff();
+                mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
                 shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
-
-
 
                 try {
                     shooter.shoot_N_rings(2);
@@ -248,7 +250,9 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                     e.printStackTrace();
                }
                drivetime.reset();
-               gyroDrive(DRIVE_SPEED,10,0,3);
+               gyroDrive(DRIVE_SPEED,8,0,3);
+
+
                 break;
             case BLUE_C: // four rings. 5 tiles forward and one tile to the left.
                 telemetry.addData("Going to BLUE C", "Target Zone");
@@ -263,16 +267,17 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 gyroDrive(DRIVE_SPEED, -26, 20,3);
                 gyroTurn(TURN_SPEED,120,2);
                 gyroTurn(TURN_SPEED*.5,180,2);
+                m_Ring_Spreader.ringSpreaderDown();
                 gyroDrive(DRIVE_SPEED,33,180,2);
                 drivetime.reset();
-                // guroDrive with ring collection included
-                gyroDriveandCollectRings(DRIVE_SPEED*.4,14,180,10);
-                gyroDriveandCollectRings(DRIVE_SPEED*.7,-20,180,10);
+                // gyroDrive with ring collection included
+                gyroDriveandCollectRings(DRIVE_SPEED*.3,14,180,10);
+                gyroDriveandCollectRings(DRIVE_SPEED*.8,-20,180,10);
                 gyroTurn(TURN_SPEED,35,3);
                 gyroTurn(TURN_SPEED*.4,0,2);
                 shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
                 try {
-                    shooter.shoot_N_rings(3);
+                    shooter.shoot_N_rings(2);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
