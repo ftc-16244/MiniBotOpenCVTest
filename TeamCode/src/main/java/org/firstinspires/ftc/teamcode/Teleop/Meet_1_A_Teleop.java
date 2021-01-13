@@ -10,6 +10,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Debouce;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain_v3;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
+import org.firstinspires.ftc.teamcode.Subsystems.Ring_Spreader;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 
@@ -26,6 +27,8 @@ public class Meet_1_A_Teleop extends OpMode {
     public Intake               intake      = new Intake();
     public Wobblegoal           wobble  = new Wobblegoal();
     public Elevator elevator    = new Elevator();
+    public Ring_Spreader m_Ring_Spreader = new Ring_Spreader();
+
     public ElapsedTime gripperCloseTimer = new ElapsedTime();
     //public ElapsedTime debounceTimer = new ElapsedTime();
     private Debouce mdebounce = new Debouce();
@@ -48,7 +51,7 @@ public class Meet_1_A_Teleop extends OpMode {
         wobble.init(hardwareMap);
         elevator.init(hardwareMap);
         shooter.init(hardwareMap);
-
+        m_Ring_Spreader.init(hardwareMap);
         //newState(currDriveState);
         currDriveState = DriveSpeedState.DRIVE_FAST; // initialize robot to FAST
         ringCollectorState = RingCollectionState.OFF;
@@ -192,10 +195,10 @@ public class Meet_1_A_Teleop extends OpMode {
         }
         if (gamepad1.left_trigger > 0.25) {
             shooter.flipperForward();
-            debounce(700);
+            debounce(500);
             telemetry.addData("Flipper Fwd", "Complete ");
             shooter.flipperBackward();
-            debounce(700);
+            debounce(500);
         }
         if (gamepad1.right_trigger > 0.25) {
             //shooter.flipperBackward();
