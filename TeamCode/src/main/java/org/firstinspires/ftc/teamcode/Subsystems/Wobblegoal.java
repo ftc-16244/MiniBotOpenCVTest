@@ -29,8 +29,8 @@ public class Wobblegoal {
     private static final double     EXTENDSPEED =   .5;
     private static final int        TICKS_PER_LIFT_IN = 76; // determined experimentally
     private static final int        LIFT_HEIGHT_HIGH = (int) (LIFTUP * TICKS_PER_LIFT_IN); // converts to ticks
-    public static final double     BASECLAMPUP =   0.75;
-   public static final double     BASECLAMPDOWN=   0.35;
+    public static final double     BASECLAMPUP =   0.80;
+   public static final double     BASECLAMPDOWN=   0.4;
 
 
     public void init(HardwareMap hwMap)  {
