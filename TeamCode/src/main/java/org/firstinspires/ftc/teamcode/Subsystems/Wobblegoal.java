@@ -85,7 +85,7 @@ public class Wobblegoal {
         WobbleExtend.setTargetPosition(ARMEXTEND);
         WobbleExtend.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         WobbleExtend.setPower(EXTENDSPEED);
-        lowerWobbleClamp();
+
 
     }
     public void ArmContract() {
