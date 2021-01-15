@@ -19,14 +19,14 @@ public class Shooter {
 
     //
     //Constants for shooter motors
-    private static final double ShooterSpeedfastleft=.58; // 0.45 reset after meet 1 to improve consistiencey
+    private static final double ShooterSpeedfastleft=.58; // 0.58 reset after meet 1 to improve consistiencey
     private static final double ShooterSpeedfastright=.30; // 0.51
     //We are changing the speeds to see which speeds make the first ring in
     private static final double shooterSpeedslowleft=.52;
     private static final double shooterSpeedslowright=.30;
     private static final double jamClear=-.35;
     //Constants for stacker servos
-    private static final double leftUp = 0.68; // .75 a little shy but ok due to hitting bolt // was 0.75
+    private static final double leftUp = 0.70; // .75 a little shy but ok due to hitting bolt // was 0.75
     private static final double leftBack = .4; //good at 0.4;
     private static final double rightUp = (1-leftUp);
     private static final double rightBack = (1-leftBack);
@@ -140,9 +140,9 @@ public class Shooter {
         while (ShotCount<rings)  {
 
                 shootOneRingHigh(); // this is only used in auto due to different stacker position
-                sleep(600);
+                sleep(650);
                 flipperForward();
-                sleep(600);
+                sleep(650);
                 flipperBackward();
                 ShotCount++;
 

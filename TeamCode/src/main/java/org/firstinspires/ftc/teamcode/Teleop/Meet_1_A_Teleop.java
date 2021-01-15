@@ -224,6 +224,7 @@ public class Meet_1_A_Teleop extends OpMode {
         if (gamepad1.dpad_left) {
             wobble.GripperOpen();
             wobble.ArmExtend();
+            wobble.lowerWobbleClamp();
             // wobble.resetWobble();
 
             telemetry.addData("Ready to rab Wobble", "Complete ");
@@ -241,6 +242,7 @@ public class Meet_1_A_Teleop extends OpMode {
 
 
             wobble.ArmCarryWobble();
+            wobble.raiseWobbleClamp();
             //wobble.readyToGrabGoal();
            telemetry.addData("Carrying Wobble", "Complete ");
         }
@@ -291,7 +293,12 @@ public class Meet_1_A_Teleop extends OpMode {
             telemetry.addData("Reset Wobble", "Complete ");
         }
 
-
+        if (gamepad2.x) {
+            m_Ring_Spreader.ringSpreaderUp();
+        }
+        if (gamepad2.b) {
+            m_Ring_Spreader.ringSpreaderDown();
+        }
        // switch case to determine what mode the arm needs to operate in.
 
 

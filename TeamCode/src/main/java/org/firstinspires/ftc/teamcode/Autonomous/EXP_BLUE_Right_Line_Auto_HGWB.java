@@ -256,8 +256,8 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 break;
             case BLUE_C: // four rings. 5 tiles forward and one tile to the left.
                 telemetry.addData("Going to BLUE C", "Target Zone");
-                gyroTurn(TURN_SPEED *.5,20,2);
-                gyroDrive(DRIVE_SPEED, 54, 20,3);
+                gyroTurn(TURN_SPEED *.5,22,2);
+                gyroDrive(DRIVE_SPEED, 54, 22,3);
                 wobble.GripperOpen();
                 sleep(500);
                 wobble.ArmExtend();
@@ -271,10 +271,20 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 gyroDrive(DRIVE_SPEED,33,180,2);
                 drivetime.reset();
                 // gyroDrive with ring collection included
-                gyroDriveandCollectRings(DRIVE_SPEED*.3,14,180,10);
-                gyroDriveandCollectRings(DRIVE_SPEED*.8,-20,180,10);
-                gyroTurn(TURN_SPEED,35,3);
-                gyroTurn(TURN_SPEED*.4,0,2);
+                gyroDriveandCollectRings(DRIVE_SPEED*.2,10,180,10); // collect from stack
+                gyroDriveandCollectRings(DRIVE_SPEED*.6,-1,180,10); // collect from stack
+                gyroDriveandCollectRings(DRIVE_SPEED*.2,4,180,10); // collect from stack
+                gyroDriveandCollectRings(DRIVE_SPEED*.8,-20,180,10); // backup leave intake on
+                intake.Intakeon();
+                elevator.ElevatorSpeedfast();
+                drivetime.reset();
+                gyroTurn(TURN_SPEED,35,2);
+                gyroTurn(TURN_SPEED*.3,0,2);
+                intake.Intakeoff();
+                elevator.Elevatoroff();
+                //m_Ring_Spreader.ringSpreaderUp();
+                wobble.ArmContract();
+                mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
                 shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
                 try {
                     shooter.shoot_N_rings(2);
@@ -282,10 +292,11 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                     e.printStackTrace();
                 }
                 drivetime.reset();
-                gyroDrive(DRIVE_SPEED, 5, 0,3);
+                gyroDrive(DRIVE_SPEED, 6, 0,3);
+                m_Ring_Spreader.ringSpreaderUp();
                 //gyroDrive(DRIVE_SPEED,-18,90,2);
                 //gyroTurn(TURN_SPEED*0.5,70,2);
-                wobble.ArmContract();
+
                 //gyroTurn(TURN_SPEED,-20,3);
                 //gyroDrive(DRIVE_SPEED,-40,10,3);
                 break;
