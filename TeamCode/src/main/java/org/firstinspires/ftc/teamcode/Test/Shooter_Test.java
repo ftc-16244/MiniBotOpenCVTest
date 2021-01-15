@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 
 
     @TeleOp(name="Shooter Only Test ", group="Teleop")
-@Disabled
+//@Disabled
     public class Shooter_Test extends OpMode{
 
 
@@ -79,7 +79,14 @@ import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 
             }
 
+            if (gamepad2.left_bumper) {
+                try {
+                    shooter.shoot_N_rings(3);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
+            }
 
         }
 
