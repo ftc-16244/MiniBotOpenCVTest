@@ -51,7 +51,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 
 @TeleOp(name="Wobble Mover Test", group="Linear Opmode")
 //@Disabled
-public class WobbleMover_Test extends LinearOpMode {
+public class  WobbleMover_Test extends LinearOpMode {
 
     // Declare OpMode members.
     private Wobblegoal wobble = new Wobblegoal();
@@ -73,6 +73,26 @@ public class WobbleMover_Test extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+
+            //========================================
+            // GAME PAD 1
+            //========================================
+
+            if (gamepad1.x) {
+                wobble.wobbleWristDown();
+                // wobble.resetWobble();
+                sleep(500); // pause for servos to move
+                telemetry.addData("Wrist Down", "Complete ");
+            }
+
+            if (gamepad1.b) {
+                wobble.wobbleWristUp();
+                //wobble.readyToGrabGoal();
+                sleep(500);
+                telemetry.addData("Wrist p", "Complete ");
+            }
+
+
             //========================================
             // GAME PAD 2
             //========================================

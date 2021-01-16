@@ -140,9 +140,9 @@ public class Shooter {
         while (ShotCount<rings)  {
 
                 shootOneRingHigh(); // this is only used in auto due to different stacker position
-                sleep(650);
+                sleep(700);
                 flipperForward();
-                sleep(650);
+                sleep(700);
                 flipperBackward();
                 ShotCount++;
 

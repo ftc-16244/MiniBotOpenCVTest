@@ -17,8 +17,9 @@ import java.util.List;
 // The goal here was to extend a base class with all the methods and prove it works just the same.
 
 // Place robot on the right most blue line when facing the goal. Robot should be placed such that
-// as it drives straight ahead it will not hit the stack of rings. So basically center the robot on
-// the seam between the first and second floor tile. Which is an inch or to to the right of the blue line.
+// as it drives straight ahead it will not hit the stack of rings. The left edge of teh left most intake wheel
+// needs to line up with the right edge of the tape on the floor. This is so the new wobble gripper and wobble
+// goal will not hit the 4 stack of rings on the first part of auto.
 
 
 // Alignment Position RH Blue Line when facing the goal
@@ -142,13 +143,15 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
         }
         // Pick up the Wobble Goal before moving.
         // Sleep statements help let things settle before moving on.
-        wobble.GripperOpen();
-        wobble.ArmExtend();
-        sleep(1000);
+        wobble.GripperPartOpen();
+        //wobble.ArmExtend();
+        sleep(250);
+        wobble.wobbleWristDown();
+        sleep(250);
         wobble.GripperClose();
-        sleep(500);
+        //sleep(250);
         //wobble.ArmCarryWobble();
-        sleep(500);
+
 
         // After picking up the wobble goal the robot always goes to the same spot to shoot the 3 preloaded rings.
         // After delivering the rings, the switch case has the appropriate drive path to the identified Target Zone.
@@ -181,14 +184,14 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 gyroTurn(TURN_SPEED*.4,60,3);
                 gyroDrive(DRIVE_SPEED,27,60,4);
                sleep(500);
-                wobble.GripperSuperOpen();
+                wobble.GripperOpen();
                 sleep(500);
-                wobble.ArmExtend();
-                sleep(500);
-                wobble.lowerWobbleClamp();
+                //wobble.ArmExtend();
+
+
                 drivetime.reset();
                 gyroDrive(DRIVE_SPEED*.5,-4,60,4);
-
+                wobble.lowerWobbleClamp(); // back up so clamp doest catch on first wobble
                 gyroTurn(TURN_SPEED, 155,4);
                 gyroTurn(TURN_SPEED*.33, 180,3);
 
@@ -197,22 +200,26 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 gyroTurn(TURN_SPEED*.4,158,3);
                 gyroDrive(DRIVE_SPEED*5,6.5,158,2);
 
-                wobble.ArmExtend();
+                //wobble.ArmExtend();
 
-                sleep(500);
+                //sleep(500);
                 wobble.GripperClose();
                 sleep(1000);
-
+                //wobble.liftPartial();
                 drivetime.reset();
-                gyroDrive(DRIVE_SPEED,-53,153,2); // backup with 2nd wobble goal
+                gyroDrive(DRIVE_SPEED,-55,153,2); // backup with 2nd wobble goal
                 gyroTurn(TURN_SPEED*.5,90,3);
-                gyroDrive(DRIVE_SPEED,14,90,2);
-                wobble.GripperSuperOpen();
+                gyroDrive(DRIVE_SPEED,13,90,2);
+               //wobble.GripperSuperOpen();
+                wobble.GripperOpen();
                 sleep(250);
                 wobble.raiseWobbleClamp();
                 sleep(250);
-                gyroDrive(DRIVE_SPEED,-6,90,2);
-                wobble.ArmContract();
+                gyroDrive(DRIVE_SPEED,-10,90,2);
+                //wobble.ArmContract();
+                wobble.wobbleWristStart();
+                wobble.GripperClose();
+                sleep(500);// Keeps power to servo on long enough to allow servo to move
 
 
                 break;
@@ -224,23 +231,25 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 sleep(500);
                 wobble.GripperOpen();
                 sleep(500);
-                wobble.ArmContract();
+                //wobble.ArmContract();
                 drivetime.reset();
-                gyroDrive(DRIVE_SPEED,-6,10,3);
-                wobble.ArmContract();
+                gyroDrive(DRIVE_SPEED,-4,10,3);
+                //wobble.ArmContract();
                 drivetime.reset();
-                gyroTurn(TURN_SPEED*0.45,150,4);
-                gyroTurn(TURN_SPEED*0.35,170,3);
+                gyroTurn(TURN_SPEED*0.6,150,4);
+                gyroTurn(TURN_SPEED*0.35,167,3);
 
-                gyroDrive(DRIVE_SPEED*.7, 28, 170, 5);
-                gyroDriveandCollectRings(DRIVE_SPEED,8,170,2);
+                gyroDrive(DRIVE_SPEED*.7, 28, 167, 5);
+                gyroDriveandCollectRings(DRIVE_SPEED,8,167,2);
                 intake.Intakeon();
                 elevator.ElevatorSpeedfast();
                 gyroTurn(TURN_SPEED*.7,25,3); //turn fast most of the way
-                gyroTurn(TURN_SPEED*.4,0,3);// turn slow to be accurate. Need to une PIDSs better instead
-                gyroDrive(DRIVE_SPEED*.7, 12, 0, 3);
+                gyroTurn(TURN_SPEED*.4,2,3);// turn slow to be accurate. Need to une PIDSs better instead
+                gyroDrive(DRIVE_SPEED*.7, 12, 2, 3);
                 intake.Intakeoff();
                 elevator.Elevatoroff();
+                wobble.wobbleWristStart();
+                wobble.GripperClose();
                 mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
                 shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
 
@@ -250,9 +259,9 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                     e.printStackTrace();
                }
                drivetime.reset();
-               gyroDrive(DRIVE_SPEED,8,0,3);
-
-
+               gyroDrive(DRIVE_SPEED,6,0,3);
+               wobble.wobbleWristStart();
+                sleep(250);
                 break;
             case BLUE_C: // four rings. 5 tiles forward and one tile to the left.
                 telemetry.addData("Going to BLUE C", "Target Zone");
@@ -260,30 +269,35 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 gyroDrive(DRIVE_SPEED, 54, 22,3);
                 wobble.GripperOpen();
                 sleep(500);
-                wobble.ArmExtend();
+                //wobble.ArmExtend();
                 //sleep(1000);
                 drivetime.reset();
                 // change gyroDrive(DRIVE_SPEED, -32.0, 10, 5);
-                gyroDrive(DRIVE_SPEED, -26, 20,3);
+                gyroDrive(DRIVE_SPEED, -25, 20,3);
                 gyroTurn(TURN_SPEED,120,2);
                 gyroTurn(TURN_SPEED*.5,180,2);
                 m_Ring_Spreader.ringSpreaderDown();
-                gyroDrive(DRIVE_SPEED,33,180,2);
+                gyroDrive(DRIVE_SPEED,31,180,2);
                 drivetime.reset();
+
                 // gyroDrive with ring collection included
                 gyroDriveandCollectRings(DRIVE_SPEED*.2,10,180,10); // collect from stack
-                gyroDriveandCollectRings(DRIVE_SPEED*.6,-1,180,10); // collect from stack
-                gyroDriveandCollectRings(DRIVE_SPEED*.2,4,180,10); // collect from stack
-                gyroDriveandCollectRings(DRIVE_SPEED*.8,-20,180,10); // backup leave intake on
+
+                gyroDriveandCollectRings(DRIVE_SPEED*.6,-3,180,10); // collect from stack
+                gyroDriveandCollectRings(DRIVE_SPEED*.2,7,180,10); // collect from stack
+
+                gyroDriveandCollectRings(DRIVE_SPEED*.8,-14,180,10); // backup leave intake on
+
                 intake.Intakeon();
                 elevator.ElevatorSpeedfast();
+                wobble.wobbleWristStart();
+                wobble.GripperClose();
+
                 drivetime.reset();
-                gyroTurn(TURN_SPEED,35,2);
-                gyroTurn(TURN_SPEED*.3,0,2);
+                gyroTurn(TURN_SPEED,40,2);
+                gyroTurn(TURN_SPEED*.30,0 ,2);
                 intake.Intakeoff();
                 elevator.Elevatoroff();
-                //m_Ring_Spreader.ringSpreaderUp();
-                wobble.ArmContract();
                 mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
                 shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
                 try {
@@ -291,14 +305,21 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                //wobble.wobbleWristStart();
+                //wobble.GripperClose();
                 drivetime.reset();
-                gyroDrive(DRIVE_SPEED, 6, 0,3);
+                gyroDrive(DRIVE_SPEED, 10, 0,3);
                 m_Ring_Spreader.ringSpreaderUp();
+                sleep(500);
+
                 //gyroDrive(DRIVE_SPEED,-18,90,2);
                 //gyroTurn(TURN_SPEED*0.5,70,2);
 
                 //gyroTurn(TURN_SPEED,-20,3);
                 //gyroDrive(DRIVE_SPEED,-40,10,3);
+
+
+
                 break;
         }
 
