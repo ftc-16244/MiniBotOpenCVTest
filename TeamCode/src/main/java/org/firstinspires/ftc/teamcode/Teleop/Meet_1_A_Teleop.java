@@ -223,8 +223,9 @@ public class Meet_1_A_Teleop extends OpMode {
 
         if (gamepad1.dpad_left) {
             wobble.GripperOpen();
-            wobble.ArmExtend();
+            //wobble.ArmExtend();
             wobble.lowerWobbleClamp();
+            wobble.wobbleWristDown();
             // wobble.resetWobble();
 
             telemetry.addData("Ready to rab Wobble", "Complete ");
@@ -241,54 +242,62 @@ public class Meet_1_A_Teleop extends OpMode {
             }
 
 
-            wobble.ArmCarryWobble();
+            //wobble.ArmCarryWobble();
             wobble.raiseWobbleClamp();
             //wobble.readyToGrabGoal();
            telemetry.addData("Carrying Wobble", "Complete ");
         }
         if (gamepad1.dpad_right) {
             wobble.GripperOpen();
-            wobble.ArmExtend();
+            //wobble.ArmExtend();
 
             telemetry.addData("Dropping Wobble", "Complete ");
         }
         if (gamepad1.dpad_down) {
-            wobble.ArmContract();
-            wobble.GripperOpen();
+            //wobble.ArmContract();
+            wobble.GripperClose();
             wobble.LiftLower();
-
+            wobble.wobbleWristUp();
+            wobble.raiseWobbleClamp();
             telemetry.addData("Reset Wobble", "Complete ");
         }
         if (gamepad1.back){
             wobble.LiftRise();
+            wobble.raiseWobbleClamp();
+            
         }
 
         //========================================
         // GAME PAD 2 Mainly Wobble
         //========================================
         if (gamepad2.dpad_left) {
-            wobble.GripperOpen();
-            wobble.ArmExtend();
-            // wobble.resetWobble();
+           //wobble.GripperOpen();
+           wobble.wobbleWristDown();
+           //wobble.lowerWobbleClamp();
 
+           //wobble.ArmExtend();
+           //wobble.resetWobble();
+            //wobble.readyToGrabWobble();
             telemetry.addData("Ready to rab Wobble", "Complete ");
         }
 
         if (gamepad2.dpad_up){
             wobble.GripperClose();
-            wobble.ArmCarryWobble();
+            //wobble.ArmCarryWobble();
             //wobble.readyToGrabGoal();
             telemetry.addData("Carrying Wobble", "Complete ");
         }
         if (gamepad2.dpad_right) {
             wobble.GripperOpen();
-            wobble.ArmExtend();
+            //wobble.ArmExtend();
 
             telemetry.addData("Dropping Wobble", "Complete ");
         }
         if (gamepad2.dpad_down) {
             wobble.ArmContract();
-            wobble.GripperOpen();
+            wobble.wobbleWristUp();
+            wobble.GripperClose();
+            wobble.raiseWobbleClamp();
 
             telemetry.addData("Reset Wobble", "Complete ");
         }
