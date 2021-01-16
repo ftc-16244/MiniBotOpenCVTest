@@ -262,9 +262,10 @@ public class Meet_1_A_Teleop extends OpMode {
             telemetry.addData("Reset Wobble", "Complete ");
         }
         if (gamepad1.back){
+            wobble.wobbleWristDown();
             wobble.LiftRise();
             wobble.raiseWobbleClamp();
-            
+
         }
 
         //========================================
