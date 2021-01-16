@@ -143,7 +143,9 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
         // Pick up the Wobble Goal before moving.
         // Sleep statements help let things settle before moving on.
         wobble.GripperOpen();
-        wobble.ArmExtend();
+        //wobble.ArmExtend();
+
+        wobble.wobbleWristDown();
         sleep(1000);
         wobble.GripperClose();
         sleep(500);
@@ -181,9 +183,10 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 gyroTurn(TURN_SPEED*.4,60,3);
                 gyroDrive(DRIVE_SPEED,27,60,4);
                sleep(500);
-                wobble.GripperSuperOpen();
+                wobble.GripperOpen();
                 sleep(500);
-                wobble.ArmExtend();
+                //wobble.ArmExtend();
+
                 sleep(500);
                 wobble.lowerWobbleClamp();
                 drivetime.reset();
@@ -197,7 +200,7 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 gyroTurn(TURN_SPEED*.4,158,3);
                 gyroDrive(DRIVE_SPEED*5,6.5,158,2);
 
-                wobble.ArmExtend();
+                //wobble.ArmExtend();
 
                 sleep(500);
                 wobble.GripperClose();
@@ -207,12 +210,14 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 gyroDrive(DRIVE_SPEED,-53,153,2); // backup with 2nd wobble goal
                 gyroTurn(TURN_SPEED*.5,90,3);
                 gyroDrive(DRIVE_SPEED,14,90,2);
-                wobble.GripperSuperOpen();
+                //wobble.GripperSuperOpen();
+                wobble.GripperOpen();
                 sleep(250);
                 wobble.raiseWobbleClamp();
                 sleep(250);
                 gyroDrive(DRIVE_SPEED,-6,90,2);
-                wobble.ArmContract();
+                //wobble.ArmContract();
+                wobble.wobbleWristUp();
 
 
                 break;
