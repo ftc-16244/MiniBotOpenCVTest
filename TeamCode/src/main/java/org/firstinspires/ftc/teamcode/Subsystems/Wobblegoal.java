@@ -9,32 +9,37 @@ import static java.lang.Thread.sleep;
 
 public class Wobblegoal {
     //Define Hardware Objects
-    public DcMotor WobbleLift=null;
-    //public Servo WobbleExtend=null;
-    public DcMotor WobbleExtend = null;
-    public Servo WobbleGrip=null;
-    public Servo WobbleBaseClamp = null;
-    public Servo WobbleWrist = null;
+    public DcMotor  WobbleLift=null;
+    public DcMotor  WobbleExtend = null; // no longer used
+    public Servo    WobbleGrip=null;
+    public Servo    WobbleBaseClamp = null;
+    public Servo    WobbleWrist = null; // replaces REV Core Hex Motor to extend arm
 
-    //Constants
-    private static final double     LIFTSPEED   =   0.65;
-    private static final double     LIFTUP      =   14.5 ; //Number is in inches
-    private static final int        LIFTDOWN    =   0;
-    private static final double     GRIPPERINIT  = 0.5;// 0.35 for V3
-    private static final double     GRIPPEROPEN =   0.8;//0.3 for V3
-    private static final double     GRIPPERSUPEROPEN =   0.01;//0.01 for V3
-    private static final double     GRIPPERCLOSE=   0.25;// 0.8 for V3
-    private static final int        ARMEXTEND   =   35; //32-33 is good ticks
-    private static final int        ARMCONTRACT =   0; // ticks
-    private static final int        ARMCARRY    =   60;
-    private static final double     EXTENDSPEED =   .5;
+    //Constants Lift
+    private static final double     LIFTSPEED       =   0.65;
+    private static final double     LIFTUP          =   14.5 ; //Number is in inches
+    private static final int        LIFTDOWN        =   0;
+    private static final int        LIFTPARTIAL        = 8;
     private static final int        TICKS_PER_LIFT_IN = 76; // determined experimentally
     private static final int        LIFT_HEIGHT_HIGH = (int) (LIFTUP * TICKS_PER_LIFT_IN); // converts to ticks
-    public static final double     BASECLAMPUP =   0.80;
-    public static final double     BASECLAMPDOWN=   0.4;
-    public static final double      WRISTSTART = .36 ;
-    public static final double      WRISTUP = 0.42;
-    public static final double      WRISTDOWN = 0.65;
+    //Constants Gripper
+    private static final double     GRIPPERINIT         =   0.4;// 0.35 for V3
+    private static final double     GRIPPEROPEN         =   0.78;//0.3 for V3
+    private static final double     GRIPPERSUPEROPEN    =   0.01;//0.01 for V3
+    private static final double     GRIPPERCLOSE        =   0.25;// 0.8 for V3
+    private static final double     GRIPPERPARTOPEN     =   0.55;// 0.8 for V3
+    //Constants Arm - obsolete
+    private static final int        ARMEXTEND       =   35; //32-33 is good ticks
+    private static final int        ARMCONTRACT     =   0; // ticks
+    private static final int        ARMCARRY        =   60;
+    private static final double     EXTENDSPEED     =   .5;
+    //Constants Wobble Base Clam
+    public static final double      BASECLAMPUP     =   0.80;
+    public static final double      BASECLAMPDOWN   =   0.4;
+    //Constants Wobble Wrist - Replaces Arm
+    public static final double      WRISTSTART      = .36 ;
+    public static final double      WRISTUP         = 0.42;
+    public static final double      WRISTDOWN       = 0.65;
     public void init(HardwareMap hwMap)  {
         WobbleLift=hwMap.get(DcMotor.class,"LiftWobble");
         WobbleExtend=hwMap.get(DcMotor.class,"ArmExtend");
@@ -67,10 +72,23 @@ public class Wobblegoal {
         WobbleLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         WobbleLift.setPower(LIFTSPEED);
     }
+
+    public void liftPartial() {
+        raiseWobbleClamp();
+        WobbleLift.setTargetPosition(LIFTPARTIAL); // this one is just zero for now
+        WobbleLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        WobbleLift.setPower(LIFTSPEED);
+
+    }
     public void GripperOpen()  {
 
         WobbleGrip.setPosition(GRIPPEROPEN);
 
+    }
+
+
+    public void GripperPartOpen() {
+        WobbleGrip.setPosition(GRIPPERPARTOPEN);
     }
 
     public void GripperSuperOpen()  {
@@ -122,13 +140,16 @@ public class Wobblegoal {
 
         WobbleWrist.setPosition(WRISTDOWN);
 
-
-
     }
 
     public void wobbleWristUp() {
 
         WobbleWrist.setPosition(WRISTUP);
+
+    }
+    public void wobbleWristStart() {
+
+        WobbleWrist.setPosition(WRISTSTART);
 
     }
 
