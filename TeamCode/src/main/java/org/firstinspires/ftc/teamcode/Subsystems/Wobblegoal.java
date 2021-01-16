@@ -14,15 +14,16 @@ public class Wobblegoal {
     public DcMotor WobbleExtend = null;
     public Servo WobbleGrip=null;
     public Servo WobbleBaseClamp = null;
+    public Servo WobbleWrist = null;
 
     //Constants
     private static final double     LIFTSPEED   =   0.65;
     private static final double     LIFTUP      =   14.5 ; //Number is in inches
     private static final int        LIFTDOWN    =   0;
-    private static final double     GRIPPERINIT  = 0.35;
-    private static final double     GRIPPEROPEN =   0.3;
-    private static final double     GRIPPERSUPEROPEN =   0.01;
-    private static final double     GRIPPERCLOSE=   0.8;
+    private static final double     GRIPPERINIT  = 0.5;// 0.35 for V3
+    private static final double     GRIPPEROPEN =   0.8;//0.3 for V3
+    private static final double     GRIPPERSUPEROPEN =   0.01;//0.01 for V3
+    private static final double     GRIPPERCLOSE=   0.25;// 0.8 for V3
     private static final int        ARMEXTEND   =   35; //32-33 is good ticks
     private static final int        ARMCONTRACT =   0; // ticks
     private static final int        ARMCARRY    =   60;
@@ -30,14 +31,16 @@ public class Wobblegoal {
     private static final int        TICKS_PER_LIFT_IN = 76; // determined experimentally
     private static final int        LIFT_HEIGHT_HIGH = (int) (LIFTUP * TICKS_PER_LIFT_IN); // converts to ticks
     public static final double     BASECLAMPUP =   0.80;
-   public static final double     BASECLAMPDOWN=   0.4;
-
-
+    public static final double     BASECLAMPDOWN=   0.4;
+    public static final double      WRISTSTART = .36 ;
+    public static final double      WRISTUP = 0.42;
+    public static final double      WRISTDOWN = 0.65;
     public void init(HardwareMap hwMap)  {
         WobbleLift=hwMap.get(DcMotor.class,"LiftWobble");
         WobbleExtend=hwMap.get(DcMotor.class,"ArmExtend");
         WobbleGrip=hwMap.get(Servo.class,"Gripper");
         WobbleBaseClamp=hwMap.get(Servo.class,"Base Clamp");
+        WobbleWrist = hwMap.get(Servo.class,"Wrist");
 
         //Positive=up and Negative=down
         WobbleLift.setDirection(DcMotor.Direction.FORWARD);
@@ -49,6 +52,7 @@ public class Wobblegoal {
         WobbleExtend.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         WobbleGrip.setPosition(GRIPPERINIT);
         WobbleBaseClamp.setPosition(BASECLAMPUP);
+        WobbleWrist.setPosition(WRISTSTART);
 
     }
 
@@ -114,6 +118,20 @@ public class Wobblegoal {
 
     }
 
+    public void wobbleWristDown()  {
+
+        WobbleWrist.setPosition(WRISTDOWN);
+
+
+
+    }
+
+    public void wobbleWristUp() {
+
+        WobbleWrist.setPosition(WRISTUP);
+
+    }
+
     ///// Multi Function methods to be called by the Opmodes
 
     public void resetWobble() {
@@ -122,16 +140,19 @@ public class Wobblegoal {
         LiftLower();
     }
 
-    public void readyToGrabGoal() {
-        LiftRise();
-        ArmExtend();
+    public void readyToGrabWobble() {
+        //LiftRise();
+        //ArmExtend();
         GripperOpen();
         LiftLower();
+
+        lowerWobbleClamp();
     }
 
     public void grabAndLift() {
         GripperClose();
-        LiftRise();
+        //LiftRise();
+        raiseWobbleClamp();
     }
 
     public void lowerAndRelease() {

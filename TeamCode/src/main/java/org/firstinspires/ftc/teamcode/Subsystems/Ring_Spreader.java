@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class Ring_Spreader {
+public class  Ring_Spreader {
     //Define Hardware Objects
     public Servo ringSpreader=null;
 
