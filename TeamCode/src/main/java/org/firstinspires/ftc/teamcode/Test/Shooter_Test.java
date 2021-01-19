@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 
 
     @TeleOp(name="Shooter Only Test ", group="Teleop")
-//@Disabled
+    @Disabled
     public class Shooter_Test extends OpMode{
 
 
