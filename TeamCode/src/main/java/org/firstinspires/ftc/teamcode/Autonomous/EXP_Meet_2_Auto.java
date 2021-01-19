@@ -2,15 +2,14 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.Enums.RingCollectionState;
 import org.firstinspires.ftc.teamcode.Enums.ShooterState;
 import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
 
 import java.util.List;
 
-@Autonomous(name="EXP_Blue_Right_Line_HGWB", group="Test")
+@Autonomous(name="EXP_Meet 2 Auto", group="Test")
 //@Disabled // Leave disabled until ready to test
 
 // This opmode EXTENDS BasicAutonomous and actually does the same thing as BasicAutonomous
@@ -29,7 +28,7 @@ import java.util.List;
 //    X     B       X       X
 //    X     B       X       X
 
-public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
+public class EXP_Meet_2_Auto extends BasicAutonomous {
     private static  final double        extraRingShootTimeAllowed   = 2; //  timer for shooting the single ring unique to this opMode
     private static  final double        autoShootTimeAllowed        = 4;//
     private static final  double        autoRingCollectTimeAllowed  = 0.6; // time allowed to let the single ring to get picked up
@@ -231,40 +230,60 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 wobble.GripperOpen();
                 sleep(500);
 
-                // Go towards the single ring
+                // Go towards the single ring and get second wobble
                 drivetime.reset();
                 gyroDrive(DRIVE_SPEED,-4,10,3);
 
                 drivetime.reset();
-                gyroTurn(TURN_SPEED*0.6,150,4);
-                gyroTurn(TURN_SPEED*0.35,167,3);
+                gyroTurn(TURN_SPEED*0.75,150,4);
+                gyroTurn(TURN_SPEED*0.4,167,3);
                 m_Ring_Spreader.ringSpreaderDown(); // drop ring spreader arm to prevent jamming in case TF reads C and goes to B
                 gyroDrive(DRIVE_SPEED*.7, 28, 167, 5);
-                gyroDriveandCollectRings(DRIVE_SPEED,8,167,2);
+                gyroDriveandCollectRings(DRIVE_SPEED,8,167,2); // was 8
+
                 intake.Intakeon();
                 elevator.ElevatorSpeedfast();
+                // Go for second wobbble
+                gyroTurn(TURN_SPEED,155,3);
+                gyroTurn(TURN_SPEED*.45,148,2);
+                wobble.lowerWobbleClamp();
+                gyroDrive(DRIVE_SPEED,17,148,3);
+                gyroDrive(DRIVE_SPEED*.6,5,148,3);
+                wobble.GripperClose();
+                sleep(500);
+                gyroDrive(DRIVE_SPEED,-18,148,3);
 
                 // Turn back to face the goal and shoot
-                gyroTurn(TURN_SPEED*.7,25,3); //turn fast most of the way
-                gyroTurn(TURN_SPEED*.4,2,3);// turn slow to be accurate. Need to une PIDSs better instead
-                gyroDrive(DRIVE_SPEED*.7, 12, 2, 3);
+                gyroTurn(TURN_SPEED*.8,25,3); //turn fast most of the way
+                gyroTurn(TURN_SPEED*.4,-2,3);// turn slow to be accurate. Need to une PIDSs better instead
+
+                gyroDrive(DRIVE_SPEED*.7, 7, -2, 3);
+
                 intake.Intakeoff();
                 elevator.Elevatoroff();
-                wobble.wobbleWristStart();
-                wobble.GripperClose();
+
+                //wobble.wobbleWristStart();
+                //wobble.GripperClose();
                 mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
                 shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
 
                 try {
-                    shooter.shoot_N_rings(2);
+                    shooter.shoot_N_rings(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                }
+
                drivetime.reset();
-               gyroDrive(DRIVE_SPEED,6,0,3);
-               wobble.wobbleWristStart();
+               gyroDrive(DRIVE_SPEED,20,-5,3);
+
                 m_Ring_Spreader.ringSpreaderUp();
+                wobble.GripperOpen();
                 sleep(250);
+                wobble.wobbleWristStart();
+                sleep(250);
+                gyroDrive(DRIVE_SPEED,-3,-5,3);
+
+
                 break;
             case BLUE_C: // four rings. 5 tiles forward and one tile to the left.
                 // Drop off first wobble after shooting 3 rings
