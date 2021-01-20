@@ -248,10 +248,10 @@ public class EXP_Meet_2_Auto extends BasicAutonomous {
                 gyroTurn(TURN_SPEED*.45,148,2);
                 wobble.lowerWobbleClamp();
                 gyroDrive(DRIVE_SPEED,17,148,3);
-                gyroDrive(DRIVE_SPEED*.6,5,148,3);
+                gyroDrive(DRIVE_SPEED*.45,7,148,3);
                 wobble.GripperClose();
                 sleep(500);
-                gyroDrive(DRIVE_SPEED,-18,148,3);
+                gyroDrive(DRIVE_SPEED,-19,148,3);
 
                 // Turn back to face the goal and shoot
                 gyroTurn(TURN_SPEED*.8,25,3); //turn fast most of the way
@@ -273,16 +273,18 @@ public class EXP_Meet_2_Auto extends BasicAutonomous {
                     e.printStackTrace();
                }
 
-               drivetime.reset();
-               gyroDrive(DRIVE_SPEED,20,-5,3);
+                drivetime.reset();
+                gyroDrive(DRIVE_SPEED,18,-2,3);
 
-                m_Ring_Spreader.ringSpreaderUp();
+
                 wobble.GripperOpen();
                 sleep(250);
                 wobble.wobbleWristStart();
                 sleep(250);
-                gyroDrive(DRIVE_SPEED,-3,-5,3);
-
+                gyroDrive(DRIVE_SPEED,-3,-8,3);
+                wobble.raiseWobbleClamp();
+                m_Ring_Spreader.ringSpreaderUp();
+                sleep(250);
 
                 break;
             case BLUE_C: // four rings. 5 tiles forward and one tile to the left.
