@@ -255,9 +255,9 @@ public class EXP_Meet_2_Auto extends BasicAutonomous {
 
                 // Turn back to face the goal and shoot
                 gyroTurn(TURN_SPEED*.8,25,3); //turn fast most of the way
-                gyroTurn(TURN_SPEED*.4,-2,3);// turn slow to be accurate. Need to une PIDSs better instead
+                gyroTurn(TURN_SPEED*.4,0,3);// turn slow to be accurate. Need to une PIDSs better instead
 
-                gyroDrive(DRIVE_SPEED*.7, 7, -2, 3);
+                gyroDrive(DRIVE_SPEED*.7, 10 , 0, 3); // drive fwd ro shoot 4th ring
 
                 intake.Intakeoff();
                 elevator.Elevatoroff();
