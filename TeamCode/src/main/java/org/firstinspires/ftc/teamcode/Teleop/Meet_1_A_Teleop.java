@@ -195,10 +195,10 @@ public class Meet_1_A_Teleop extends OpMode {
         }
         if (gamepad1.left_trigger > 0.25) {
             shooter.flipperForward();
-            debounce(650);
+            debounce(700);
             telemetry.addData("Flipper Fwd", "Complete ");
             shooter.flipperBackward();
-            debounce(650);
+            debounce(700);
         }
         if (gamepad1.right_trigger > 0.25) {
             //shooter.flipperBackward();
