@@ -16,9 +16,9 @@ public class Wobblegoal {
     public Servo    WobbleWrist = null; // replaces REV Core Hex Motor to extend arm
 
     //Constants Lift
-    private static final double     LIFTSPEED       =   0.65;
+    private static final double     LIFTSPEED       =   0.78;
     private static final double     LIFTUP          =   14.5 ; //Number is in inches
-    private static final int        LIFTDOWN        =   0;
+    private static final int        LIFTDOWN        =   -1; //To make sure it goes all the way down
     private static final int        LIFTPARTIAL        = 8;
     private static final int        TICKS_PER_LIFT_IN = 76; // determined experimentally
     private static final int        LIFT_HEIGHT_HIGH = (int) (LIFTUP * TICKS_PER_LIFT_IN); // converts to ticks
