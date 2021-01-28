@@ -192,12 +192,12 @@ public class EXP_Meet_2_Auto extends BasicAutonomous {
                 gyroDrive(DRIVE_SPEED*.5,-4,60,4);
                 wobble.lowerWobbleClamp(); // back up so clamp doest catch on first wobble
                 gyroTurn(TURN_SPEED, 155,4);
-                gyroTurn(TURN_SPEED*.4, 180,3);
+                gyroTurn(TURN_SPEED*.4, 180,3); // turn and drive straight to front
 
-                gyroDrive(DRIVE_SPEED*.7,36,180,4);
+                gyroDrive(DRIVE_SPEED*.7,36,180,4); // approach 2nd wobble parallel to side wall
 
-                gyroTurn(TURN_SPEED*.4,157,3);
-                gyroDrive(DRIVE_SPEED*5,6.5,157,2);
+                gyroTurn(TURN_SPEED*.4,157,3); // make final correctin turn to get second wobble
+                gyroDrive(DRIVE_SPEED*5,7.5,157,2); // drive fwd to get second wobble
 
                 //wobble.ArmExtend();
 
@@ -255,9 +255,9 @@ public class EXP_Meet_2_Auto extends BasicAutonomous {
 
                 // Turn back to face the goal and shoot
                 gyroTurn(TURN_SPEED*.8,25,3); //turn fast most of the way
-                gyroTurn(TURN_SPEED*.4,-2,3);// turn slow to be accurate. Need to une PIDSs better instead
+                gyroTurn(TURN_SPEED*.4,0,3);// turn slow to be accurate. Need to une PIDSs better instead
 
-                gyroDrive(DRIVE_SPEED*.7, 7, -2, 3);
+                gyroDrive(DRIVE_SPEED*.7, 10 , 0, 3); // drive fwd ro shoot 4th ring
 
                 intake.Intakeoff();
                 elevator.Elevatoroff();
