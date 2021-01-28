@@ -26,7 +26,7 @@ public class Wobblegoal {
     private static final double     GRIPPERINIT         =   0.4;// 0.35 for V3
     private static final double     GRIPPEROPEN         =   0.78;//0.3 for V3
     private static final double     GRIPPERSUPEROPEN    =   0.01;//0.01 for V3
-    private static final double     GRIPPERCLOSE        =   0.25;// 0.8 for V3
+    private static final double     GRIPPERCLOSE        =   0.22;// 0.8 for V3
     private static final double     GRIPPERPARTOPEN     =   0.55;// 0.8 for V3
     //Constants Arm - obsolete
     private static final int        ARMEXTEND       =   35; //32-33 is good ticks
@@ -38,8 +38,10 @@ public class Wobblegoal {
     public static final double      BASECLAMPDOWN   =   0.4;
     //Constants Wobble Wrist - Replaces Arm
     public static final double      WRISTSTART      = .36 ;
-    public static final double      WRISTUP         = 0.42;
+    public static final double      WRISTUP         = 0.45 ;
     public static final double      WRISTDOWN       = 0.65;
+    public static final double      WRISTHALFWAY      = 0.50;
+
     public void init(HardwareMap hwMap)  {
         WobbleLift=hwMap.get(DcMotor.class,"LiftWobble");
         WobbleExtend=hwMap.get(DcMotor.class,"ArmExtend");
@@ -150,6 +152,12 @@ public class Wobblegoal {
     public void wobbleWristStart() {
 
         WobbleWrist.setPosition(WRISTSTART);
+
+    }
+
+    public void wobbleWristHalfWay() {
+
+        WobbleWrist.setPosition(WRISTHALFWAY);
 
     }
 
