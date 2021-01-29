@@ -18,10 +18,11 @@ public class Wobblegoal {
     //Constants Lift
     private static final double     LIFTSPEED       =   0.78;
     private static final double     LIFTUP          =   14.5 ; //Number is in inches
-    private static final int        LIFTDOWN        =   -1; //To make sure it goes all the way down
+    private static final double     LIFTDOWN        =   -0.5; //To make sure it goes all the way down
     private static final int        LIFTPARTIAL        = 8;
-    private static final int        TICKS_PER_LIFT_IN = 76; // determined experimentally
+    private static final double     TICKS_PER_LIFT_IN = 76; // determined experimentally
     private static final int        LIFT_HEIGHT_HIGH = (int) (LIFTUP * TICKS_PER_LIFT_IN); // converts to ticks
+    private static final int        LIFT_HEIGHT_LOW = (int) (LIFTDOWN * TICKS_PER_LIFT_IN); // converts to ticks
     //Constants Gripper
     private static final double     GRIPPERINIT         =   0.4;// 0.35 for V3
     private static final double     GRIPPEROPEN         =   0.78;//0.3 for V3
@@ -70,7 +71,7 @@ public class Wobblegoal {
         WobbleLift.setPower(LIFTSPEED);
     }
     public void LiftLower() {
-        WobbleLift.setTargetPosition(LIFTDOWN); // this one is just zero for now
+        WobbleLift.setTargetPosition(LIFT_HEIGHT_LOW); // this one is just zero for now
         WobbleLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         WobbleLift.setPower(LIFTSPEED);
     }
