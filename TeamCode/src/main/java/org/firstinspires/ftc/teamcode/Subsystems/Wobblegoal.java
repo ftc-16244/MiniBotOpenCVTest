@@ -17,8 +17,8 @@ public class Wobblegoal {
 
     //Constants Lift
     private static final double     LIFTSPEED       =   0.78;
-    private static final double     LIFTUP          =   14.5 ; //Number is in inches
-    private static final double     LIFTDOWN        =   -0.5; //To make sure it goes all the way down
+    private static final double     LIFTUP          =   13 ; //Number is in inches
+    private static final double     LIFTDOWN        =   0; //To make sure it goes all the way down
     private static final int        LIFTPARTIAL        = 8;
     private static final double     TICKS_PER_LIFT_IN = 76; // determined experimentally
     private static final int        LIFT_HEIGHT_HIGH = (int) (LIFTUP * TICKS_PER_LIFT_IN); // converts to ticks
