@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
 import java.util.List;
 
 @Autonomous(name="EXP_Blue_Right_Line_HGWB", group="Test")
-//@Disabled // Leave disabled until ready to test
+@Disabled // Leave disabled until ready to test
 
 // This opmode EXTENDS BasicAutonomous and actually does the same thing as BasicAutonomous
 // The goal here was to extend a base class with all the methods and prove it works just the same.
@@ -193,9 +193,9 @@ public class EXP_BLUE_Right_Line_Auto_HGWB extends BasicAutonomous {
                 gyroDrive(DRIVE_SPEED*.5,-4,60,4);
                 wobble.lowerWobbleClamp(); // back up so clamp doest catch on first wobble
                 gyroTurn(TURN_SPEED, 155,4);
-                gyroTurn(TURN_SPEED*.4, 180,3);
+                gyroTurn(TURN_SPEED*.35, 180,3);
 
-                gyroDrive(DRIVE_SPEED*.7,36,180,4);
+                gyroDrive(DRIVE_SPEED*.8,36,180,4);
 
                 gyroTurn(TURN_SPEED*.4,160,3);
                 gyroDrive(DRIVE_SPEED*5,6.5,160,2);
