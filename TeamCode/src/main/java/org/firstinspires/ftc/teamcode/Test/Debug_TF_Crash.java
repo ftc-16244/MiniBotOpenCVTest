@@ -29,6 +29,8 @@
 
 package org.firstinspires.ftc.teamcode.Test;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -36,9 +38,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.teamcode.Autonomous.BasicAutonomous;
+import org.firstinspires.ftc.teamcode.Enums.ShooterState;
+import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
+
 
 import java.util.List;
 
@@ -54,29 +61,47 @@ import java.util.List;
  */
 @Autonomous(name = "Debug TF Crash", group = "Concept")
 //@Disabled
-public class Debug_TF_Crash extends LinearOpMode {
-    private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
-    private static final String LABEL_FIRST_ELEMENT = "Quad";
-    private static final String LABEL_SECOND_ELEMENT = "Single";
+public class Debug_TF_Crash extends BasicAutonomous {
 
+    WobbleTargetZone Square = WobbleTargetZone.BLUE_A; // Default target zone
 
-    private static final String VUFORIA_KEY =
-            "AQXVmfz/////AAABmXaLleqhDEfavwYMzTtToIEdemv1X+0FZP6tlJRbxB40Cu6uDRNRyMR8yfBOmNoCPxVsl1mBgl7GKQppEQbdNI4tZLCARFsacECZkqph4VD5nho2qFN/DmvLA0e1xwz1oHBOYOyYzc14tKxatkLD0yFP7/3/s/XobsQ+3gknx1UIZO7YXHxGwSDgoU96VAhGGx+00A2wMn2UY6SGPl+oYgsE0avmlG4A4gOsc+lck55eAKZ2PwH7DyxYAtbRf5i4Hb12s7ypFoBxfyS400tDSNOUBg393Njakzcr4YqL6PYe760ZKmu78+8X4xTAYSrqFJQHaCiHt8HcTVLNl2fPQxh0wBmLvQJ/mvVfG495ER1A";
-
-    /**
-     * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
-     * localization engine.
-     */
-    private VuforiaLocalizer vuforia;
-
-    /**
-     * {@link #tfod} is the variable we will use to store our instance of the TensorFlow Object
-     * Detection engine.
-     */
-    private TFObjectDetector tfod;
+    private static final double         shooterStartUpTimeAllowed   = 1.25;
 
     @Override
     public void runOpMode() {
+
+        drivetrain.init(hardwareMap);
+        wobble.init(hardwareMap);
+        shooter.init(hardwareMap);
+        intake.init(hardwareMap);
+        elevator.init(hardwareMap);
+        m_Ring_Spreader.init(hardwareMap);
+
+        shooter.shooterReload(); // reload = flipper back, stacker mostly down, shooter off
+
+
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled      = true;
+        parameters.loggingTag          = "IMU";
+        //parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+        // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+        // and named "imu".
+        //imu = hardwareMap.get(BNO055IMU.class, "imu");
+        drivetrain.imu.initialize(parameters);
+
+
+        // make sure the gyro is calibrated before continuing
+        while (!isStopRequested() && !drivetrain.imu.isGyroCalibrated())  {
+            sleep(100);
+            idle();
+        }
+
+
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
         // first.
         initVuforia();
@@ -97,69 +122,214 @@ public class Debug_TF_Crash extends LinearOpMode {
             // (typically 1.78 or 16/9).
 
             // Uncomment the following line if you want to adjust the magnification and/or the aspect ratio of the input images.
-            //tfod.setZoom(2.5, 1.78);
+            tfod.setZoom(2.5, 1.78);
         }
-
-        /** Wait for the game to begin */
-        telemetry.addData(">", "Press Play to start op mode");
+        telemetry.addData(">", "Robot Ready.");    //
         telemetry.update();
-        waitForStart();
 
-        if (opModeIsActive()) {
-            while (opModeIsActive()) {
-                if (tfod != null) {
-                    // getUpdatedRecognitions() will return null if no new information is available since
-                    // the last time that call was made.
-                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                    if (updatedRecognitions != null) {
-                      telemetry.addData("# Object Detected", updatedRecognitions.size());
-                      // step through the list of recognitions and display boundary info.
-                      int i = 0;
-                      for (Recognition recognition : updatedRecognitions) {
+        telemetry.addData("Mode", "waiting for start");
+        telemetry.addData("imu calib status", drivetrain.imu.getCalibrationStatus().toString());
+        /** Wait for the game to begin */
+        telemetry.addData("Square", Square);
+
+        telemetry.update();
+        //////////////////////////////////////////////////////////////////////////////////////
+        waitForStart();
+        ////////////////////////////////////////////////////////////////////////////////////
+        tfTime.reset(); //  reset the TF timer
+        while (tfTime.time() < tfSenseTime && opModeIsActive()) { // need to let TF find the target so timer runs to let it do this
+            if (tfod != null) {
+                // getUpdatedRecognitions() will return null if no new information is available since
+                // the last time that call was made.
+                List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                if (updatedRecognitions != null) {
+                    telemetry.addData("# Object Detected", updatedRecognitions.size());
+                    // step through the list of recognitions and display boundary info.
+                    int i = 0;
+                    for (Recognition recognition : updatedRecognitions) {
                         telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
                         telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
                                 recognition.getLeft(), recognition.getTop());
                         telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                 recognition.getRight(), recognition.getBottom());
-                      }
-                      telemetry.update();
+                        ///
+                        StackSize = recognition.getLabel();
+                        //telemetry.addData("Target", Target);
+                        if (StackSize == "Quad") {
+                            Square = WobbleTargetZone.BLUE_C;
+                            telemetry.addData("Square", Square);
+                        } else if (StackSize == "Single") {
+                            Square = WobbleTargetZone.BLUE_B;
+                            telemetry.addData("Square", Square);
+
+                        }
+
                     }
+                    telemetry.update();
                 }
+            }
+            if (tfod != null) {
+                tfod.shutdown();
             }
         }
 
-        if (tfod != null) {
-            tfod.shutdown();
+        // Pick up the Wobble Goal before moving.
+        // Sleep statements help let things settle before moving on.
+        wobble.GripperPartOpen();
+        //wobble.ArmExtend();
+        sleep(250);
+        wobble.wobbleWristDown();
+        sleep(250);
+        wobble.GripperClose();
+        //sleep(250);
+        //wobble.ArmCarryWobble();
+
+
+        // After picking up the wobble goal the robot always goes to the same spot to shoot the 3 preloaded rings.
+        // After delivering the rings, the switch case has the appropriate drive path to the identified Target Zone.
+
+        drivetime.reset(); // reset because time starts when TF starts and time is up before we can call gyroDrive
+        // Drive paths are initially all the same to get to the shooter location
+        //gyroDrive(DRIVE_SPEED, 54.0, 0.0, 10);
+
+        gyroDrive(DRIVE_SPEED, 54.0, 0.0, 10);// 54 total
+        //gyroDrive(DRIVE_SPEED*.6, 10.0, 0.0, 10);// 54 total
+        gyroTurn(TURN_SPEED,10,3); //Need to change this angle for the right line start point
+        //mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
+        //shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
+        //shoot3Rings(mShooterState, autoShootTimeAllowed);   // call method to start shooter and launch 3 rings. pass shooter state in case it is needed
+        try {
+            shooter.shoot_N_rings(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
+        shooter.shooterReload();
+        drivetime.reset(); // reset because time starts when TF starts and time is up before we can call gyroDrive
+
+        // Switch manages the 3 different Target Zone objectives based on the number of rings stacked up
+        // Ring stack is none, one or 4 rings tall and is determined by a randomization process.
+        // Robot has to read the stack height and set the Target Zone square state based on Vuforia/ Tensor Flow detection
+
+        switch(Square){
+            case BLUE_A: // no rings. 3 tiles (24 inches per tile) forward and 2 tiles to the left from start
+                telemetry.addData("Going to BLUE A", "Target Zone");
+                gyroTurn(TURN_SPEED,45,2);
+                gyroTurn(TURN_SPEED*.4,60,3);
+                gyroDrive(DRIVE_SPEED,27,60,4);
+                sleep(500);
+                wobble.GripperOpen();
+                sleep(500);
+                //wobble.ArmExtend();
+
+
+                drivetime.reset();
+                gyroDrive(DRIVE_SPEED*.5,-4,60,4);
+                wobble.lowerWobbleClamp(); // back up so clamp doest catch on first wobble
+                gyroTurn(TURN_SPEED, 155,4);
+                gyroTurn(TURN_SPEED*.4, 180,3); // turn and drive straight to front
+
+                gyroDrive(DRIVE_SPEED*.6,36,180,4); // approach 2nd wobble parallel to side wall
+
+                gyroTurn(TURN_SPEED*.4,157,3); // make final correctin turn to get second wobble
+                gyroDrive(DRIVE_SPEED*5,7.5,157,2); // drive fwd to get second wobble
+
+                //wobble.ArmExtend();
+
+                //sleep(500);
+                wobble.GripperClose();
+                sleep(1000);
+                //wobble.liftPartial();
+                drivetime.reset();
+                gyroDrive(DRIVE_SPEED,-55,153,2); // backup with 2nd wobble goal
+                gyroTurn(TURN_SPEED*.5,90,3);
+                gyroDrive(DRIVE_SPEED,13,90,2);
+                //wobble.GripperSuperOpen();
+                wobble.GripperOpen();
+                sleep(250);
+                wobble.raiseWobbleClamp();
+                sleep(250);
+                gyroDrive(DRIVE_SPEED,-24,90,2);
+                //wobble.ArmContract();
+                wobble.wobbleWristStart();
+                wobble.GripperClose();
+                sleep(500);// Keeps power to servo on long enough to allow servo to move
+
+
+                break;
+            case BLUE_B: // one ring  4 tiles straight ahead
+                // Drop off wobble
+                telemetry.addData("Going to BLUE B", "Target Zone");
+                gyroDrive(DRIVE_SPEED, 24.0, 10.0, 5);
+                sleep(500);
+                wobble.GripperOpen();
+                sleep(500);
+
+                // Go towards the single ring and get second wobble
+                drivetime.reset();
+                gyroDrive(DRIVE_SPEED,-4,10,3);
+
+                drivetime.reset();
+                gyroTurn(TURN_SPEED*0.75,150,4);
+                gyroTurn(TURN_SPEED*0.4,167,3);
+                m_Ring_Spreader.ringSpreaderDown(); // drop ring spreader arm to prevent jamming in case TF reads C and goes to B
+                gyroDrive(DRIVE_SPEED*.7, 28, 167, 5);
+                gyroDriveandCollectRings(DRIVE_SPEED,8,167,2); // was 8
+
+                intake.Intakeon();
+                elevator.ElevatorSpeedfast();
+                // Go for second wobbble
+                gyroTurn(TURN_SPEED,155,3);
+                gyroTurn(TURN_SPEED*.45,150,2);
+                wobble.lowerWobbleClamp();
+                gyroDrive(DRIVE_SPEED,17,150,3);
+                gyroDrive(DRIVE_SPEED*.45,7,148,3);
+                wobble.GripperClose();
+                sleep(500);
+                gyroDrive(DRIVE_SPEED,-19,148,3);
+
+                // Turn back to face the goal and shoot
+                gyroTurn(TURN_SPEED*.8,25,3); //turn fast most of the way
+                gyroTurn(TURN_SPEED*.4,0,3);// turn slow to be accurate. Need to une PIDSs better instead
+
+                gyroDrive(DRIVE_SPEED*.7, 10 , 0, 3); // drive fwd ro shoot 4th ring
+
+                intake.Intakeoff();
+                elevator.Elevatoroff();
+
+                //wobble.wobbleWristStart();
+                //wobble.GripperClose();
+                mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
+                shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
+
+                try {
+                    shooter.shoot_N_rings(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                drivetime.reset();
+                gyroDrive(DRIVE_SPEED,21,-6,3);
+
+
+                wobble.GripperOpen();
+                sleep(250);
+                wobble.wobbleWristStart();
+                sleep(250);
+                gyroDrive(DRIVE_SPEED,-3,-8,3);
+                wobble.raiseWobbleClamp();
+                m_Ring_Spreader.ringSpreaderUp();
+                sleep(250);
+
+
+                break;
+            case BLUE_C: // four rings. 5 tiles forward and one tile to the left.
+                // Drop off first wobble after shooting 3 rings
+                telemetry.addData("Going to BLUE C", "Target Zone");
+
+                break;
+        }
+        telemetry.update();
+
     }
 
-    /**
-     * Initialize the Vuforia localization engine.
-     */
-    private void initVuforia() {
-        /*
-         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
-         */
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-
-        parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
-
-        //  Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
-
-        // Loading trackables is not necessary for the TensorFlow Object Detection engine.
-    }
-
-    /**
-     * Initialize the TensorFlow Object Detection engine.
-     */
-    private void initTfod() {
-        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-            "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-       tfodParameters.minResultConfidence = 0.8f;
-       tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
-       tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
-    }
 }
