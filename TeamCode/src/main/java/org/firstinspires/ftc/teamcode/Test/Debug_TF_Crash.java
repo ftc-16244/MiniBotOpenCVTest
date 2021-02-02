@@ -60,7 +60,7 @@ import java.util.List;
  * is explained below.
  */
 @Autonomous(name = "Debug TF Crash", group = "Concept")
-//@Disabled
+@Disabled
 public class Debug_TF_Crash extends BasicAutonomous {
 
     WobbleTargetZone Square = WobbleTargetZone.BLUE_A; // Default target zone
