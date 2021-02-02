@@ -31,7 +31,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 import java.util.List;
 
 @Autonomous(name="Base Autonomous OpMode", group="Auto")
-@Disabled
+//@Disabled
 
 // This opMode will work if used from the left blue starting line. It's main intent is to be
 //the basis for all other Auto Opmodes. Extend this class to create OpModes with different starting
@@ -85,9 +85,10 @@ public class BasicAutonomous extends LinearOpMode {
     public  double                 totalError;
 
     // STATE Definitions from the ENUM package
-    RingCollectionState mRingCollectionState = RingCollectionState.OFF;
-    ShooterState mShooterState = ShooterState.STATE_SHOOTER_OFF; // default condition, this is needed to keep shooter on for a Linear Opmode
-    WobbleTargetZone Square = WobbleTargetZone.BLUE_A; // Default target zone
+    public  RingCollectionState mRingCollectionState = RingCollectionState.OFF;
+    public  ShooterState mShooterState = ShooterState.STATE_SHOOTER_OFF; // default condition, this is needed to keep shooter on for a Linear Opmode
+    public WobbleTargetZone Square = WobbleTargetZone.BLUE_A; // Default target zone
+
 
     //// Vuforia Content
    public static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
