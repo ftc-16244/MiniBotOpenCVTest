@@ -5,6 +5,5 @@ public enum ShooterState {
     STATE_SHOOTER_READY,
     STATE_SHOOTER_ACTIVE;
 
-    public class WobbleTargetZone {
-    }
+
 }
