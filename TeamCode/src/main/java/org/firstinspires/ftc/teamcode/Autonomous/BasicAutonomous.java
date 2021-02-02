@@ -57,7 +57,7 @@ public class BasicAutonomous extends LinearOpMode {
     public ElapsedTime          tfTime      = new ElapsedTime(); // timer for tensor flow
     public ElapsedTime          ShootTimer          = new ElapsedTime(); //auto shooter timer (4 rings)
     public ElapsedTime          autoRingCollectTimer    = new ElapsedTime(); //auto shooter timer (4 rings)
-    //public static double        shooterStartUpTimeAllowed = 1.25;
+    public static double        shooterStartUpTimeAllowed = 1.25;
     public static double        autoShootTimeAllowed    = 5; //  seconds allows 4 shoot cycles in case one messes up
     //public static double      extraRingShootTimeAllowed    = 4; //  seconds allows 4 shoot cycles in case one messes up
     public static double        tfSenseTime             = 1; // needs a couple seconds to process the image and ID the target
@@ -85,9 +85,10 @@ public class BasicAutonomous extends LinearOpMode {
     public  double                 totalError;
 
     // STATE Definitions from the ENUM package
-    RingCollectionState mRingCollectionState = RingCollectionState.OFF;
-    ShooterState mShooterState = ShooterState.STATE_SHOOTER_OFF; // default condition, this is needed to keep shooter on for a Linear Opmode
-    WobbleTargetZone Square = WobbleTargetZone.BLUE_A; // Default target zone
+    public  RingCollectionState mRingCollectionState = RingCollectionState.OFF;
+    public  ShooterState mShooterState = ShooterState.STATE_SHOOTER_OFF; // default condition, this is needed to keep shooter on for a Linear Opmode
+    public WobbleTargetZone Square = WobbleTargetZone.BLUE_A; // Default target zone
+
 
     //// Vuforia Content
    public static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
