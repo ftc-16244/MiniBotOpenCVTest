@@ -38,7 +38,7 @@ import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
 
 import java.util.List;
 
-@Autonomous(name = "Debug TF Crash", group = "Concept")
+@Autonomous(name = "Meet 4 Auto", group = "Concept")
 //@Disabled
 public class Meet_4_Auto extends BasicAutonomous {
 
