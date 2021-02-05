@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Ring_Spreader;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter_VelCtrl;
 import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 
 @TeleOp(name="Meet 1A Teleop", group="Teleop")
@@ -23,7 +24,7 @@ public class Meet_1_A_Teleop extends OpMode {
 
     private ElapsedTime runtime     = new ElapsedTime();
     public Drivetrain_v3        drivetrain  = new Drivetrain_v3(true);   // Use subsystem Drivetrain
-    public Shooter              shooter     = new Shooter();
+    public Shooter_VelCtrl shooter     = new Shooter_VelCtrl(); //experiment to see if thsi helps
     public Intake               intake      = new Intake();
     public Wobblegoal           wobble  = new Wobblegoal();
     public Elevator elevator    = new Elevator();
