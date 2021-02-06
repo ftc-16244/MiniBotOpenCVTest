@@ -264,6 +264,10 @@ public class Meet_4_Teleop extends OpMode {
             liftposn = WobbleLiftPosn.DOWN;
             wobble.wobbleWristUp();
             wobble.raiseWobbleClamp();
+            gripperCloseTimer.reset();
+           
+
+
             telemetry.addData("Reset Wobble", "Complete ");
         }
         if (gamepad1.back){
