@@ -26,6 +26,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Ring_Spreader;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter_VelCtrl;
 import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 
 import java.util.List;
@@ -44,7 +45,7 @@ import java.util.List;
 public class BasicAutonomous extends LinearOpMode {
     /* Declare OpMode members. */
     public Drivetrain_v3        drivetrain  = new Drivetrain_v3(false);   // Use subsystem Drivetrain
-    public Shooter              shooter     = new Shooter();
+    public Shooter_VelCtrl shooter     = new Shooter_VelCtrl();
     public Intake               intake      = new Intake(); // not currently using intake and elevator in auto
     public Wobblegoal           wobble      = new Wobblegoal();
     public Elevator             elevator    = new Elevator();
