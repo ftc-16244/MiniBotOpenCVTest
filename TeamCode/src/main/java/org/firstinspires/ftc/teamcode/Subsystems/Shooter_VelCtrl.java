@@ -41,7 +41,7 @@ public class Shooter_VelCtrl {
     private static final double LEFT_SHOOTER_TICKS_PERSEC_PS = TICKS_PER_MTR_REV *LEFT_SHOOTER_SPEED_PS/60; //ticks per second
     private static final double RIGHT_SHOOTER_TICKS_PERSEC_PS = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_PS/60; //ticks per second
     // Hight Goal speeds
-    private static final int    LEFT_SHOOTER_SPEED_HG = 2600; // RPM
+    private static final int    LEFT_SHOOTER_SPEED_HG = 2700; // RPM
     private static final int    RIGHT_SHOOTER_SPEED_HG = 1750; // RPM
     private static final double    LEFT_SHOOTER_TICKS_PERSEC_HG = TICKS_PER_MTR_REV *LEFT_SHOOTER_SPEED_HG/60;
     private static final double    RIGHT_SHOOTER_TICKS_PERSEC_HG = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_HG/60;
@@ -149,9 +149,9 @@ public class Shooter_VelCtrl {
         while (ShotCount<rings)  {
 
                 shootOneRingHigh(); // this is only used in auto due to different stacker position
-                sleep(400);
+                sleep(700);
                 flipperForward();
-                sleep(400);
+                sleep(700);
                 flipperBackward();
                 ShotCount++;
 
