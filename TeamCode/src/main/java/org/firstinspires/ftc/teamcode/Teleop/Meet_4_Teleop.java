@@ -7,18 +7,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Enums.DriveSpeedState;
 import org.firstinspires.ftc.teamcode.Enums.RingCollectionState;
+import org.firstinspires.ftc.teamcode.Enums.WobbleLiftPosn;
+import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
 import org.firstinspires.ftc.teamcode.Subsystems.Debouce;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain_v3;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Ring_Spreader;
-import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter_VelCtrl;
 import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 
-@TeleOp(name="Meet 1A Teleop", group="Teleop")
-//@Disabled
-public class Meet_1_A_Teleop extends OpMode {
+@TeleOp(name="Meet 4 Teleop", group="Teleop")
+@Disabled
+public class Meet_4_Teleop extends OpMode {
 
 
     /* Declare OpMode members. */
@@ -38,6 +39,8 @@ public class Meet_1_A_Teleop extends OpMode {
     private DriveSpeedState  currDriveState;
     private RingCollectionState ringCollectorState;
     private double gripperCloseTime = 1.0;
+
+    public WobbleLiftPosn liftposn =WobbleLiftPosn.DOWN; // Default target zone
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -256,16 +259,22 @@ public class Meet_1_A_Teleop extends OpMode {
             telemetry.addData("Dropping Wobble", "Complete ");
         }
         if (gamepad1.dpad_down) {
-            //wobble.ArmContract();
+
             wobble.GripperClose();
-            wobble.LiftLower();
+            //wobble.LiftLower();
+            liftposn = WobbleLiftPosn.DOWN;
             wobble.wobbleWristUp();
             wobble.raiseWobbleClamp();
+            gripperCloseTimer.reset();
+
+
+
             telemetry.addData("Reset Wobble", "Complete ");
         }
         if (gamepad1.back){
             wobble.wobbleWristDown();
-            wobble.LiftRise();
+            //wobble.LiftRise();
+            liftposn = WobbleLiftPosn.UP;
             wobble.raiseWobbleClamp();
 
         }
@@ -343,6 +352,22 @@ public class Meet_1_A_Teleop extends OpMode {
                 break;
         }
 
+        // State machine for the wobble lift
+        switch(liftposn) {
+
+            case DOWN:
+                telemetry.addData("Lift Position",liftposn);
+                wobble.LiftLower();
+                break;
+
+            case UP:
+                telemetry.addData("Lift Position",liftposn);
+                wobble.LiftRise();
+
+                break;
+        }
+
+        // States for intake direction
         switch(ringCollectorState) {
 
             case OFF:

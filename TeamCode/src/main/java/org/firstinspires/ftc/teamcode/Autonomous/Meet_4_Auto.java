@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Enums.ShooterState;
@@ -38,7 +39,7 @@ import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
 
 import java.util.List;
 
-@Autonomous(name = "Debug TF Crash", group = "Concept")
+@Autonomous(name = "Meet 4 Auto", group = "Concept")
 //@Disabled
 public class Meet_4_Auto extends BasicAutonomous {
 
@@ -173,13 +174,13 @@ public class Meet_4_Auto extends BasicAutonomous {
         gyroDrive(DRIVE_SPEED, 54.0, 0.0, 10);// 54 total
         //gyroDrive(DRIVE_SPEED*.6, 10.0, 0.0, 10);// 54 total
         gyroTurn(TURN_SPEED,10,3); //Need to change this angle for the right line start point
-        //mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
-        //shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
+        mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
+        shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
         //shoot3Rings(mShooterState, autoShootTimeAllowed);   // call method to start shooter and launch 3 rings. pass shooter state in case it is needed
         try {
-            shooter.shoot_N_rings(3);
+          shooter.shoot_N_rings(3);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+          e.printStackTrace();
         }
         shooter.shooterReload();
         drivetime.reset(); // reset because time starts when TF starts and time is up before we can call gyroDrive
@@ -259,6 +260,7 @@ public class Meet_4_Auto extends BasicAutonomous {
                 gyroTurn(TURN_SPEED,155,3);
                 gyroTurn(TURN_SPEED*.45,150,2);
                 wobble.lowerWobbleClamp();
+                m_Ring_Spreader.ringSpreaderUp();
                 gyroDrive(DRIVE_SPEED,17,150,3);
                 gyroDrive(DRIVE_SPEED*.45,7,148,3);
                 wobble.GripperClose();
@@ -303,6 +305,51 @@ public class Meet_4_Auto extends BasicAutonomous {
             case BLUE_C: // four rings. 5 tiles forward and one tile to the left.
                 // Drop off first wobble after shooting 3 rings
                 telemetry.addData("Going to BLUE C", "Target Zone");
+                gyroTurn(TURN_SPEED *.5,22,2);
+                gyroDrive(DRIVE_SPEED, 54, 22,3);
+                wobble.GripperOpen();
+                sleep(500);
+
+                // Move to the stack of 4 rings
+                drivetime.reset();
+                gyroDrive(DRIVE_SPEED, -25, 20,3);
+                gyroTurn(TURN_SPEED,120,2);
+                gyroTurn(TURN_SPEED*.5,180,2);
+                m_Ring_Spreader.ringSpreaderDown(); // drop ring spreader arm to prevent jamming
+                gyroDrive(DRIVE_SPEED,31,180,2); // last forward move before collecting
+                drivetime.reset();
+
+                // Collect from the stack of 4 rings
+                gyroDriveandCollectRings(DRIVE_SPEED*.2,10,180,10); // collect from stack
+                gyroDriveandCollectRings(DRIVE_SPEED*.6,-3,180,10); // back up to prevent jamming
+                gyroDriveandCollectRings(DRIVE_SPEED*.2,7,180,10); // collect from stack
+                gyroDriveandCollectRings(DRIVE_SPEED*.8,-14,180,10); // backup leave intake on
+
+                // Keep intake and elevator running to get ring settled
+                intake.Intakeon();
+                elevator.ElevatorSpeedfast();
+                wobble.wobbleWristStart(); // lift up wrist so it is not across the line
+                wobble.GripperClose(); // close gripper so rings exiting shooter do not hit the grabber arm
+
+                // Turn to face the goal and shoot rings from the stack
+                drivetime.reset();
+                gyroTurn(TURN_SPEED,40,2);
+                gyroTurn(TURN_SPEED*.30,0 ,1.5);
+                intake.Intakeoff();
+                elevator.Elevatoroff();
+                mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
+                shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
+                try {
+                    shooter.shoot_N_rings(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                drivetime.reset();
+
+                // Pull ahead to the line
+                gyroDrive(DRIVE_SPEED, 10, 0,3);
+                m_Ring_Spreader.ringSpreaderUp();
+                sleep(500);
 
                 break;
         }
