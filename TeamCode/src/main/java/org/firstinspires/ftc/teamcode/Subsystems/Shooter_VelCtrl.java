@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import static java.lang.Thread.sleep;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 public class Shooter_VelCtrl {
     // Define hardware objects
@@ -16,7 +17,7 @@ public class Shooter_VelCtrl {
     public Servo    stacker=null;
 
     //
-    //Constants for shooter motors
+    //Constants for shooter motors (speed control)
     private static final double ShooterSpeedfastleft=.58; // 0.58 reset after meet 1 to improve consistiencey
     private static final double ShooterSpeedfastright=.30; // 0.51
     //We are changing the speeds to see which speeds make the first ring in
@@ -34,19 +35,17 @@ public class Shooter_VelCtrl {
     //private static final double stackerShootAutoOnly = 0.54; // slightly different in Auto so Teleop stays the same
     private static final double stacketMidLoad = .44; // tips stacker back so it loads better
 
-    // Power Shoot speeds
-    private static final int    TICKS_PER_MTR_REV = 28;
+    // Power Shoot speeds for Velocity Control per REV docs suggestion
+    private static final int    TICKS_PER_MTR_REV = 28; //UltraPlanetary 1:1 with 90 mm shooter wheels
     private static final int    LEFT_SHOOTER_SPEED_PS = 2550; // RPM
     private static final int    RIGHT_SHOOTER_SPEED_PS = 1600; //RPM
     private static final double LEFT_SHOOTER_TICKS_PERSEC_PS = TICKS_PER_MTR_REV *LEFT_SHOOTER_SPEED_PS/60; //ticks per second
     private static final double RIGHT_SHOOTER_TICKS_PERSEC_PS = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_PS/60; //ticks per second
-    // Hight Goal speeds
+    // High Goal Speeds - Velocity Control
     private static final int    LEFT_SHOOTER_SPEED_HG = 2700; // RPM
     private static final int    RIGHT_SHOOTER_SPEED_HG = 1750; // RPM
     private static final double    LEFT_SHOOTER_TICKS_PERSEC_HG = TICKS_PER_MTR_REV *LEFT_SHOOTER_SPEED_HG/60;
     private static final double    RIGHT_SHOOTER_TICKS_PERSEC_HG = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_HG/60;
-
-
 
 
     public void init(HardwareMap hwMap)  {
@@ -113,36 +112,32 @@ public class Shooter_VelCtrl {
     }
 
 
-    // Multi Function Methods that combine several simple methods together
+    // Multi Function or Compound Methods
+    // These will be called by the opModes
     public void shootonePowerShots() {
         shootMiddleGoal();
         stackerMoveToShoot();
         flipperBackward();
 
     }
-
+    // this actually should be called shooterReady or Rings_Ready_to_Launch
     public void shootOneRingHigh() {
-        shootHighGoal();
-        stackerMoveToShootInAutoOnly();
-        flipperBackward();
-
+        shootHighGoal(); // sets motors for high goal
+        stackerMoveToShoot(); // raises ring stacker
+        flipperBackward(); // makes sure flippers are behind rings
+        //telemetry.addData("Left Shooter Target",LEFT_SHOOTER_SPEED_HG);
+        //telemetry.addData("Right Shooter Target",RIGHT_SHOOTER_SPEED_HG);
     }
 
-
+    // this actually should be called RingsReadytoLoad
     public void shooterReload() {
         stackerMoveToMidLoad(); //
         flipperBackward(); // move flippers back
         shooterOff(); // turn off shooters
 
         }
-    // not used
-    public void jamClear() {
-        shooterleft.setPower(jamClear);
-        shooterright.setPower(jamClear);
-
-
-    }
-
+    // Used to automate ring flippers in auto and pass the desired cycles
+    // THis is set for high goals. Shooter speed is not passed into it.
 
     public void shoot_N_rings(int rings) throws InterruptedException {
         int ShotCount = 0;
