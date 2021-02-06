@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Enums.ShooterState;
@@ -259,6 +260,7 @@ public class Meet_4_Auto extends BasicAutonomous {
                 gyroTurn(TURN_SPEED,155,3);
                 gyroTurn(TURN_SPEED*.45,150,2);
                 wobble.lowerWobbleClamp();
+                m_Ring_Spreader.ringSpreaderUp();
                 gyroDrive(DRIVE_SPEED,17,150,3);
                 gyroDrive(DRIVE_SPEED*.45,7,148,3);
                 wobble.GripperClose();
