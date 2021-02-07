@@ -1,8 +1,7 @@
 package org.firstinspires.ftc.teamcode.Enums;
 
-public enum WobbleLiftPosn {
-    DOWN,
+public enum WristPosn {
+    PARK,
     UP,
-    IDLE,
-
+    DOWN
 }
