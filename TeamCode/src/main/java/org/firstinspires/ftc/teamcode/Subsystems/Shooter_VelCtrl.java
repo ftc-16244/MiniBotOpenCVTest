@@ -32,7 +32,7 @@ public class Shooter_VelCtrl {
     private static final double flippercenter = 0.5;
     private static final double stackerReload = 0.44; // 0.42 causes rings to slide forward too much
     private static final double stackerShoot = 0.545; // 0.55 is a bit high
-    private static final double stackerDumpOut = 1.0; // empties on the field is there is a jam
+    private static final double stackerDumpOut = .95; // empties on the field is there is a jam
     //private static final double stackerShootAutoOnly = 0.54; // slightly different in Auto so Teleop stays the same
     private static final double stacketMidLoad = .44; // tips stacker back so it loads better
 
