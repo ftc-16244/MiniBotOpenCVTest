@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Teleop;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Enums.DriveSpeedState;
@@ -245,12 +246,12 @@ public class Meet_4_Teleop extends OpMode {
         if (gamepad1.dpad_up){
             gripperCloseTimer.reset();
             wobble.GripperClose();
-            while (gripperCloseTimer.time() < gripperCloseTime){
+            //while (gripperCloseTimer.time() < gripperCloseTime){
 
                 // stall program so gripper can close
                 // not necessary in Linear Opmode just in iterative
                 //more than a couple seconds and this will trow error
-            }
+            //}
 
             wobble.raiseWobbleClamp();
             //wobble.readyToGrabGoal();
@@ -272,64 +273,38 @@ public class Meet_4_Teleop extends OpMode {
             wobble.raiseWobbleClamp();
 
         }
-        // Hold dpad down then move right hand (turn stick) in the Y direction to park wrist
+        // Hold dpad down then move right hand (turn stick) back (in the Y direction) to park wrist
         if (gamepad1.dpad_down && gamepad1.right_stick_y > 0.5){
 
-            wristPosn = WristPosn.PARK; // wrist position state
+            wristPosn = WristPosn.PARK; //
         }
 
 
         if (gamepad1.back){
-            //wobble.wobbleWristDown();
+
             //wobble.LiftRise();
             liftposn = WobbleLiftPosn.UP;
-            wobble.raiseWobbleClamp();
+            //wobble.raiseWobbleClamp();
+            wristPosn = WristPosn.DOWN; // wrist position state
 
         }
 
         //========================================
         // GAME PAD 2 Mainly Wobble
         //========================================
-        if (gamepad2.dpad_left) {
-           //wobble.GripperOpen();
-           //wobble.wobbleWristDown();
-           liftposn = WobbleLiftPosn.UP;
-           //wobble.lowerWobbleClamp();
 
-           //wobble.ArmExtend();
-           //wobble.resetWobble();
-            //wobble.readyToGrabWobble();
-            telemetry.addData("Ready to rab Wobble", "Complete ");
-        }
-
-        if (gamepad2.dpad_up){
-            wobble.GripperClose();
-            //wobble.ArmCarryWobble();
-            //wobble.readyToGrabGoal();
-            telemetry.addData("Carrying Wobble", "Complete ");
-        }
-        if (gamepad2.dpad_right) {
-            wobble.GripperOpen();
-            //wobble.ArmExtend();
-
-            telemetry.addData("Dropping Wobble", "Complete ");
-        }
-        if (gamepad2.dpad_down) {
-            //wobble.ArmContract();
-            //wobble.wobbleWristUp();
-            wobble.GripperClose();
-            wobble.raiseWobbleClamp();
-            wristPosn = WristPosn.UP;
-
-
-            telemetry.addData("Reset Wobble", "Complete ");
-        }
 
         if (gamepad2.x) {
             m_Ring_Spreader.ringSpreaderUp();
         }
         if (gamepad2.b) {
             m_Ring_Spreader.ringSpreaderDown();
+        }
+
+        if (gamepad2.back){
+            shooter.stackerMoveToDump();
+            intake.Intakeoff();
+            elevator.Elevatoroff();
         }
        // switch case to determine what mode the arm needs to operate in.
 
@@ -369,14 +344,17 @@ public class Meet_4_Teleop extends OpMode {
             case DOWN:
                 telemetry.addData("Lift Position",liftposn);
                 wobble.LiftLower();
-                if(wobble.getLiftHeight() < 0.5){
+                if(wobble.getLiftHeight() < 0.15){
                     liftposn =WobbleLiftPosn.IDLE;
+                    wobble.WobbleLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 }
                 break;
 
             case UP:
                 telemetry.addData("Lift Position",liftposn);
                 wobble.LiftRise();
+                //wobble.wobbleWristDown();
+
 
                 break;
 
