@@ -80,6 +80,18 @@ public class Wobblegoal {
         WobbleLift.setPower(LIFTSPEED);
     }
 
+    public void LiftIdle() {
+       WobbleLift.setPower(0);
+    }
+
+    public double getLiftHeight() {
+        double liftHeight;
+        WobbleLift.getCurrentPosition();
+        liftHeight =  WobbleLift.getCurrentPosition() *  TICKS_PER_LIFT_IN;
+        return  liftHeight;
+    }
+
+
 
     public void GripperOpen()  {
 

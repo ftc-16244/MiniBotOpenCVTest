@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode.Teleop;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Enums.DriveSpeedState;
 import org.firstinspires.ftc.teamcode.Enums.RingCollectionState;
 import org.firstinspires.ftc.teamcode.Enums.WobbleLiftPosn;
 import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
+import org.firstinspires.ftc.teamcode.Enums.WristPosn;
 import org.firstinspires.ftc.teamcode.Subsystems.Debouce;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain_v3;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
@@ -18,7 +20,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Shooter_VelCtrl;
 import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 
 @TeleOp(name="Meet 4 Teleop", group="Teleop")
-@Disabled
+//@Disabled
 public class Meet_4_Teleop extends OpMode {
 
 
@@ -40,14 +42,19 @@ public class Meet_4_Teleop extends OpMode {
     private RingCollectionState ringCollectorState;
     private double gripperCloseTime = 1.0;
 
-    public WobbleLiftPosn liftposn =WobbleLiftPosn.DOWN; // Default target zone
+    public WobbleLiftPosn liftposn =WobbleLiftPosn.IDLE; // Default target zone
+    public WristPosn wristPosn = WristPosn.PARK;
 
+    private ElapsedTime wristTimer = new ElapsedTime();
+    private double wristParkDelay = 3;
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
    public void init() {
 
+        double wristRestTime = 3;
+        ElapsedTime wristResetTimer = new ElapsedTime();
         /* Initialize the hardware variables.
         * The init() method of the hardware class does all the work here
         */
@@ -229,9 +236,9 @@ public class Meet_4_Teleop extends OpMode {
         if (gamepad1.dpad_left) {
             wobble.GripperOpen();
             //wobble.ArmExtend();
+            wristPosn = WristPosn.DOWN;
             wobble.lowerWobbleClamp();
-            wobble.wobbleWristDown();
-            // wobble.resetWobble();
+            //wobble.wobbleWristDown();
 
             telemetry.addData("Ready to rab Wobble", "Complete ");
         }
@@ -239,22 +246,20 @@ public class Meet_4_Teleop extends OpMode {
         if (gamepad1.dpad_up){
             gripperCloseTimer.reset();
             wobble.GripperClose();
-            while (gripperCloseTimer.time() < gripperCloseTime){
+            //while (gripperCloseTimer.time() < gripperCloseTime){
 
                 // stall program so gripper can close
                 // not necessary in Linear Opmode just in iterative
                 //more than a couple seconds and this will trow error
-            }
+            //}
 
-
-            //wobble.ArmCarryWobble();
             wobble.raiseWobbleClamp();
             //wobble.readyToGrabGoal();
            telemetry.addData("Carrying Wobble", "Complete ");
         }
         if (gamepad1.dpad_right) {
             wobble.GripperOpen();
-            //wobble.ArmExtend();
+
 
             telemetry.addData("Dropping Wobble", "Complete ");
         }
@@ -262,63 +267,44 @@ public class Meet_4_Teleop extends OpMode {
 
             wobble.GripperClose();
             //wobble.LiftLower();
-            liftposn = WobbleLiftPosn.DOWN;
-            wobble.wobbleWristUp();
+            liftposn = WobbleLiftPosn.DOWN; // lift position state
+            //wobble.wobbleWristUp();
+            wristPosn = WristPosn.UP; // wrist position state
             wobble.raiseWobbleClamp();
-            gripperCloseTimer.reset();
 
-
-
-            telemetry.addData("Reset Wobble", "Complete ");
         }
+        // Hold dpad down then move right hand (turn stick) back (in the Y direction) to park wrist
+        if (gamepad1.dpad_down && gamepad1.right_stick_y > 0.5){
+
+            wristPosn = WristPosn.PARK; //
+        }
+
+
         if (gamepad1.back){
-            wobble.wobbleWristDown();
+
             //wobble.LiftRise();
             liftposn = WobbleLiftPosn.UP;
-            wobble.raiseWobbleClamp();
+            //wobble.raiseWobbleClamp();
+            wristPosn = WristPosn.DOWN; // wrist position state
 
         }
 
         //========================================
         // GAME PAD 2 Mainly Wobble
         //========================================
-        if (gamepad2.dpad_left) {
-           //wobble.GripperOpen();
-           wobble.wobbleWristDown();
-           //wobble.lowerWobbleClamp();
 
-           //wobble.ArmExtend();
-           //wobble.resetWobble();
-            //wobble.readyToGrabWobble();
-            telemetry.addData("Ready to rab Wobble", "Complete ");
-        }
-
-        if (gamepad2.dpad_up){
-            wobble.GripperClose();
-            //wobble.ArmCarryWobble();
-            //wobble.readyToGrabGoal();
-            telemetry.addData("Carrying Wobble", "Complete ");
-        }
-        if (gamepad2.dpad_right) {
-            wobble.GripperOpen();
-            //wobble.ArmExtend();
-
-            telemetry.addData("Dropping Wobble", "Complete ");
-        }
-        if (gamepad2.dpad_down) {
-            wobble.ArmContract();
-            wobble.wobbleWristUp();
-            wobble.GripperClose();
-            wobble.raiseWobbleClamp();
-
-            telemetry.addData("Reset Wobble", "Complete ");
-        }
 
         if (gamepad2.x) {
             m_Ring_Spreader.ringSpreaderUp();
         }
         if (gamepad2.b) {
             m_Ring_Spreader.ringSpreaderDown();
+        }
+
+        if (gamepad2.back){
+            shooter.stackerMoveToDump();
+            intake.Intakeoff();
+            elevator.Elevatoroff();
         }
        // switch case to determine what mode the arm needs to operate in.
 
@@ -358,14 +344,52 @@ public class Meet_4_Teleop extends OpMode {
             case DOWN:
                 telemetry.addData("Lift Position",liftposn);
                 wobble.LiftLower();
+                if(wobble.getLiftHeight() < 0.15){
+                    liftposn =WobbleLiftPosn.IDLE;
+                    wobble.WobbleLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                }
                 break;
 
             case UP:
                 telemetry.addData("Lift Position",liftposn);
                 wobble.LiftRise();
+                //wobble.wobbleWristDown();
+
+
+                break;
+
+            case IDLE:
+                telemetry.addData("Lift Position",liftposn);
+                wobble.LiftIdle();
+
 
                 break;
         }
+
+        // Wrist Position
+
+        switch(wristPosn) {
+
+            case PARK:
+                telemetry.addData("Wrist  Position",wristPosn);
+                wobble.wobbleWristStart();
+
+                break;
+
+            case UP:
+                telemetry.addData("Wrist  Position",wristPosn);
+                wobble.wobbleWristUp();
+
+                break;
+
+            case DOWN:
+                telemetry.addData("Wrist  Position",wristPosn);
+                wobble.wobbleWristDown();
+
+
+                break;
+        }
+
 
         // States for intake direction
         switch(ringCollectorState) {

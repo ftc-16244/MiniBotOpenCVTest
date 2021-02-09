@@ -204,13 +204,13 @@ public class Meet_4_Auto extends BasicAutonomous {
                 drivetime.reset();
                 gyroDrive(DRIVE_SPEED*.5,-4,60,4);
                 wobble.lowerWobbleClamp(); // back up so clamp doest catch on first wobble
-                gyroTurn(TURN_SPEED, 155,4);
-                gyroTurn(TURN_SPEED*.4, 180,3); // turn and drive straight to front
+                gyroTurn(TURN_SPEED, 155,3);
+                gyroTurn(TURN_SPEED*.35, 180,3); // turn and drive straight to front
 
                 gyroDrive(DRIVE_SPEED*.6,36,180,4); // approach 2nd wobble parallel to side wall
 
-                gyroTurn(TURN_SPEED*.4,157,3); // make final correctin turn to get second wobble
-                gyroDrive(DRIVE_SPEED*5,7.5,157,2); // drive fwd to get second wobble
+                gyroTurn(TURN_SPEED*.4,156,3); // make final correctin turn to get second wobble
+                gyroDrive(DRIVE_SPEED*5,7.5,156,2); // drive fwd to get second wobble
 
                 //wobble.ArmExtend();
 
@@ -219,8 +219,8 @@ public class Meet_4_Auto extends BasicAutonomous {
                 sleep(1000);
                 //wobble.liftPartial();
                 drivetime.reset();
-                gyroDrive(DRIVE_SPEED,-55,153,2); // backup with 2nd wobble goal
-                gyroTurn(TURN_SPEED*.5,90,3);
+                gyroDrive(DRIVE_SPEED,-57,153,2); // backup with 2nd wobble goal
+                gyroTurn(TURN_SPEED*.5,90,32);
                 gyroDrive(DRIVE_SPEED,13,90,2);
                 //wobble.GripperSuperOpen();
                 wobble.GripperOpen();
@@ -258,11 +258,11 @@ public class Meet_4_Auto extends BasicAutonomous {
                 elevator.ElevatorSpeedfast();
                 // Go for second wobbble
                 gyroTurn(TURN_SPEED,155,3);
-                gyroTurn(TURN_SPEED*.45,150,2);
+                gyroTurn(TURN_SPEED*.45,149,2);
                 wobble.lowerWobbleClamp();
                 m_Ring_Spreader.ringSpreaderUp();
-                gyroDrive(DRIVE_SPEED,17,150,3);
-                gyroDrive(DRIVE_SPEED*.45,7,148,3);
+                gyroDrive(DRIVE_SPEED,17,149,3);
+                gyroDrive(DRIVE_SPEED*.45,7,149,3);
                 wobble.GripperClose();
                 sleep(500);
                 gyroDrive(DRIVE_SPEED,-19,148,3);
