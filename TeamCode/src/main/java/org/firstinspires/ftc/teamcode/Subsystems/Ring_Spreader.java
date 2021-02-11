@@ -10,7 +10,7 @@ public class  Ring_Spreader {
 
     //Constants
     private static final double spreaderUp=.65;
-    private static final double spreaderDown=.03;
+    private static final double spreaderDown=.07;
 
     public void init(HardwareMap hwMap)  {
         ringSpreader     = hwMap.get(Servo.class, "Ring_Spreader");
