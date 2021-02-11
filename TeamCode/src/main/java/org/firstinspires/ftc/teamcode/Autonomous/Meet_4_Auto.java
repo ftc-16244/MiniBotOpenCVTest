@@ -333,8 +333,9 @@ public class Meet_4_Auto extends BasicAutonomous {
 
                 // Turn to face the goal and shoot rings from the stack
                 drivetime.reset();
-                gyroTurn(TURN_SPEED,40,2);
-                gyroTurn(TURN_SPEED*.30,0 ,1.5);
+                gyroTurn(TURN_SPEED,30,2);
+                gyroTurn(TURN_SPEED*.30,2 ,1.5);
+                sleep(100);
                 intake.Intakeoff();
                 elevator.Elevatoroff();
                 mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
