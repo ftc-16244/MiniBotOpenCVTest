@@ -19,11 +19,11 @@ public class Wobblegoal {
 
     private static final double     LIFTSPEED       =   0.78;
 
-    private static final double     LIFTUP          =   14 ; //Number is in inches 13 is too low
+    private static final double     LIFTUP          =   14.8; //Number is in inches 13 is too low
     private static final double     LIFTDOWN        =   0; //To make sure it goes all the way down
     private static final int        LIFTPARTIAL        = 8;
 
-    private static final double     TICKS_PER_LIFT_IN = 76; // determined experimentally
+    private static final double     TICKS_PER_LIFT_IN = 100; // determined experimentally
     private static final int        LIFT_HEIGHT_HIGH = (int) (LIFTUP * TICKS_PER_LIFT_IN); // converts to ticks
     private static final int        LIFT_HEIGHT_LOW = (int) (LIFTDOWN * TICKS_PER_LIFT_IN); // converts to ticks
 
