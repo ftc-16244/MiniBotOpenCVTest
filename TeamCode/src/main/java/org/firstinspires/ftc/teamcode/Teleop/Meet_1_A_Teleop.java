@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Shooter_VelCtrl;
 import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 
 @TeleOp(name="Meet 1A Teleop", group="Teleop")
-//@Disabled
+@Disabled
 public class Meet_1_A_Teleop extends OpMode {
 
 
