@@ -39,9 +39,9 @@ import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
 
 import java.util.List;
 
-@Autonomous(name = "Meet 4 Auto", group = "Concept")
-//@Disabled
-public class Meet_4_Auto extends BasicAutonomous {
+@Autonomous(name = "Meet 4 Auto Remap", group = "Concept")
+@Disabled
+public class Meet_4_Auto_Remap extends BasicAutonomous {
 
     WobbleTargetZone Square = WobbleTargetZone.BLUE_A; // Default target zone
 
@@ -62,38 +62,35 @@ public class Meet_4_Auto extends BasicAutonomous {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.calibrationDataFile = "BNO055IMUCalibrationVert.json"; // see the calibration sample opmode
         parameters.loggingEnabled      = true;
         parameters.loggingTag          = "IMU";
-
-        // Axis Remap for vertical REV Hub mounting- x and y may be flipped but it works
 
         byte AXIS_MAP_CONFIG_BYTE = 0x6; //This is what to write to the AXIS_MAP_CONFIG register to swap x and z axes
         byte AXIS_MAP_SIGN_BYTE = 0x1; //This is what to write to the AXIS_MAP_SIGN register to negate the z axis
 
-        //Need to be in CONFIG mode to write to registers
+//Need to be in CONFIG mode to write to registers
         drivetrain.imu.write8(BNO055IMU.Register.OPR_MODE,BNO055IMU.SensorMode.CONFIG.bVal & 0x0F);
 
         sleep(100); //Changing modes requires a delay before doing anything else
 
-        //Write to the AXIS_MAP_CONFIG register
+//Write to the AXIS_MAP_CONFIG register
         drivetrain.imu.write8(BNO055IMU.Register.AXIS_MAP_CONFIG,AXIS_MAP_CONFIG_BYTE & 0x0F);
 
-        //Write to the AXIS_MAP_SIGN register
+//Write to the AXIS_MAP_SIGN register
         drivetrain.imu.write8(BNO055IMU.Register.AXIS_MAP_SIGN,AXIS_MAP_SIGN_BYTE & 0x0F);
 
-        //Need to change back into the IMU mode to use the gyro
+//Need to change back into the IMU mode to use the gyro
         drivetrain.imu.write8(BNO055IMU.Register.OPR_MODE,BNO055IMU.SensorMode.IMU.bVal & 0x0F);
 
         sleep(100); //Changing modes again requires a delay
+
         //parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
         //imu = hardwareMap.get(BNO055IMU.class, "imu");
-
-        // end of rempa section
         drivetrain.imu.initialize(parameters);
 
 

@@ -47,7 +47,7 @@ import java.io.File;
 import java.util.Locale;
 
 /**
- * {@link SensorBNO055IMUCalibration} calibrates the IMU accelerometer per
+ * {@link SensorBNO055IMUCalibration_Vertical} calibrates the IMU accelerometer per
  * "Section 3.11 Calibration" of the BNO055 specification.
  *
  * <p>Manual calibration of the IMU is definitely NOT necessary: except for the magnetometer
@@ -98,9 +98,9 @@ import java.util.Locale;
  * @see <a href="https://www.bosch-sensortec.com/bst/products/all_products/bno055">BNO055 product page</a>
  * @see <a href="https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST_BNO055_DS000_14.pdf">BNO055 specification</a>
  */
-@TeleOp(name = "Sensor: BNO055 IMU Calibration", group = "Sensor")
+@TeleOp(name = "Sensor: BNO055 IMU Calibration Vertical", group = "Sensor")
 @Disabled                            // Uncomment this to add to the opmode list
-public class SensorBNO055IMUCalibration extends LinearOpMode
+public class SensorBNO055IMUCalibration_Vertical extends LinearOpMode
     {
     //----------------------------------------------------------------------------------------------
     // State
@@ -111,7 +111,8 @@ public class SensorBNO055IMUCalibration extends LinearOpMode
 
     // State used for updating telemetry
     Orientation angles;
-
+        byte AXIS_MAP_CONFIG_BYTE = 0x6; //This is what to write to the AXIS_MAP_CONFIG register to swap x and z axes
+        byte AXIS_MAP_SIGN_BYTE = 0x1; //This is what to write to the AXIS_MAP_SIGN register to negate the z axis
     //----------------------------------------------------------------------------------------------
     // Main logic
     //----------------------------------------------------------------------------------------------
@@ -129,12 +130,34 @@ public class SensorBNO055IMUCalibration extends LinearOpMode
         telemetry.log().add("calibration data to a file.");
         telemetry.log().add("");
 
+
+
+
         // We are expecting the IMU to be attached to an I2C port on a Core Device Interface Module and named "imu".
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.loggingEnabled = true;
         parameters.loggingTag     = "IMU";
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+
+
+
+
+//Need to be in CONFIG mode to write to registers
+        imu.write8(BNO055IMU.Register.OPR_MODE,BNO055IMU.SensorMode.CONFIG.bVal & 0x0F);
+
+        sleep(100); //Changing modes requires a delay before doing anything else
+
+//Write to the AXIS_MAP_CONFIG register
+        imu.write8(BNO055IMU.Register.AXIS_MAP_CONFIG,AXIS_MAP_CONFIG_BYTE & 0x0F);
+
+//Write to the AXIS_MAP_SIGN register
+        imu.write8(BNO055IMU.Register.AXIS_MAP_SIGN,AXIS_MAP_SIGN_BYTE & 0x0F);
+
+//Need to change back into the IMU mode to use the gyro
+        imu.write8(BNO055IMU.Register.OPR_MODE,BNO055IMU.SensorMode.IMU.bVal & 0x0F);
+
+        sleep(100); //Changing modes again requires a delay
 
         composeTelemetry();
         telemetry.log().add("Waiting for start...");
@@ -159,7 +182,7 @@ public class SensorBNO055IMUCalibration extends LinearOpMode
                 // when you initialize the IMU in an opmode in which it is used. If you
                 // have more than one IMU on your robot, you'll of course want to use
                 // different configuration file names for each.
-                String filename = "BNO055IMUCalibration.json";
+                String filename = "BNO055IMUCalibrationVert.json";
                 File file = AppUtil.getInstance().getSettingsFile(filename);
                 ReadWriteFile.writeFile(file, calibrationData.serialize());
                 telemetry.log().add("saved to '%s'", filename);
