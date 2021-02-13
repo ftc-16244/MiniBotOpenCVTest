@@ -216,6 +216,7 @@ public class Meet_4_Teleop extends OpMode {
             //shooter.flipperBackward();
             //telemetry.addData("Flipper Back", "Complete ");
             shooter.shootonePowerShots();
+            currDriveState =  DriveSpeedState.DRIVE_SLOW;
             telemetry.addData("SHooter Low for Power Shots", "Complete ");
         }
 

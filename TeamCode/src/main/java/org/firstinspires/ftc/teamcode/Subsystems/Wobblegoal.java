@@ -42,8 +42,8 @@ public class Wobblegoal {
     public static final double      BASECLAMPUP         =   0.80;
     public static final double      BASECLAMPDOWN       =   0.4;
     //Constants Wobble Wrist - Replaces Arm
-    public static final double      WRISTSTART          =   .36 ;
-    public static final double      WRISTUP             =   0.45 ;
+    public static final double      WRISTSTART          =   .33 ;
+    public static final double      WRISTUP             =   0.5 ;
     public static final double      WRISTDOWN           =   0.65;
     public static final double      WRISTHALFWAY        =   0.50;
 
