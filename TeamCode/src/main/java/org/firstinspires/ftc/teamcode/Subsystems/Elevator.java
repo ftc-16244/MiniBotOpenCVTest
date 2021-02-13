@@ -17,7 +17,7 @@ public class Elevator {
     //constants
 
     private static final double ElevatorSpeedfast=0.95;
-    private static final double ElevatorSpeedslow=0.6;
+    private static final double ElevatorSpeedslow=0.55;
     private static final double Elevatoroff=0;
     public void init(HardwareMap hwMap){
     elevator =hwMap.get(DcMotor.class,"Elevator");
