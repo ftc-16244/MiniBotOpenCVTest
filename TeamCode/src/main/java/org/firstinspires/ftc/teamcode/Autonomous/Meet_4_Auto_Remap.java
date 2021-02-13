@@ -258,7 +258,8 @@ public class Meet_4_Auto_Remap extends BasicAutonomous {
             case BLUE_B: // one ring  4 tiles straight ahead
                 // Drop off wobble
                 telemetry.addData("Going to BLUE B", "Target Zone");
-                gyroDrive(DRIVE_SPEED, 24.0, 10.0, 5);
+                drivetime.reset();
+                gyroDrive(DRIVE_SPEED, 25.0, 10.0, 5);
                 sleep(500);
                 wobble.GripperOpen();
                 sleep(500);
@@ -268,30 +269,30 @@ public class Meet_4_Auto_Remap extends BasicAutonomous {
                 gyroDrive(DRIVE_SPEED,-4,10,3);
 
                 drivetime.reset();
-                gyroTurn(TURN_SPEED*0.75,150,4);
-                gyroTurn(TURN_SPEED*0.4,167,3);
+                gyroTurn(TURN_SPEED*0.7,150,3);
+                gyroTurn(TURN_SPEED*0.4,165,3);
                 m_Ring_Spreader.ringSpreaderDown(); // drop ring spreader arm to prevent jamming in case TF reads C and goes to B
-                gyroDrive(DRIVE_SPEED*.7, 28, 167, 5);
-                gyroDriveandCollectRings(DRIVE_SPEED,8,167,2); // was 8
+                gyroDrive(DRIVE_SPEED*.65, 28, 165, 5);
+                gyroDriveandCollectRings(DRIVE_SPEED,8,165,2); // was 8
 
                 intake.Intakeon();
                 elevator.ElevatorSpeedfast();
                 // Go for second wobbble
                 gyroTurn(TURN_SPEED,155,3);
-                gyroTurn(TURN_SPEED*.45,149,2);
+                gyroTurn(TURN_SPEED*.45,143,2);
                 wobble.lowerWobbleClamp();
                 m_Ring_Spreader.ringSpreaderUp();
-                gyroDrive(DRIVE_SPEED,17,149,3);
-                gyroDrive(DRIVE_SPEED*.45,7,149,3);
+                gyroDrive(DRIVE_SPEED*.8,17,143,2);
+                gyroDrive(DRIVE_SPEED*.4,7,143,2);
                 wobble.GripperClose();
                 sleep(500);
-                gyroDrive(DRIVE_SPEED,-19,148,3);
+                gyroDrive(DRIVE_SPEED,-20,143,2);
 
                 // Turn back to face the goal and shoot
-                gyroTurn(TURN_SPEED ,25,3); //turn fast most of the way
-                gyroTurn(TURN_SPEED*.4,0,3);// turn slow to be accurate. Need to une PIDSs better instead
+                gyroTurn(TURN_SPEED ,25,2); //turn fast most of the way
+                gyroTurn(TURN_SPEED*.45,-1,3);// turn slow to be accurate. Need to une PIDSs better instead
 
-                gyroDrive(DRIVE_SPEED*.7, 10 , 0, 3); // drive fwd ro shoot 4th ring
+                gyroDrive(DRIVE_SPEED*.7, 10 , -1, 2); // drive fwd ro shoot 4th ring
 
                 intake.Intakeoff();
                 elevator.Elevatoroff();
@@ -315,10 +316,12 @@ public class Meet_4_Auto_Remap extends BasicAutonomous {
                 sleep(250);
                 wobble.wobbleWristStart();
                 sleep(250);
-                gyroDrive(DRIVE_SPEED,-3,-8,3);
+                gyroDrive(DRIVE_SPEED,-4,-6,3);
                 wobble.raiseWobbleClamp();
                 m_Ring_Spreader.ringSpreaderUp();
+                wobble.GripperClose();
                 sleep(250);
+
 
 
                 break;

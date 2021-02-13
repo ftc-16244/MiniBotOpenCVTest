@@ -425,7 +425,7 @@ public class BasicAutonomous extends LinearOpMode {
 
             // Determine new target position in ticks/ counts then pass to motor controller
             intake.Intakeon(); // this is only used in auto due to different stacker position
-            elevator.ElevatorSpeedfast();
+            elevator.ElevatorSpeedslow();
 
             moveCounts = (int)(distance * Drivetrain_v3.COUNTS_PER_INCH);
             newLeftTarget = drivetrain.leftFront.getCurrentPosition() + moveCounts;

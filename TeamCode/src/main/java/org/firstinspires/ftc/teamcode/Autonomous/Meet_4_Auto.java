@@ -232,8 +232,8 @@ public class Meet_4_Auto extends BasicAutonomous {
 
                 gyroDrive(DRIVE_SPEED*.6,36,180,4); // approach 2nd wobble parallel to side wall
 
-                gyroTurn(TURN_SPEED*.4,156,3); // make final correctin turn to get second wobble
-                gyroDrive(DRIVE_SPEED*5,7.5,156,2); // drive fwd to get second wobble
+                gyroTurn(TURN_SPEED*.4,154,3); // make final correctin turn to get second wobble
+                gyroDrive(DRIVE_SPEED*4,7.5,154,2); // drive fwd to get second wobble
 
                 //wobble.ArmExtend();
 
@@ -242,7 +242,7 @@ public class Meet_4_Auto extends BasicAutonomous {
                 sleep(1000);
                 //wobble.liftPartial();
                 drivetime.reset();
-                gyroDrive(DRIVE_SPEED,-57,153,2); // backup with 2nd wobble goal
+                gyroDrive(DRIVE_SPEED,-58,153,2); // backup with 2nd wobble goal
                 gyroTurn(TURN_SPEED*.5,90,32);
                 gyroDrive(DRIVE_SPEED,13,90,2);
                 //wobble.GripperSuperOpen();
@@ -292,9 +292,9 @@ public class Meet_4_Auto extends BasicAutonomous {
 
                 // Turn back to face the goal and shoot
                 gyroTurn(TURN_SPEED ,25,3); //turn fast most of the way
-                gyroTurn(TURN_SPEED*.4,0,3);// turn slow to be accurate. Need to une PIDSs better instead
+                gyroTurn(TURN_SPEED*.4,-1,3);// turn slow to be accurate. Need to une PIDSs better instead
 
-                gyroDrive(DRIVE_SPEED*.7, 10 , 0, 3); // drive fwd ro shoot 4th ring
+                gyroDrive(DRIVE_SPEED*.7, 10 , -1, 3); // drive fwd ro shoot 4th ring
 
                 intake.Intakeoff();
                 elevator.Elevatoroff();
@@ -311,14 +311,14 @@ public class Meet_4_Auto extends BasicAutonomous {
                 }
 
                 drivetime.reset();
-                gyroDrive(DRIVE_SPEED,21,-6,3);
+                gyroDrive(DRIVE_SPEED,23,-6,3);
 
 
                 wobble.GripperOpen();
                 sleep(250);
                 wobble.wobbleWristStart();
                 sleep(250);
-                gyroDrive(DRIVE_SPEED,-3,-8,3);
+                gyroDrive(DRIVE_SPEED,-4,-8,3);
                 wobble.raiseWobbleClamp();
                 m_Ring_Spreader.ringSpreaderUp();
                 sleep(250);
@@ -343,10 +343,10 @@ public class Meet_4_Auto extends BasicAutonomous {
                 drivetime.reset();
 
                 // Collect from the stack of 4 rings
-                gyroDriveandCollectRings(DRIVE_SPEED*.2,10,180,10); // collect from stack
-                gyroDriveandCollectRings(DRIVE_SPEED*.6,-3,180,10); // back up to prevent jamming
-                gyroDriveandCollectRings(DRIVE_SPEED*.2,7,180,10); // collect from stack
-                gyroDriveandCollectRings(DRIVE_SPEED*.8,-14,180,10); // backup leave intake on
+                gyroDriveandCollectRings(DRIVE_SPEED*.2,6,180,10); // collect from stack
+                gyroDriveandCollectRings(DRIVE_SPEED*.6,-4,180,10); // back up to prevent jamming
+                gyroDriveandCollectRings(DRIVE_SPEED*.3,9,180,10); // collect from stack
+                gyroDriveandCollectRings(DRIVE_SPEED*.9,-11,180,10); // backup leave intake on
 
                 // Keep intake and elevator running to get ring settled
                 intake.Intakeon();
@@ -371,7 +371,7 @@ public class Meet_4_Auto extends BasicAutonomous {
                 drivetime.reset();
 
                 // Pull ahead to the line
-                gyroDrive(DRIVE_SPEED, 10, 0,3);
+                gyroDrive(DRIVE_SPEED, 11, 0,3);
                 m_Ring_Spreader.ringSpreaderUp();
                 sleep(500);
 
