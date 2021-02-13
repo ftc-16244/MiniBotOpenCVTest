@@ -38,7 +38,7 @@ import org.firstinspires.ftc.teamcode.Enums.ShooterState;
 import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
 
 import java.util.List;
-
+// Not using this as it seems to be causing too many variations to have to fix now.
 @Autonomous(name = "Meet 4 Auto Remap", group = "Concept")
 @Disabled
 public class Meet_4_Auto_Remap extends BasicAutonomous {
