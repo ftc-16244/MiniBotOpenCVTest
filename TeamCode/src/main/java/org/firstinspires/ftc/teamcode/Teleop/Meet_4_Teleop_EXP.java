@@ -302,13 +302,43 @@ public class Meet_4_Teleop_EXP extends OpMode {
         if (gamepad2.left_bumper){
             liftmode =  LiftMode.MANUAL;
             wobble.WobbleLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            liftposn =WobbleLiftPosn.IDLE; // set to idle for whne you reactivate Encoder mode
         }
 
         if (gamepad2.right_bumper){
             liftmode =  LiftMode.ENCODER;
+
             wobble.WobbleLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             wobble.WobbleLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            liftposn =WobbleLiftPosn.IDLE; // set idle becasue therwise it will go to the state where it left off before switching to manual
         }
+
+        if (gamepad2.dpad_left) {
+            wobble.GripperOpen();
+            //wobble.ArmExtend();
+            wristPosn = WristPosn.DOWN;
+           telemetry.addData("Ready to rab Wobble", "Complete ");
+        }
+
+        if (gamepad2.dpad_up){
+            gripperCloseTimer.reset();
+            wobble.GripperClose();
+            //while (gripperCloseTimer.time() < gripperCloseTime){
+
+            // stall program so gripper can close
+            // not necessary in Linear Opmode just in iterative
+            //more than a couple seconds and this will trow error
+            //}
+
+            wobble.raiseWobbleClamp();
+            //wobble.readyToGrabGoal();
+            telemetry.addData("Carrying Wobble", "Complete ");
+        }
+        if (gamepad2.dpad_right) {
+            wobble.GripperOpen();
+            telemetry.addData("Dropping Wobble", "Complete ");
+        }
+
 
         if (gamepad2.dpad_down){
             wristPosn = WristPosn.PARK; //
@@ -359,7 +389,7 @@ public class Meet_4_Teleop_EXP extends OpMode {
                 break;
         }
 
-        
+
         //Encoder Control of the Wobble Lift state machine for modes
         if (liftmode == LiftMode.ENCODER){
             telemetry.addData("Lift Mode",liftmode);
