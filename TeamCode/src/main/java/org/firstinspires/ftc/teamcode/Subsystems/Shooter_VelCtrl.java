@@ -37,22 +37,24 @@ public class Shooter_VelCtrl {
     private static final double stacketMidLoad = .44; // tips stacker back so it loads better
 
     // Power Shoot speeds for Velocity Control per REV docs suggestion
+    private static  final double RIGHT_SHOOTER_GEAR_RATIO = 2.89; // 3:1 Ultra Planetary
+
     private static final int    TICKS_PER_MTR_REV = 28; //UltraPlanetary 1:1 with 90 mm shooter wheels
     private static final int    LEFT_SHOOTER_SPEED_PS = 2550; // RPM
     private static final int    RIGHT_SHOOTER_SPEED_PS = 1600; //RPM
     private static final double LEFT_SHOOTER_TICKS_PERSEC_PS = TICKS_PER_MTR_REV *LEFT_SHOOTER_SPEED_PS/60; //ticks per second
-    private static final double RIGHT_SHOOTER_TICKS_PERSEC_PS = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_PS/60; //ticks per second
+    private static final double RIGHT_SHOOTER_TICKS_PERSEC_PS = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_PS*RIGHT_SHOOTER_GEAR_RATIO/60; //ticks per second
     // High Goal Speeds (AUTO) - Velocity Control
     private static final int    LEFT_SHOOTER_SPEED_HG = 2750; // bumped to 2750 from 2700 to avovid low shots
-    private static final int    RIGHT_SHOOTER_SPEED_HG = 1750; // RPM
+    private static final int    RIGHT_SHOOTER_SPEED_HG = 1800; // RPM
     private static final double    LEFT_SHOOTER_TICKS_PERSEC_HG = TICKS_PER_MTR_REV *LEFT_SHOOTER_SPEED_HG/60;
-    private static final double    RIGHT_SHOOTER_TICKS_PERSEC_HG = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_HG/60;
+    private static final double    RIGHT_SHOOTER_TICKS_PERSEC_HG = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_HG*RIGHT_SHOOTER_GEAR_RATIO/60;
 
     //High Goal Speeds Teleop should be pretty close to the auto speeds but can make slight changges if need be
-    private static final int    LEFT_SHOOTER_SPEED_HG_TELE = 1800; // was 2100/2400 works well
-    private static final int    RIGHT_SHOOTER_SPEED_HG_TELE = 2700; // RPM
+    private static final int    LEFT_SHOOTER_SPEED_HG_TELE = 2600; // was 2100/2400 works well
+    private static final int    RIGHT_SHOOTER_SPEED_HG_TELE = 1800; // RPM
     private static final double    LEFT_SHOOTER_TICKS_PERSEC_HG_TELE = TICKS_PER_MTR_REV *LEFT_SHOOTER_SPEED_HG_TELE/60;
-    private static final double    RIGHT_SHOOTER_TICKS_PERSEC_HG_TELE = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_HG_TELE/60;
+    private static final double    RIGHT_SHOOTER_TICKS_PERSEC_HG_TELE = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_HG_TELE*RIGHT_SHOOTER_GEAR_RATIO/60;
 
     public void init(HardwareMap hwMap)  {
         shooterleft     = hwMap.get(DcMotorEx.class,"LeftShooter");
@@ -162,9 +164,9 @@ public class Shooter_VelCtrl {
         while (ShotCount<rings)  {
 
                 shootOneRingHigh(); // this is only used in auto due to different stacker position
-                sleep(700);
+                sleep(600);
                 flipperForward();
-                sleep(700);
+                sleep(600);
                 flipperBackward();
                 ShotCount++;
 
