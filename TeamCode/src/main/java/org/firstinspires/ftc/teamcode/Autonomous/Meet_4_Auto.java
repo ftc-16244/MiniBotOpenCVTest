@@ -281,14 +281,17 @@ public class Meet_4_Auto extends BasicAutonomous {
                 elevator.ElevatorSpeedfast();
                 // Go for second wobbble
                 gyroTurn(TURN_SPEED,155,3);
-                gyroTurn(TURN_SPEED*.45,149,2);
+                gyroTurn(TURN_SPEED*.45,147,2);
                 wobble.lowerWobbleClamp();
                 m_Ring_Spreader.ringSpreaderUp();
-                gyroDrive(DRIVE_SPEED,17,149,3);
-                gyroDrive(DRIVE_SPEED*.45,7,149,3);
+
+                // go to second wobble
+
+                gyroDrive(DRIVE_SPEED,17,147,3);
+                gyroDrive(DRIVE_SPEED*.45,7,147,3);
                 wobble.GripperClose();
                 sleep(500);
-                gyroDrive(DRIVE_SPEED,-19,148,3);
+                gyroDrive(DRIVE_SPEED,-19,147,3);
 
                 // Turn back to face the goal and shoot
                 gyroTurn(TURN_SPEED ,25,3); //turn fast most of the way
@@ -311,7 +314,7 @@ public class Meet_4_Auto extends BasicAutonomous {
                 }
 
                 drivetime.reset();
-                gyroDrive(DRIVE_SPEED,23,-6,3);
+                gyroDrive(DRIVE_SPEED,22,-6,3);
 
 
                 wobble.GripperOpen();
