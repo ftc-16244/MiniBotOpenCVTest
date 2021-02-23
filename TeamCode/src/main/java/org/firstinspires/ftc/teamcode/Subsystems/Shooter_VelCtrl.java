@@ -26,7 +26,7 @@ public class Shooter_VelCtrl {
     private static final double jamClear=-.35;
     //Constants for stacker servos
     private static final double leftUp = 0.70; // .75 a little shy but ok due to hitting bolt // was 0.75
-    private static final double leftBack = .4; //good at 0.4;
+    private static final double leftBack = .38; //good at 0.4;
     private static final double rightUp = (1-leftUp);
     private static final double rightBack = (1-leftBack);
     private static final double flippercenter = 0.5;
@@ -37,17 +37,24 @@ public class Shooter_VelCtrl {
     private static final double stacketMidLoad = .44; // tips stacker back so it loads better
 
     // Power Shoot speeds for Velocity Control per REV docs suggestion
+    private static  final double RIGHT_SHOOTER_GEAR_RATIO = 2.89; // 3:1 Ultra Planetary
+
     private static final int    TICKS_PER_MTR_REV = 28; //UltraPlanetary 1:1 with 90 mm shooter wheels
     private static final int    LEFT_SHOOTER_SPEED_PS = 2550; // RPM
     private static final int    RIGHT_SHOOTER_SPEED_PS = 1600; //RPM
     private static final double LEFT_SHOOTER_TICKS_PERSEC_PS = TICKS_PER_MTR_REV *LEFT_SHOOTER_SPEED_PS/60; //ticks per second
-    private static final double RIGHT_SHOOTER_TICKS_PERSEC_PS = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_PS/60; //ticks per second
-    // High Goal Speeds - Velocity Control
-    private static final int    LEFT_SHOOTER_SPEED_HG = 2750; // RPM 2700 and 1750 not bad but misses low in auto sometimes
-    private static final int    RIGHT_SHOOTER_SPEED_HG = 1750; // RPM
+    private static final double RIGHT_SHOOTER_TICKS_PERSEC_PS = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_PS*RIGHT_SHOOTER_GEAR_RATIO/60; //ticks per second
+    // High Goal Speeds (AUTO) - Velocity Control
+    private static final int    LEFT_SHOOTER_SPEED_HG = 2750; // bumped to 2750 from 2700 to avovid low shots
+    private static final int    RIGHT_SHOOTER_SPEED_HG = 1800; // RPM
     private static final double    LEFT_SHOOTER_TICKS_PERSEC_HG = TICKS_PER_MTR_REV *LEFT_SHOOTER_SPEED_HG/60;
-    private static final double    RIGHT_SHOOTER_TICKS_PERSEC_HG = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_HG/60;
+    private static final double    RIGHT_SHOOTER_TICKS_PERSEC_HG = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_HG*RIGHT_SHOOTER_GEAR_RATIO/60;
 
+    //High Goal Speeds Teleop should be pretty close to the auto speeds but can make slight changges if need be
+    private static final int    LEFT_SHOOTER_SPEED_HG_TELE = 2600; // was 2100/2400 works well
+    private static final int    RIGHT_SHOOTER_SPEED_HG_TELE = 1800; // RPM
+    private static final double    LEFT_SHOOTER_TICKS_PERSEC_HG_TELE = TICKS_PER_MTR_REV *LEFT_SHOOTER_SPEED_HG_TELE/60;
+    private static final double    RIGHT_SHOOTER_TICKS_PERSEC_HG_TELE = TICKS_PER_MTR_REV *RIGHT_SHOOTER_SPEED_HG_TELE*RIGHT_SHOOTER_GEAR_RATIO/60;
 
     public void init(HardwareMap hwMap)  {
         shooterleft     = hwMap.get(DcMotorEx.class,"LeftShooter");
@@ -75,6 +82,13 @@ public class Shooter_VelCtrl {
         shooterleft.setVelocity(LEFT_SHOOTER_TICKS_PERSEC_HG);
         shooterright.setVelocity(RIGHT_SHOOTER_TICKS_PERSEC_HG);
     }
+
+    public void shootHighGoalTeleop() {
+        shooterleft.setVelocity(LEFT_SHOOTER_TICKS_PERSEC_HG_TELE);
+        shooterright.setVelocity(RIGHT_SHOOTER_TICKS_PERSEC_HG_TELE);
+    }
+
+
     public void shooterOff() {
             shooterleft.setPower(0);
             shooterright.setPower(0);
@@ -128,7 +142,7 @@ public class Shooter_VelCtrl {
     }
     // this actually should be called shooterReady or Rings_Ready_to_Launch
     public void shootOneRingHigh() {
-        shootHighGoal(); // sets motors for high goal
+        shootHighGoalTeleop(); // sets motors for high goal
         stackerMoveToShoot(); // raises ring stacker
         flipperBackward(); // makes sure flippers are behind rings
         //telemetry.addData("Left Shooter Target",LEFT_SHOOTER_SPEED_HG);
@@ -150,9 +164,9 @@ public class Shooter_VelCtrl {
         while (ShotCount<rings)  {
 
                 shootOneRingHigh(); // this is only used in auto due to different stacker position
-                sleep(700);
+                sleep(600);
                 flipperForward();
-                sleep(700);
+                sleep(600);
                 flipperBackward();
                 ShotCount++;
 

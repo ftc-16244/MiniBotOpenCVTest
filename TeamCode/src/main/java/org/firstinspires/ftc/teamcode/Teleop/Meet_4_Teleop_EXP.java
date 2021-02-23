@@ -1,15 +1,14 @@
 package org.firstinspires.ftc.teamcode.Teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Enums.DriveSpeedState;
+import org.firstinspires.ftc.teamcode.Enums.LiftMode;
 import org.firstinspires.ftc.teamcode.Enums.RingCollectionState;
 import org.firstinspires.ftc.teamcode.Enums.WobbleLiftPosn;
-import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
 import org.firstinspires.ftc.teamcode.Enums.WristPosn;
 import org.firstinspires.ftc.teamcode.Subsystems.Debouce;
 import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain_v3;
@@ -19,9 +18,10 @@ import org.firstinspires.ftc.teamcode.Subsystems.Ring_Spreader;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter_VelCtrl;
 import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 
-@TeleOp(name="Meet 4 Teleop", group="Teleop")
-@Disabled
-public class Meet_4_Teleop extends OpMode {
+@TeleOp(name="Meet 4 Teleop Exp", group="Teleop")
+// Creted to fix the lift poblem
+//@Disabled
+public class Meet_4_Teleop_EXP extends OpMode {
 
 
     /* Declare OpMode members. */
@@ -44,6 +44,7 @@ public class Meet_4_Teleop extends OpMode {
 
     public WobbleLiftPosn liftposn =WobbleLiftPosn.IDLE; // Default target zone
     public WristPosn wristPosn = WristPosn.PARK;
+    public LiftMode liftmode = LiftMode.ENCODER; // default lift mode
 
     private ElapsedTime wristTimer = new ElapsedTime();
     private double wristParkDelay = 3;
@@ -104,6 +105,7 @@ public class Meet_4_Teleop extends OpMode {
         double turn;
         double max;
         double speedfactor = 0.5;
+        double manualLiftSpeed;
 
 
         // Ultimate Goal
@@ -207,10 +209,10 @@ public class Meet_4_Teleop extends OpMode {
         }
         if (gamepad1.left_trigger > 0.25) {
             shooter.flipperForward();
-            debounce(600);
+            debounce(550);
             telemetry.addData("Flipper Fwd", "Complete ");
             shooter.flipperBackward();
-            debounce(600);
+            debounce(550);
         }
         if (gamepad1.right_trigger > 0.25) {
             //shooter.flipperBackward();
@@ -293,7 +295,55 @@ public class Meet_4_Teleop extends OpMode {
         //========================================
         // GAME PAD 2 Mainly Wobble
         //========================================
+        // left joystick is assigned to drive speed
+        manualLiftSpeed = -gamepad2.left_stick_y; // always calculated may or may not use
 
+        // Swap control of the wobble lift between Encoder modea nd manual mode
+        if (gamepad2.left_bumper){
+            liftmode =  LiftMode.MANUAL;
+            wobble.WobbleLift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            liftposn =WobbleLiftPosn.IDLE; // set to idle for whne you reactivate Encoder mode
+        }
+
+        if (gamepad2.right_bumper){
+            liftmode =  LiftMode.ENCODER;
+
+            wobble.WobbleLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            wobble.WobbleLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            liftposn =WobbleLiftPosn.IDLE; // set idle becasue therwise it will go to the state where it left off before switching to manual
+        }
+
+        if (gamepad2.dpad_left) {
+            wobble.GripperOpen();
+            //wobble.ArmExtend();
+            wristPosn = WristPosn.DOWN;
+           telemetry.addData("Ready to rab Wobble", "Complete ");
+        }
+
+        if (gamepad2.dpad_up){
+            gripperCloseTimer.reset();
+            wobble.GripperClose();
+            //while (gripperCloseTimer.time() < gripperCloseTime){
+
+            // stall program so gripper can close
+            // not necessary in Linear Opmode just in iterative
+            //more than a couple seconds and this will trow error
+            //}
+
+            wobble.raiseWobbleClamp();
+            //wobble.readyToGrabGoal();
+            telemetry.addData("Carrying Wobble", "Complete ");
+        }
+        if (gamepad2.dpad_right) {
+            wobble.GripperOpen();
+            telemetry.addData("Dropping Wobble", "Complete ");
+        }
+
+
+        if (gamepad2.dpad_down){
+            wristPosn = WristPosn.PARK; //
+
+        }
 
         if (gamepad2.x) {
             m_Ring_Spreader.ringSpreaderUp();
@@ -339,34 +389,46 @@ public class Meet_4_Teleop extends OpMode {
                 break;
         }
 
-        // State machine for the wobble lift
-        switch(liftposn) {
 
-            case DOWN:
-                telemetry.addData("Lift Position",liftposn);
-                wobble.LiftLower();
-                if(wobble.getLiftHeight() < 0.15){
-                    liftposn =WobbleLiftPosn.IDLE;
+        //Encoder Control of the Wobble Lift state machine for modes
+        if (liftmode == LiftMode.ENCODER){
+            telemetry.addData("Lift Mode",liftmode);
+            switch (liftposn) {
+
+                case DOWN:
+                    telemetry.addData("Lift Position", liftposn);
+                    wobble.LiftLower();
+                    if (wobble.getLiftHeight() < 0.15) {
+                        liftposn = WobbleLiftPosn.IDLE;
+
+                    }
+                    break;
+
+                case UP:
+                    telemetry.addData("Lift Position", liftposn);
+                    wobble.LiftRise();
+                    //wobble.wobbleWristDown();
+
+
+                    break;
+
+                case IDLE:
+                    telemetry.addData("Lift Position", liftposn);
+                    wobble.LiftIdle();
                     wobble.WobbleLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                }
-                break;
-
-            case UP:
-                telemetry.addData("Lift Position",liftposn);
-                wobble.LiftRise();
-                //wobble.wobbleWristDown();
 
 
-                break;
+                    break;
+            }
+        } // bracket for the if statement
 
-            case IDLE:
-                telemetry.addData("Lift Position",liftposn);
-                wobble.LiftIdle();
+        // Manual Control of the Wobble Lift
+        if (liftmode == LiftMode.MANUAL){
 
+            telemetry.addData("Lift Mode",liftmode);
+            wobble.WobbleLift.setPower(manualLiftSpeed);
 
-                break;
         }
-
         // Wrist Position
 
         switch(wristPosn) {
