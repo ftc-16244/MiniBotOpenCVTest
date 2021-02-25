@@ -26,39 +26,35 @@ public class Meet_4_Teleop_EXP extends OpMode {
 
     /* Declare OpMode members. */
 
-    private ElapsedTime runtime     = new ElapsedTime();
-    public Drivetrain_v3        drivetrain  = new Drivetrain_v3(true);   // Use subsystem Drivetrain
-    public Shooter_VelCtrl shooter     = new Shooter_VelCtrl(); //experiment to see if thsi helps
-    public Intake               intake      = new Intake();
-    public Wobblegoal           wobble  = new Wobblegoal();
-    public Elevator elevator    = new Elevator();
+    private ElapsedTime     runtime     = new ElapsedTime();
+    public Drivetrain_v3    drivetrain  = new Drivetrain_v3(true);   // Use subsystem Drivetrain
+    public Shooter_VelCtrl  shooter     = new Shooter_VelCtrl(); //experiment to see if thsi helps
+    public Intake           intake      = new Intake();
+    public Wobblegoal       wobble      = new Wobblegoal();
+    public Elevator         elevator    = new Elevator();
     public Ring_Spreader m_Ring_Spreader = new Ring_Spreader();
 
     public ElapsedTime gripperCloseTimer = new ElapsedTime();
     //public ElapsedTime debounceTimer = new ElapsedTime();
     private Debouce mdebounce = new Debouce();
 
+    // ENUMS
     private DriveSpeedState  currDriveState;
     private RingCollectionState ringCollectorState;
-    private double gripperCloseTime = 1.0;
+    private double          gripperCloseTime = 1.0;
 
-    public WobbleLiftPosn liftposn =WobbleLiftPosn.IDLE; // Default target zone
-    public WristPosn wristPosn = WristPosn.PARK;
-    public LiftMode liftmode = LiftMode.ENCODER; // default lift mode
+    public WobbleLiftPosn   liftposn    = WobbleLiftPosn.IDLE; // Default target zone
+    public WristPosn        wristPosn   = WristPosn.PARK;
+    public LiftMode         liftmode    = LiftMode.ENCODER; // default lift mode
 
-    private ElapsedTime wristTimer = new ElapsedTime();
-    private double wristParkDelay = 3;
+    private ElapsedTime     wristTimer  = new ElapsedTime();
+
     /*
      * Code to run ONCE when the driver hits INIT
      */
     @Override
    public void init() {
 
-        double wristRestTime = 3;
-        ElapsedTime wristResetTimer = new ElapsedTime();
-        /* Initialize the hardware variables.
-        * The init() method of the hardware class does all the work here
-        */
         drivetrain.init(hardwareMap);
         intake.init(hardwareMap);
         wobble.init(hardwareMap);
@@ -107,27 +103,8 @@ public class Meet_4_Teleop_EXP extends OpMode {
         double speedfactor = 0.5;
         double manualLiftSpeed;
 
-
-        // Ultimate Goal
-        //Gamepad 1
-        //  Drivetrain (left/right sticks)
-        //  Intake on
-        //  Intake off
-        //  Intake reverse
-        //  Wobble (at least 4 function)
-
-        // Gamepad 2
-        // Shooter slow (mid goal)
-        // Shooter fast (high goal)
-        // Shooter reverse
-        // stacker uo
-        // stacker down
-        // flipper in
-        // flipper out
-
-
         //========================================
-        // GAME PAD 1
+        // GAME PAD 1 - ULTIMATE GOAL GAME
         //========================================
         // left joystick is assigned to drive speed
         drive = -gamepad1.left_stick_y;
@@ -234,9 +211,9 @@ public class Meet_4_Teleop_EXP extends OpMode {
         }
 
 
-        // Wobble Controls
+        // Wobble Controls on Gampepad 1
 
-        if (gamepad1.dpad_left) {
+        if (gamepad1.dpad_left && liftmode == LiftMode.ENCODER) {
             wobble.GripperOpen();
             //wobble.ArmExtend();
             wristPosn = WristPosn.DOWN;
@@ -246,7 +223,7 @@ public class Meet_4_Teleop_EXP extends OpMode {
             telemetry.addData("Ready to rab Wobble", "Complete ");
         }
 
-        if (gamepad1.dpad_up){
+        if (gamepad1.dpad_up && liftmode == LiftMode.ENCODER){
             gripperCloseTimer.reset();
             wobble.GripperClose();
             //while (gripperCloseTimer.time() < gripperCloseTime){
@@ -260,13 +237,13 @@ public class Meet_4_Teleop_EXP extends OpMode {
             //wobble.readyToGrabGoal();
            telemetry.addData("Carrying Wobble", "Complete ");
         }
-        if (gamepad1.dpad_right) {
+        if (gamepad1.dpad_right && liftmode == LiftMode.ENCODER) {
             wobble.GripperOpen();
 
 
             telemetry.addData("Dropping Wobble", "Complete ");
         }
-        if (gamepad1.dpad_down) {
+        if (gamepad1.dpad_down && liftmode == LiftMode.ENCODER) {
 
             wobble.GripperClose();
             //wobble.LiftLower();
@@ -283,7 +260,7 @@ public class Meet_4_Teleop_EXP extends OpMode {
         }
 
 
-        if (gamepad1.back){
+        if (gamepad1.back && liftmode == LiftMode.ENCODER){
 
             //wobble.LiftRise();
             liftposn = WobbleLiftPosn.UP;
@@ -296,6 +273,7 @@ public class Meet_4_Teleop_EXP extends OpMode {
         // GAME PAD 2 Mainly Wobble
         //========================================
         // left joystick is assigned to drive speed
+
         manualLiftSpeed = -gamepad2.left_stick_y; // always calculated may or may not use
 
         // Swap control of the wobble lift between Encoder modea nd manual mode
@@ -429,7 +407,7 @@ public class Meet_4_Teleop_EXP extends OpMode {
             wobble.WobbleLift.setPower(manualLiftSpeed);
 
         }
-        // Wrist Position
+        // Wrist Position switch case
 
         switch(wristPosn) {
 
