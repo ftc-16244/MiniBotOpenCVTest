@@ -299,6 +299,7 @@ public class Meet_4_Teleop_EXP extends OpMode {
             liftposn = WobbleLiftPosn.UP;
             //wobble.raiseWobbleClamp();
             wristPosn = WristPosn.DOWN; // wrist position state
+            wobble.raiseWobbleClamp();
 
         }
 
@@ -347,27 +348,29 @@ public class Meet_4_Teleop_EXP extends OpMode {
          **/
 
         if (gamepad2.dpad_left && liftmode == LiftMode.MANUAL) {
-            wobble.GripperOpen();
-            //wobble.ArmExtend();
-            wristPosn = WristPosn.DOWN;
+           wobble.GripperOpen();
+           //wobble.ArmExtend();
+           wristPosn = WristPosn.DOWN;
+           wobble.lowerWobbleClamp();
            telemetry.addData("Ready to rab Wobble", "Complete ");
         }
 
         if (gamepad2.dpad_up && liftmode == LiftMode.MANUAL){
-            gripperCloseTimer.reset();
-            wobble.GripperClose();
-            wobble.raiseWobbleClamp();
-            //wobble.readyToGrabGoal();
-            telemetry.addData("Carrying Wobble", "Complete ");
+           gripperCloseTimer.reset();
+           wobble.GripperClose();
+           wobble.raiseWobbleClamp();
+           //wobble.readyToGrabGoal();
+           telemetry.addData("Carrying Wobble", "Complete ");
         }
         if (gamepad2.dpad_right && liftmode == LiftMode.MANUAL) {
-            wobble.GripperOpen();
-            telemetry.addData("Dropping Wobble", "Complete ");
+           wobble.GripperOpen();
+           telemetry.addData("Dropping Wobble", "Complete ");
         }
 
 
         if (gamepad2.dpad_down && liftmode == LiftMode.MANUAL){
-            wristPosn = WristPosn.PARK; //
+            wristPosn = WristPosn.PARK;
+            wobble.GripperClose();
 
         }
 
