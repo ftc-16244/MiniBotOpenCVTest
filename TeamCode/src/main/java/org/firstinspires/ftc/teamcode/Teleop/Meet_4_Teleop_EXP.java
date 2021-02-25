@@ -115,6 +115,7 @@ public class Meet_4_Teleop_EXP extends OpMode {
          * Gamepad #1 Joysticks
          *
          **/
+
         // left joystick is assigned to drive speed
         drive = -gamepad1.left_stick_y;
         // right joystick is for turning
@@ -203,7 +204,9 @@ public class Meet_4_Teleop_EXP extends OpMode {
             telemetry.addData("Stacker Ready to Shoot", "Complete ");
         }
         /**
+         *
          * Gamepad #1 Triggers - Soot Ring and Low Speed
+         *
          **/
 
         if (gamepad1.left_trigger > 0.25) {
@@ -222,7 +225,9 @@ public class Meet_4_Teleop_EXP extends OpMode {
         }
 
         /**
+         *
          * Gamepad #1 Stick Buttons - Drive Speeds
+         *
          **/
 
         if (gamepad1.left_stick_button)
@@ -236,7 +241,9 @@ public class Meet_4_Teleop_EXP extends OpMode {
 
 
         /**
+         *
          * Gamepad #1 DPAD Wobble Controls
+         *
          **/
 
         if (gamepad1.dpad_left && liftmode == LiftMode.ENCODER) {
@@ -304,15 +311,20 @@ public class Meet_4_Teleop_EXP extends OpMode {
 
 
         /**
+         *
          * Gamepad #2 Joysticks
+         *
          **/
 
         manualLiftSpeed = -gamepad2.left_stick_y; // always calculated may or may not use
 
 
         /**
+         *
          * Gamepad #2 Bumpers
+         *
          **/
+
         // Swap control of the wobble lift between Encoder modea nd manual mode
         if (gamepad2.left_bumper){
             liftmode =  LiftMode.MANUAL;
@@ -329,7 +341,9 @@ public class Meet_4_Teleop_EXP extends OpMode {
         }
 
         /**
+         *
          * Gamepad #2 DPAD - Wobble Secondary Driver
+         *
          **/
 
         if (gamepad2.dpad_left && liftmode == LiftMode.MANUAL) {
@@ -358,7 +372,9 @@ public class Meet_4_Teleop_EXP extends OpMode {
         }
 
         /**
+         *
          * Gamepad #2 Buttons- Ring Spreader
+         *
          **/
 
         if (gamepad2.x) {
