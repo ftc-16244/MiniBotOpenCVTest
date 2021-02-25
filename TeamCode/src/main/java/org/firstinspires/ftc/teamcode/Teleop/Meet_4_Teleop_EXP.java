@@ -103,9 +103,18 @@ public class Meet_4_Teleop_EXP extends OpMode {
         double speedfactor = 0.5;
         double manualLiftSpeed;
 
-        //========================================
-        // GAME PAD 1 - ULTIMATE GOAL GAME
-        //========================================
+        /**
+         * /////////////////////////////////////////////////////////////////////////////////////
+         * Gamepad #1 Section
+         * /////////////////////////////////////////////////////////////////////////////////////
+         **/
+
+
+        /**
+         *
+         * Gamepad #1 Joysticks
+         *
+         **/
         // left joystick is assigned to drive speed
         drive = -gamepad1.left_stick_y;
         // right joystick is for turning
@@ -122,8 +131,11 @@ public class Meet_4_Teleop_EXP extends OpMode {
             right /= max;
         }
 
-       // Gamepad 1 Buttons
-
+        /**
+         *
+         * Gamepad #1 Bumpers
+         *
+         **/
 
         if (gamepad1.left_bumper && ringCollectorState == RingCollectionState.OFF) {
             shooter.flipperBackward();
@@ -160,6 +172,12 @@ public class Meet_4_Teleop_EXP extends OpMode {
 
         }
 
+        /**
+         *
+         * Gamepad #1 Buttons - Stacker and Shooter Motors
+         *
+         **/
+
         if (gamepad1.x) {
             //shooter.shooterReload();
             shooter.stackerMoveToReload();
@@ -184,6 +202,10 @@ public class Meet_4_Teleop_EXP extends OpMode {
             ringCollectorState = RingCollectionState.OFF;
             telemetry.addData("Stacker Ready to Shoot", "Complete ");
         }
+        /**
+         * Gamepad #1 Triggers - Soot Ring and Low Speed
+         **/
+
         if (gamepad1.left_trigger > 0.25) {
             shooter.flipperForward();
             debounce(550);
@@ -199,8 +221,10 @@ public class Meet_4_Teleop_EXP extends OpMode {
             telemetry.addData("SHooter Low for Power Shots", "Complete ");
         }
 
-        // Gamepad 1 Bumpers - for Speed Control
-        // set-up drive speed states on bumpers
+        /**
+         * Gamepad #1 Stick Buttons - Drive Speeds
+         **/
+
         if (gamepad1.left_stick_button)
         {
             currDriveState = DriveSpeedState.DRIVE_FAST;
@@ -211,7 +235,9 @@ public class Meet_4_Teleop_EXP extends OpMode {
         }
 
 
-        // Wobble Controls on Gampepad 1
+        /**
+         * Gamepad #1 DPAD Wobble Controls
+         **/
 
         if (gamepad1.dpad_left && liftmode == LiftMode.ENCODER) {
             wobble.GripperOpen();
@@ -269,13 +295,24 @@ public class Meet_4_Teleop_EXP extends OpMode {
 
         }
 
-        //========================================
-        // GAME PAD 2 Mainly Wobble
-        //========================================
-        // left joystick is assigned to drive speed
+        /**
+         * /////////////////////////////////////////////////////////////////////////////////////
+         * Gamepad #2 Section
+         * /////////////////////////////////////////////////////////////////////////////////////
+         **/
+        // left joystick is assigned to drive speed.
+
+
+        /**
+         * Gamepad #2 Joysticks
+         **/
 
         manualLiftSpeed = -gamepad2.left_stick_y; // always calculated may or may not use
 
+
+        /**
+         * Gamepad #2 Bumpers
+         **/
         // Swap control of the wobble lift between Encoder modea nd manual mode
         if (gamepad2.left_bumper){
             liftmode =  LiftMode.MANUAL;
@@ -291,6 +328,10 @@ public class Meet_4_Teleop_EXP extends OpMode {
             liftposn =WobbleLiftPosn.IDLE; // set idle becasue therwise it will go to the state where it left off before switching to manual
         }
 
+        /**
+         * Gamepad #2 DPAD - Wobble Secondary Driver
+         **/
+
         if (gamepad2.dpad_left && liftmode == LiftMode.MANUAL) {
             wobble.GripperOpen();
             //wobble.ArmExtend();
@@ -301,13 +342,6 @@ public class Meet_4_Teleop_EXP extends OpMode {
         if (gamepad2.dpad_up && liftmode == LiftMode.MANUAL){
             gripperCloseTimer.reset();
             wobble.GripperClose();
-            //while (gripperCloseTimer.time() < gripperCloseTime){
-
-            // stall program so gripper can close
-            // not necessary in Linear Opmode just in iterative
-            //more than a couple seconds and this will trow error
-            //}
-
             wobble.raiseWobbleClamp();
             //wobble.readyToGrabGoal();
             telemetry.addData("Carrying Wobble", "Complete ");
@@ -322,6 +356,10 @@ public class Meet_4_Teleop_EXP extends OpMode {
             wristPosn = WristPosn.PARK; //
 
         }
+
+        /**
+         * Gamepad #2 Buttons- Ring Spreader
+         **/
 
         if (gamepad2.x) {
             m_Ring_Spreader.ringSpreaderUp();
@@ -338,7 +376,10 @@ public class Meet_4_Teleop_EXP extends OpMode {
        // switch case to determine what mode the arm needs to operate in.
 
 
-        // switch case for the drive speed state
+        /**
+         * Switch Case to manage high and low drive speeds
+         * @Param currDriveState this is an ENUM that describes high or low speed
+         **/
 
         switch(currDriveState) {
 
@@ -368,7 +409,14 @@ public class Meet_4_Teleop_EXP extends OpMode {
         }
 
 
-        //Encoder Control of the Wobble Lift state machine for modes
+        /**
+         * Switch Case and If to allow the lift to be controlled by the primary driver
+         * on Gamepad #1.
+         * @Param liftmode this is an ENUM is either ENCODER for the primary driver to control
+         * or MANUAL to allow the secondary driver to take control of the lift. We suspect that we
+         * had a static problem which made resetting the lift impossible.
+         **/
+
         if (liftmode == LiftMode.ENCODER){
             telemetry.addData("Lift Mode",liftmode);
             switch (liftposn) {
@@ -400,14 +448,22 @@ public class Meet_4_Teleop_EXP extends OpMode {
             }
         } // bracket for the if statement
 
-        // Manual Control of the Wobble Lift
+        /**
+         * Switch Case and If to allow the lift to be controlled by the secondary driver
+         * on Gamepad #2.
+         * @Param liftmode is an ENUM set to MANUAL in this situation.
+         **/
         if (liftmode == LiftMode.MANUAL){
 
             telemetry.addData("Lift Mode",liftmode);
             wobble.WobbleLift.setPower(manualLiftSpeed);
 
         }
-        // Wrist Position switch case
+        /**
+         * Switch Case and If to allow the lift to be controlled by the secondary driver
+         * on Gamepad #2.
+         * @Param wristPosn is an ENUM to set different wrist positions.
+         **/
 
         switch(wristPosn) {
 
