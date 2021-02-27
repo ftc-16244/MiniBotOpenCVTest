@@ -58,7 +58,7 @@ public class BasicAutonomous extends LinearOpMode {
     public ElapsedTime          tfTime      = new ElapsedTime(); // timer for tensor flow
     public ElapsedTime          ShootTimer          = new ElapsedTime(); //auto shooter timer (4 rings)
     public ElapsedTime          autoRingCollectTimer    = new ElapsedTime(); //auto shooter timer (4 rings)
-    public static double        shooterStartUpTimeAllowed = 1.5;
+    public static double        shooterStartUpTimeAllowed = 1.65;
     public static double        autoShootTimeAllowed    = 5; //  seconds allows 4 shoot cycles in case one messes up
     //public static double      extraRingShootTimeAllowed    = 4; //  seconds allows 4 shoot cycles in case one messes up
     public static double        tfSenseTime             = 1; // needs a couple seconds to process the image and ID the target

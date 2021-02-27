@@ -250,7 +250,7 @@ public class Meet_4_Auto extends BasicAutonomous {
                 sleep(250);
                 wobble.raiseWobbleClamp();
                 sleep(250);
-                gyroDrive(DRIVE_SPEED,-24,90,2);
+                gyroDrive(DRIVE_SPEED,-24,85 ,2);
                 //wobble.ArmContract();
                 wobble.wobbleWristStart();
                 wobble.GripperClose();
@@ -271,7 +271,7 @@ public class Meet_4_Auto extends BasicAutonomous {
                 gyroDrive(DRIVE_SPEED,-4,10,3);
 
                 drivetime.reset();
-                gyroTurn(TURN_SPEED*0.75,150,4);
+                gyroTurn(TURN_SPEED*0.75,140,4);
                 gyroTurn(TURN_SPEED*0.4,167,3);
                 m_Ring_Spreader.ringSpreaderDown(); // drop ring spreader arm to prevent jamming in case TF reads C and goes to B
                 gyroDrive(DRIVE_SPEED*.7, 28, 167, 5);
@@ -295,9 +295,9 @@ public class Meet_4_Auto extends BasicAutonomous {
 
                 // Turn back to face the goal and shoot
                 gyroTurn(TURN_SPEED ,25,3); //turn fast most of the way
-                gyroTurn(TURN_SPEED*.4,-1,3);// turn slow to be accurate. Need to une PIDSs better instead
+                gyroTurn(TURN_SPEED*.4,0,3);// turn slow to be accurate. Need to une PIDSs better instead
 
-                gyroDrive(DRIVE_SPEED*.7, 10 , -1, 3); // drive fwd ro shoot 4th ring
+                gyroDrive(DRIVE_SPEED*.7, 10 , 0 , 3); // drive fwd ro shoot 4th ring
 
                 intake.Intakeoff();
                 elevator.Elevatoroff();
