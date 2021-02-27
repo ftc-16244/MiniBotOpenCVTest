@@ -232,8 +232,9 @@ public class Meet_4_Auto extends BasicAutonomous {
 
                 gyroDrive(DRIVE_SPEED*.6,36,180,4); // approach 2nd wobble parallel to side wall
 
-                gyroTurn(TURN_SPEED*.4,154,3); // make final correctin turn to get second wobble
-                gyroDrive(DRIVE_SPEED*4,7.5,154,2); // drive fwd to get second wobble
+                gyroTurn(TURN_SPEED*.4,152,3); // make final correctin turn to get second wobble
+                gyroDrive(DRIVE_SPEED*4,7.5,152
+                        ,2); // drive fwd to get second wobble
 
                 //wobble.ArmExtend();
 
@@ -244,7 +245,7 @@ public class Meet_4_Auto extends BasicAutonomous {
                 drivetime.reset();
                 gyroDrive(DRIVE_SPEED,-58,153,2); // backup with 2nd wobble goal
                 gyroTurn(TURN_SPEED*.5,90,32);
-                gyroDrive(DRIVE_SPEED,13,90,2);
+                gyroDrive(DRIVE_SPEED,14,90,2);
                 //wobble.GripperSuperOpen();
                 wobble.GripperOpen();
                 sleep(250);
