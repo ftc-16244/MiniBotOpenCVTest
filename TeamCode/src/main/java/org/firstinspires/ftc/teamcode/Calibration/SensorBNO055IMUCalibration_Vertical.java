@@ -99,7 +99,7 @@ import java.util.Locale;
  * @see <a href="https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST_BNO055_DS000_14.pdf">BNO055 specification</a>
  */
 @TeleOp(name = "Sensor: BNO055 IMU Calibration Vertical", group = "Sensor")
-@Disabled                            // Uncomment this to add to the opmode list
+//@Disabled                            // Uncomment this to add to the opmode list
 public class SensorBNO055IMUCalibration_Vertical extends LinearOpMode
     {
     //----------------------------------------------------------------------------------------------
@@ -111,8 +111,8 @@ public class SensorBNO055IMUCalibration_Vertical extends LinearOpMode
 
     // State used for updating telemetry
     Orientation angles;
-        byte AXIS_MAP_CONFIG_BYTE = 0x6; //This is what to write to the AXIS_MAP_CONFIG register to swap x and z axes
-        byte AXIS_MAP_SIGN_BYTE = 0x1; //This is what to write to the AXIS_MAP_SIGN register to negate the z axis
+        byte AXIS_MAP_CONFIG_BYTE = 0x09; //This is what to write to the AXIS_MAP_CONFIG register to swap x and z axes
+        byte AXIS_MAP_SIGN_BYTE = 0x06; //This is what to write to the AXIS_MAP_SIGN register to negate the z axis
     //----------------------------------------------------------------------------------------------
     // Main logic
     //----------------------------------------------------------------------------------------------
