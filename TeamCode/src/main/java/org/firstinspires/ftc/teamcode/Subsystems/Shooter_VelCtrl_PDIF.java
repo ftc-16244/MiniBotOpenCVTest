@@ -19,8 +19,8 @@ public class Shooter_VelCtrl_PDIF {
     //
     private double kp= 30;
     private double ki = 0.2;
-    private double kd = 3;
-    private double kf = 13.5;
+    private double kd = 6;
+    private double kf = 13.5;//13.0;
 
 
     PIDFCoefficients pidfCoefficients = new PIDFCoefficients(kp,ki,kd,kf);
@@ -167,9 +167,9 @@ public class Shooter_VelCtrl_PDIF {
         while (ShotCount<rings)  {
 
                 shootOneRingHigh(); // this is only used in auto due to different stacker position
-                sleep(700);
+                sleep(450);
                 flipperForward();
-                sleep(700);
+                sleep(450 );
                 flipperBackward();
                 ShotCount++;
 
