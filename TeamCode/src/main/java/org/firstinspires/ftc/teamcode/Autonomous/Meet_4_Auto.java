@@ -40,7 +40,7 @@ import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
 import java.util.List;
 
 @Autonomous(name = "Meet 4 Auto", group = "Concept")
-//@Disabled
+@Disabled
 public class Meet_4_Auto extends BasicAutonomous {
 
     WobbleTargetZone Square = WobbleTargetZone.BLUE_A; // Default target zone
