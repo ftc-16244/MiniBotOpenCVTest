@@ -26,7 +26,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Ring_Spreader;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter;
-import org.firstinspires.ftc.teamcode.Subsystems.Shooter_VelCtrl;
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter_VelCtrl_PDIF;
 import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 
 import java.util.List;
@@ -45,7 +45,8 @@ import java.util.List;
 public class BasicAutonomous extends LinearOpMode {
     /* Declare OpMode members. */
     public Drivetrain_v3        drivetrain  = new Drivetrain_v3(false);   // Use subsystem Drivetrain
-    public Shooter_VelCtrl shooter     = new Shooter_VelCtrl();
+    //public Shooter_VelCtrl shooter     = new Shooter_VelCtrl();
+    public Shooter_VelCtrl_PDIF shooter     = new Shooter_VelCtrl_PDIF();
     public Intake               intake      = new Intake(); // not currently using intake and elevator in auto
     public Wobblegoal           wobble      = new Wobblegoal();
     public Elevator             elevator    = new Elevator();
@@ -58,7 +59,7 @@ public class BasicAutonomous extends LinearOpMode {
     public ElapsedTime          tfTime      = new ElapsedTime(); // timer for tensor flow
     public ElapsedTime          ShootTimer          = new ElapsedTime(); //auto shooter timer (4 rings)
     public ElapsedTime          autoRingCollectTimer    = new ElapsedTime(); //auto shooter timer (4 rings)
-    public static double        shooterStartUpTimeAllowed = 1.65;
+    public static double        shooterStartUpTimeAllowed = 1.0;
     public static double        autoShootTimeAllowed    = 5; //  seconds allows 4 shoot cycles in case one messes up
     //public static double      extraRingShootTimeAllowed    = 4; //  seconds allows 4 shoot cycles in case one messes up
     public static double        tfSenseTime             = 1; // needs a couple seconds to process the image and ID the target

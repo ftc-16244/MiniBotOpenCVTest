@@ -70,8 +70,8 @@ public class SensorBNO055IMU_Vertical extends LinearOpMode
     Acceleration gravity;
 
 
-        byte AXIS_MAP_CONFIG_BYTE = 0x6; //This is what to write to the AXIS_MAP_CONFIG register to swap x and z axes
-        byte AXIS_MAP_SIGN_BYTE = 0x1; //This is what to write to the AXIS_MAP_SIGN register to negate the z axis
+        byte AXIS_MAP_CONFIG_BYTE = 0x09; //This is what to write to the AXIS_MAP_CONFIG register to swap x and z axes
+        byte AXIS_MAP_SIGN_BYTE = 0x06; //This is what to write to the AXIS_MAP_SIGN register to negate the z axis
     //----------------------------------------------------------------------------------------------
     // Main logic
     //----------------------------------------------------------------------------------------------

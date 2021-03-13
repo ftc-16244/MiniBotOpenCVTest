@@ -31,17 +31,16 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Enums.ShooterState;
 import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
 
 import java.util.List;
-// Not using this as it seems to be causing too many variations to have to fix now.
-@Autonomous(name = "Meet 4 Auto Remap", group = "Concept")
-@Disabled
-public class Meet_4_Auto_Remap extends BasicAutonomous {
+
+@Autonomous(name = "State Auto", group = "Concept")
+//@Disabled
+public class State_Championship_Auto extends BasicAutonomous {
 
     WobbleTargetZone Square = WobbleTargetZone.BLUE_A; // Default target zone
 
@@ -62,35 +61,38 @@ public class Meet_4_Auto_Remap extends BasicAutonomous {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "BNO055IMUCalibrationVert.json"; // see the calibration sample opmode
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
         parameters.loggingEnabled      = true;
         parameters.loggingTag          = "IMU";
+
+        // Axis Remap for vertical REV Hub mounting- x and y may be flipped but it works
 
         byte AXIS_MAP_CONFIG_BYTE = 0x6; //This is what to write to the AXIS_MAP_CONFIG register to swap x and z axes
         byte AXIS_MAP_SIGN_BYTE = 0x1; //This is what to write to the AXIS_MAP_SIGN register to negate the z axis
 
-//Need to be in CONFIG mode to write to registers
+        //Need to be in CONFIG mode to write to registers
         drivetrain.imu.write8(BNO055IMU.Register.OPR_MODE,BNO055IMU.SensorMode.CONFIG.bVal & 0x0F);
 
         sleep(100); //Changing modes requires a delay before doing anything else
 
-//Write to the AXIS_MAP_CONFIG register
+        //Write to the AXIS_MAP_CONFIG register
         drivetrain.imu.write8(BNO055IMU.Register.AXIS_MAP_CONFIG,AXIS_MAP_CONFIG_BYTE & 0x0F);
 
-//Write to the AXIS_MAP_SIGN register
+        //Write to the AXIS_MAP_SIGN register
         drivetrain.imu.write8(BNO055IMU.Register.AXIS_MAP_SIGN,AXIS_MAP_SIGN_BYTE & 0x0F);
 
-//Need to change back into the IMU mode to use the gyro
+        //Need to change back into the IMU mode to use the gyro
         drivetrain.imu.write8(BNO055IMU.Register.OPR_MODE,BNO055IMU.SensorMode.IMU.bVal & 0x0F);
 
         sleep(100); //Changing modes again requires a delay
-
         //parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
         //imu = hardwareMap.get(BNO055IMU.class, "imu");
+
+        // end of rempa section
         drivetrain.imu.initialize(parameters);
 
 
@@ -229,8 +231,9 @@ public class Meet_4_Auto_Remap extends BasicAutonomous {
 
                 gyroDrive(DRIVE_SPEED*.6,36,180,4); // approach 2nd wobble parallel to side wall
 
-                gyroTurn(TURN_SPEED*.4,156,3); // make final correctin turn to get second wobble
-                gyroDrive(DRIVE_SPEED*5,7.5,156,2); // drive fwd to get second wobble
+                gyroTurn(TURN_SPEED*.4,152,3); // make final correctin turn to get second wobble
+                gyroDrive(DRIVE_SPEED*4,7.5,152
+                        ,2); // drive fwd to get second wobble
 
                 //wobble.ArmExtend();
 
@@ -239,15 +242,15 @@ public class Meet_4_Auto_Remap extends BasicAutonomous {
                 sleep(1000);
                 //wobble.liftPartial();
                 drivetime.reset();
-                gyroDrive(DRIVE_SPEED,-57,153,2); // backup with 2nd wobble goal
+                gyroDrive(DRIVE_SPEED,-58,153,2); // backup with 2nd wobble goal
                 gyroTurn(TURN_SPEED*.5,90,32);
-                gyroDrive(DRIVE_SPEED,13,90,2);
+                gyroDrive(DRIVE_SPEED,14,90,2);
                 //wobble.GripperSuperOpen();
                 wobble.GripperOpen();
                 sleep(250);
                 wobble.raiseWobbleClamp();
                 sleep(250);
-                gyroDrive(DRIVE_SPEED,-24,90,2);
+                gyroDrive(DRIVE_SPEED,-24,85 ,2);
                 //wobble.ArmContract();
                 wobble.wobbleWristStart();
                 wobble.GripperClose();
@@ -258,8 +261,7 @@ public class Meet_4_Auto_Remap extends BasicAutonomous {
             case BLUE_B: // one ring  4 tiles straight ahead
                 // Drop off wobble
                 telemetry.addData("Going to BLUE B", "Target Zone");
-                drivetime.reset();
-                gyroDrive(DRIVE_SPEED, 25.0, 10.0, 5);
+                gyroDrive(DRIVE_SPEED, 24.0, 10.0, 5);
                 sleep(500);
                 wobble.GripperOpen();
                 sleep(500);
@@ -269,30 +271,33 @@ public class Meet_4_Auto_Remap extends BasicAutonomous {
                 gyroDrive(DRIVE_SPEED,-4,10,3);
 
                 drivetime.reset();
-                gyroTurn(TURN_SPEED*0.7,150,3);
-                gyroTurn(TURN_SPEED*0.4,165,3);
+                gyroTurn(TURN_SPEED*0.75,140,4);
+                gyroTurn(TURN_SPEED*0.4,167,3);
                 m_Ring_Spreader.ringSpreaderDown(); // drop ring spreader arm to prevent jamming in case TF reads C and goes to B
-                gyroDrive(DRIVE_SPEED*.65, 28, 165, 5);
-                gyroDriveandCollectRings(DRIVE_SPEED,8,165,2); // was 8
+                gyroDrive(DRIVE_SPEED*.7, 28, 167, 5);
+                gyroDriveandCollectRings(DRIVE_SPEED,8,167,2); // was 8
 
                 intake.Intakeon();
                 elevator.ElevatorSpeedfast();
                 // Go for second wobbble
                 gyroTurn(TURN_SPEED,155,3);
-                gyroTurn(TURN_SPEED*.45,143,2);
+                gyroTurn(TURN_SPEED*.45,147,2);
                 wobble.lowerWobbleClamp();
                 m_Ring_Spreader.ringSpreaderUp();
-                gyroDrive(DRIVE_SPEED*.8,17,143,2);
-                gyroDrive(DRIVE_SPEED*.4,7,143,2);
+
+                // go to second wobble
+
+                gyroDrive(DRIVE_SPEED,17,147,3);
+                gyroDrive(DRIVE_SPEED*.45,7,147,3);
                 wobble.GripperClose();
                 sleep(500);
-                gyroDrive(DRIVE_SPEED,-20,143,2);
+                gyroDrive(DRIVE_SPEED,-19,147,3);
 
                 // Turn back to face the goal and shoot
-                gyroTurn(TURN_SPEED ,25,2); //turn fast most of the way
-                gyroTurn(TURN_SPEED*.45,-1,3);// turn slow to be accurate. Need to une PIDSs better instead
+                gyroTurn(TURN_SPEED ,25,3); //turn fast most of the way
+                gyroTurn(TURN_SPEED*.4,0,3);// turn slow to be accurate. Need to une PIDSs better instead
 
-                gyroDrive(DRIVE_SPEED*.7, 10 , -1, 2); // drive fwd ro shoot 4th ring
+                gyroDrive(DRIVE_SPEED*.7, 10 , 0 , 3); // drive fwd ro shoot 4th ring
 
                 intake.Intakeoff();
                 elevator.Elevatoroff();
@@ -309,19 +314,17 @@ public class Meet_4_Auto_Remap extends BasicAutonomous {
                 }
 
                 drivetime.reset();
-                gyroDrive(DRIVE_SPEED,21,-6,3);
+                gyroDrive(DRIVE_SPEED,22,-6,3);
 
 
                 wobble.GripperOpen();
                 sleep(250);
                 wobble.wobbleWristStart();
                 sleep(250);
-                gyroDrive(DRIVE_SPEED,-4,-6,3);
+                gyroDrive(DRIVE_SPEED,-4,-8,3);
                 wobble.raiseWobbleClamp();
                 m_Ring_Spreader.ringSpreaderUp();
-                wobble.GripperClose();
                 sleep(250);
-
 
 
                 break;
@@ -343,10 +346,10 @@ public class Meet_4_Auto_Remap extends BasicAutonomous {
                 drivetime.reset();
 
                 // Collect from the stack of 4 rings
-                gyroDriveandCollectRings(DRIVE_SPEED*.2,10,180,10); // collect from stack
-                gyroDriveandCollectRings(DRIVE_SPEED*.6,-3,180,10); // back up to prevent jamming
-                gyroDriveandCollectRings(DRIVE_SPEED*.2,7,180,10); // collect from stack
-                gyroDriveandCollectRings(DRIVE_SPEED*.8,-14,180,10); // backup leave intake on
+                gyroDriveandCollectRings(DRIVE_SPEED*.2,6,180,10); // collect from stack
+                gyroDriveandCollectRings(DRIVE_SPEED*.6,-4,180,10); // back up to prevent jamming
+                gyroDriveandCollectRings(DRIVE_SPEED*.3,9,180,10); // collect from stack
+                gyroDriveandCollectRings(DRIVE_SPEED*.9,-11,180,10); // backup leave intake on
 
                 // Keep intake and elevator running to get ring settled
                 intake.Intakeon();
@@ -371,7 +374,7 @@ public class Meet_4_Auto_Remap extends BasicAutonomous {
                 drivetime.reset();
 
                 // Pull ahead to the line
-                gyroDrive(DRIVE_SPEED, 10, 0,3);
+                gyroDrive(DRIVE_SPEED, 11, 0,3);
                 m_Ring_Spreader.ringSpreaderUp();
                 sleep(500);
 

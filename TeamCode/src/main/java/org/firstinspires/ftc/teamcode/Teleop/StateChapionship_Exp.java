@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -17,23 +16,24 @@ import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Ring_Spreader;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter_VelCtrl;
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter_VelCtrl_PDIF;
 import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 
-@TeleOp(name="Meet 4 Teleop Exp", group="Teleop")
+@TeleOp(name="StateChampTeleop_Exp", group="Teleop")
 // Creted to fix the lift poblem
 //@Disabled
-public class Meet_4_Teleop_EXP extends OpMode {
+public class StateChapionship_Exp extends OpMode {
 
 
     /* Declare OpMode members. */
 
     private ElapsedTime     runtime     = new ElapsedTime();
     public Drivetrain_v3    drivetrain  = new Drivetrain_v3(true);   // Use subsystem Drivetrain
-    public Shooter_VelCtrl  shooter     = new Shooter_VelCtrl(); //experiment to see if thsi helps
+    public Shooter_VelCtrl_PDIF shooter     = new Shooter_VelCtrl_PDIF(); //experiment to see if thsi helps
     public Intake           intake      = new Intake();
     public Wobblegoal       wobble      = new Wobblegoal();
     public Elevator         elevator    = new Elevator();
-    public Ring_Spreader m_Ring_Spreader = new Ring_Spreader();
+    public Ring_Spreader    m_Ring_Spreader = new Ring_Spreader();
 
     public ElapsedTime gripperCloseTimer = new ElapsedTime();
     //public ElapsedTime debounceTimer = new ElapsedTime();
@@ -71,7 +71,7 @@ public class Meet_4_Teleop_EXP extends OpMode {
 
         telemetry.addData("FAST DRIVE","Mode");//
         //telemetry.update();
-
+        //telemetry.addData("Original PIDSs", shooter.pidOrig);
     }
 
     /*
@@ -212,10 +212,10 @@ public class Meet_4_Teleop_EXP extends OpMode {
 
         if (gamepad1.left_trigger > 0.25) {
             shooter.flipperForward();
-            debounce(500);
+            debounce(400);
             telemetry.addData("Flipper Fwd", "Complete ");
             shooter.flipperBackward();
-            debounce(500);
+            debounce(400);
         }
         if (gamepad1.right_trigger > 0.25) {
             //shooter.flipperBackward();
