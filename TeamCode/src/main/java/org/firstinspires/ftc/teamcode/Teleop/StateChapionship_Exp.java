@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
 import org.firstinspires.ftc.teamcode.Subsystems.Intake;
 import org.firstinspires.ftc.teamcode.Subsystems.Ring_Spreader;
 import org.firstinspires.ftc.teamcode.Subsystems.Shooter_VelCtrl;
+import org.firstinspires.ftc.teamcode.Subsystems.Shooter_VelCtrl_PDIF;
 import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 
 @TeleOp(name="StateChampTeleop_Exp", group="Teleop")
@@ -28,7 +29,7 @@ public class StateChapionship_Exp extends OpMode {
 
     private ElapsedTime     runtime     = new ElapsedTime();
     public Drivetrain_v3    drivetrain  = new Drivetrain_v3(true);   // Use subsystem Drivetrain
-    public Shooter_VelCtrl shooter     = new Shooter_VelCtrl(); //experiment to see if thsi helps
+    public Shooter_VelCtrl_PDIF shooter     = new Shooter_VelCtrl_PDIF(); //experiment to see if thsi helps
     public Intake           intake      = new Intake();
     public Wobblegoal       wobble      = new Wobblegoal();
     public Elevator         elevator    = new Elevator();
@@ -211,10 +212,10 @@ public class StateChapionship_Exp extends OpMode {
 
         if (gamepad1.left_trigger > 0.25) {
             shooter.flipperForward();
-            debounce(650);
+            debounce(400);
             telemetry.addData("Flipper Fwd", "Complete ");
             shooter.flipperBackward();
-            debounce(650);
+            debounce(400);
         }
         if (gamepad1.right_trigger > 0.25) {
             //shooter.flipperBackward();
