@@ -355,8 +355,8 @@ public class State_Championship_Auto extends BasicAutonomous {
                 gyroDriveandCollectRings(DRIVE_SPEED*.6,-4,180,5); // back up to prevent jamming
                 gyroDriveandCollectRings(DRIVE_SPEED*.3,9,180,5); // collect from stack
                 gyroDriveandCollectRings(DRIVE_SPEED*.9,-11,180,5); // backup leave intake on
-                gyroDriveandCollectRings(DRIVE_SPEED*.3,12.5,180,5); // collect from stack
-                gyroDriveandCollectRings(DRIVE_SPEED*.9,-12.5,180,5); // backup leave intake
+                gyroDriveandCollectRings(DRIVE_SPEED*.3,13,180,5); // collect from stack
+                gyroDriveandCollectRings(DRIVE_SPEED*.9,-13,180,5); // backup leave intake
 
                 // Keep intake and elevator running to get ring settled
                 intake.Intakeon();
