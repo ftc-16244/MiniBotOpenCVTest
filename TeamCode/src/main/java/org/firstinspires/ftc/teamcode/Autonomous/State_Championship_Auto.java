@@ -288,9 +288,14 @@ public class State_Championship_Auto extends BasicAutonomous {
                 // go to second wobble
 
                 gyroDrive(DRIVE_SPEED,17,147,3);
-                gyroDrive(DRIVE_SPEED*.45,7,147,3);
+                intake.Intakeoff(); // turn off intake so it does not hit wobble
+                elevator.Elevatoroff();
+                gyroDrive(DRIVE_SPEED*.4,7,147,3); // go slow so we don't knock it over
                 wobble.GripperClose();
                 sleep(500);
+                drivetime.reset();
+                intake.Intakeon(); // turn intake back on to make sure ring is in place
+                elevator.ElevatorSpeedfast();
                 gyroDrive(DRIVE_SPEED,-19,147,3);
 
                 // Turn back to face the goal and shoot
@@ -299,7 +304,7 @@ public class State_Championship_Auto extends BasicAutonomous {
 
                 gyroDrive(DRIVE_SPEED*.7, 10 , 0 , 3); // drive fwd ro shoot 4th ring
 
-                intake.Intakeoff();
+                intake.Intakeoff(); // turn off intake to shoot
                 elevator.Elevatoroff();
 
                 //wobble.wobbleWristStart();
@@ -308,13 +313,13 @@ public class State_Championship_Auto extends BasicAutonomous {
                 shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
 
                 try {
-                    shooter.shoot_N_rings(1);
+                    shooter.shoot_N_rings(2);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
                 drivetime.reset();
-                gyroDrive(DRIVE_SPEED,22,-6,3);
+                gyroDrive(DRIVE_SPEED,21,-6,3);
 
 
                 wobble.GripperOpen();
@@ -332,24 +337,26 @@ public class State_Championship_Auto extends BasicAutonomous {
                 // Drop off first wobble after shooting 3 rings
                 telemetry.addData("Going to BLUE C", "Target Zone");
                 gyroTurn(TURN_SPEED *.5,22,2);
-                gyroDrive(DRIVE_SPEED, 54, 22,3);
+                gyroDrive(DRIVE_SPEED, 55, 22,3); // was 54 dist
                 wobble.GripperOpen();
                 sleep(500);
 
                 // Move to the stack of 4 rings
                 drivetime.reset();
-                gyroDrive(DRIVE_SPEED, -25, 20,3);
+                gyroDrive(DRIVE_SPEED, -26, 20,3); // was -25 dist
                 gyroTurn(TURN_SPEED,120,2);
                 gyroTurn(TURN_SPEED*.5,180,2);
                 m_Ring_Spreader.ringSpreaderDown(); // drop ring spreader arm to prevent jamming
                 gyroDrive(DRIVE_SPEED,31,180,2); // last forward move before collecting
                 drivetime.reset();
 
-                // Collect from the stack of 4 rings
-                gyroDriveandCollectRings(DRIVE_SPEED*.2,6,180,10); // collect from stack
-                gyroDriveandCollectRings(DRIVE_SPEED*.6,-4,180,10); // back up to prevent jamming
-                gyroDriveandCollectRings(DRIVE_SPEED*.3,9,180,10); // collect from stack
-                gyroDriveandCollectRings(DRIVE_SPEED*.9,-11,180,10); // backup leave intake on
+                // Collect from the stack of 4 rings with back and forth motion try to get no more than 3
+                gyroDriveandCollectRings(DRIVE_SPEED*.2,7,180,5); // collect from stack
+                gyroDriveandCollectRings(DRIVE_SPEED*.6,-4,180,5); // back up to prevent jamming
+                gyroDriveandCollectRings(DRIVE_SPEED*.3,9,180,5); // collect from stack
+                gyroDriveandCollectRings(DRIVE_SPEED*.9,-11,180,5); // backup leave intake on
+                gyroDriveandCollectRings(DRIVE_SPEED*.3,12.5,180,5); // collect from stack
+                gyroDriveandCollectRings(DRIVE_SPEED*.9,-12.5,180,5); // backup leave intake
 
                 // Keep intake and elevator running to get ring settled
                 intake.Intakeon();
@@ -360,17 +367,19 @@ public class State_Championship_Auto extends BasicAutonomous {
                 // Turn to face the goal and shoot rings from the stack
                 drivetime.reset();
                 gyroTurn(TURN_SPEED,30,2);
-                gyroTurn(TURN_SPEED*.30,2 ,1.5);
-                sleep(100);
-                intake.Intakeoff();
-                elevator.Elevatoroff();
+                gyroTurn(TURN_SPEED*.4,1 ,1.5);
+                gyroDrive(DRIVE_SPEED*.5,3,2,1);
+                sleep(200);
+
                 mShooterState = ShooterState.STATE_SHOOTER_ACTIVE;
                 shooterStartUp(mShooterState, shooterStartUpTimeAllowed);
                 try {
-                    shooter.shoot_N_rings(2);
+                    shooter.shoot_N_rings(3);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                intake.Intakeoff();
+                elevator.Elevatoroff();
                 drivetime.reset();
 
                 // Pull ahead to the line
