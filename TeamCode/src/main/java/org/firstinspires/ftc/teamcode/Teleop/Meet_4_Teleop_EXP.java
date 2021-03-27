@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
 
 @TeleOp(name="Meet 4 Teleop Exp", group="Teleop")
 // Creted to fix the lift poblem
-//@Disabled
+@Disabled
 public class Meet_4_Teleop_EXP extends OpMode {
 
 
