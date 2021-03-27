@@ -1,10 +1,11 @@
 package org.firstinspires.ftc.teamcode.Calibration;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
-
+@Disabled
 @TeleOp
 public class MaxVelocityTest extends LinearOpMode {
     DcMotorEx motor;
