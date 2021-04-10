@@ -63,7 +63,7 @@ public class StateChapionship_Exp extends OpMode {
         shooter.init(hardwareMap);
         m_Ring_Spreader.init(hardwareMap);
         //newState(currDriveState);
-        currDriveState = DriveSpeedState.DRIVE_FAST; // initialize robot to FAST
+        currDriveState = DriveSpeedState.DRIVE_FAST; // initialize robot to FAST//changed for drive competition
         ringCollectorState = RingCollectionState.OFF;
 
         // Send telemetry message to signify robot waiting;
@@ -407,8 +407,7 @@ public class StateChapionship_Exp extends OpMode {
                 telemetry.addData("Drive Speed",currDriveState);
                 drivetrain.leftFront.setPower(left);
                 drivetrain.rightFront.setPower(right);
-                //leftFront.setPower(left);
-                //rightFront.setPower(right);
+
 
                 // Send telemetry message to signify robot running;
                 telemetry.addData("left",  "%.2f", left);
