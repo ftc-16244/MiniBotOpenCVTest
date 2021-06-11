@@ -48,8 +48,8 @@ public class MiniBot_DriveDrain_Tank {
             rightFront = hwMap.get(DcMotor.class, "Right_front");
 
             // For HD Planetary Forward yields CCW rotation when shaft is facing you.
-            leftFront.setDirection(DcMotor.Direction.REVERSE);
-            rightFront.setDirection(DcMotor.Direction.FORWARD);
+            leftFront.setDirection(DcMotor.Direction.FORWARD);
+            rightFront.setDirection(DcMotor.Direction.REVERSE);
             leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 

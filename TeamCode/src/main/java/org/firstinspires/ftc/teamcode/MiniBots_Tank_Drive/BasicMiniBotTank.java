@@ -58,15 +58,15 @@ public class BasicMiniBotTank extends LinearOpMode {
 
     // These constants define the desired driving/control characteristics
     // The can/should be tweaked to suit the specific robot drive train.
-    public static final double     DRIVE_SPEED             = 0.65;     // Nominal speed for better accuracy.
-    public static final double     TURN_SPEED              = 0.50;    // 0.4 for berber carpet. Check on mat too
+    public static final double     DRIVE_SPEED             = 0.60;     // Nominal speed for better accuracy.
+    public static final double     TURN_SPEED              = 0.150;    // 0.4 for berber carpet. Check on mat too
 
     public static final double     HEADING_THRESHOLD       = 1.5;      // As tight as we can make it with an integer gyro
-    public static final double     Kp_TURN                 = 0.0275;   //0.025 to 0.0275 on mat seems to work
-    public static final double     Ki_TURN                 = 0.003;   //0.0025 to 0.004 on a mat works. Battery voltage matters
+    public static final double     Kp_TURN                 = 0.02;   //0.025 to 0.0275 on mat seems to work
+    public static final double     Ki_TURN                 = 0.0;   //0.0025 to 0.004 on a mat works. Battery voltage matters
     public static final double     Kd_TURN                 = 0.0;   //leave as 0
     public static final double     Kp_DRIVE                = 0.05;   //0.05 Larger is more responsive, but also less stable
-    public static final double     Ki_DRIVE                = 0.005;   // 0.005 Larger is more responsive, but also less stable
+    public static final double     Ki_DRIVE                = 0.000;   // 0.005 Larger is more responsive, but also less stable
     public static final double     Kd_DRIVE                = 0.0;   // Leave as 0 for now
 
     // Gyro constants and variables for PID steering
@@ -124,8 +124,8 @@ public class BasicMiniBotTank extends LinearOpMode {
 
         drivetime.reset(); // reset because time starts when TF starts and time is up before we can call gyroDrive
         // Drive paths are initially all the same to get to the shooter location
-        gyroDrive(DRIVE_SPEED, 55.0, 0.0, 10);
-        gyroTurn(TURN_SPEED,-10,3);
+        gyroDrive(DRIVE_SPEED, 155.0, 0.0, 10);
+        gyroTurn(TURN_SPEED,-90,3);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -200,9 +200,9 @@ public class BasicMiniBotTank extends LinearOpMode {
                 // if driving in reverse, the motor correction also needs to be reversed
                 if (distance < 0)
                     steer *= -1.0;
-                // swap the + and - if robot goes in a circle it has to do with default motor rotation
-                leftSpeed = speed - steer;
-                rightSpeed = speed + steer;
+
+                leftSpeed = speed + steer;
+                rightSpeed = speed - steer;
 
                 // Normalize speeds if either one exceeds +/- 1.0;
                 max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
@@ -294,8 +294,8 @@ public class BasicMiniBotTank extends LinearOpMode {
                 if (distance < 0)
                     steer *= -1.0;
 
-                leftSpeed = speed + steer;
-                rightSpeed = speed - steer;
+                leftSpeed = speed - steer;
+                rightSpeed = speed + steer;
 
                 // Normalize speeds if either one exceeds +/- 1.0;
                 max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
