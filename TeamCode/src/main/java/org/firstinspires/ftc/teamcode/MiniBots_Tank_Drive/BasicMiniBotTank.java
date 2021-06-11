@@ -65,7 +65,7 @@ public class BasicMiniBotTank extends LinearOpMode {
     public static final double     Kp_TURN                 = 0.02;   //0.025 to 0.0275 on mat seems to work
     public static final double     Ki_TURN                 = 0.0;   //0.0025 to 0.004 on a mat works. Battery voltage matters
     public static final double     Kd_TURN                 = 0.0;   //leave as 0
-    public static final double     Kp_DRIVE                = 0.05;   //0.05 Larger is more responsive, but also less stable
+    public static final double     Kp_DRIVE                = 0.03;   //0.05 Larger is more responsive, but also less stable
     public static final double     Ki_DRIVE                = 0.000;   // 0.005 Larger is more responsive, but also less stable
     public static final double     Kd_DRIVE                = 0.0;   // Leave as 0 for now
 
@@ -124,9 +124,12 @@ public class BasicMiniBotTank extends LinearOpMode {
 
         drivetime.reset(); // reset because time starts when TF starts and time is up before we can call gyroDrive
         // Drive paths are initially all the same to get to the shooter location
-        gyroDrive(DRIVE_SPEED, 155.0, 0.0, 10);
+        gyroDrive(DRIVE_SPEED, 55.0, 0.0, 10);
+        gyroTurn(TURN_SPEED,90,3);
+        gyroDrive(DRIVE_SPEED,25,90,3);
+        gyroTurn(TURN_SPEED,180,3);
+        gyroDrive(DRIVE_SPEED,25,180,3);
         gyroTurn(TURN_SPEED,-90,3);
-
         telemetry.addData("Path", "Complete");
         telemetry.update();
     }
@@ -166,7 +169,7 @@ public class BasicMiniBotTank extends LinearOpMode {
         if (opModeIsActive() & drivetime.time() < timeout) {
 
             // Determine new target position in ticks/ counts then pass to motor controller
-            moveCounts = (int)(distance * Drivetrain_v3.COUNTS_PER_INCH);
+            moveCounts = (int)(distance *  MiniBot_DriveDrain_Tank.COUNTS_PER_INCH);
             newLeftTarget = drivetrain.leftFront.getCurrentPosition() + moveCounts;
             newRightTarget = drivetrain.rightFront.getCurrentPosition() + moveCounts;
 
@@ -259,7 +262,7 @@ public class BasicMiniBotTank extends LinearOpMode {
 
 
 
-            moveCounts = (int)(distance * Drivetrain_v3.COUNTS_PER_INCH);
+            moveCounts = (int)(distance *  MiniBot_DriveDrain_Tank.COUNTS_PER_INCH);
             newLeftTarget = drivetrain.leftFront.getCurrentPosition() + moveCounts;
             newRightTarget = drivetrain.rightFront.getCurrentPosition() + moveCounts;
 
