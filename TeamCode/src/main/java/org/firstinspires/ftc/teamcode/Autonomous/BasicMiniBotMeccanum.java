@@ -60,7 +60,7 @@ public class BasicMiniBotMeccanum extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        drivetrain.init(hardwareMap);
+        drivetrain.init(hardwareMap); // call the init method in the subsystem. THis saves space here
         // Gyro set-up
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -132,8 +132,10 @@ public class BasicMiniBotMeccanum extends LinearOpMode {
                             double distance,
                             double angle, double timeout) {
 
-        int     newLeftTarget;
-        int     newRightTarget;
+        int     newLeftFrontTarget;
+        int     newRightFrontTarget;
+        int     newLeftRearTarget;
+        int     newRightRearTarget;
         int     moveCounts;
         double  max;
         double  error;
@@ -150,23 +152,30 @@ public class BasicMiniBotMeccanum extends LinearOpMode {
 
             // Determine new target position in ticks/ counts then pass to motor controller
             moveCounts = (int)(distance *  MiniBot_DriveDrain_Tank.COUNTS_PER_INCH);
-            newLeftTarget = drivetrain.leftFront.getCurrentPosition() + moveCounts;
-            newRightTarget = drivetrain.rightFront.getCurrentPosition() + moveCounts;
-
+            newLeftFrontTarget = drivetrain.leftFront.getCurrentPosition() + moveCounts;
+            newRightFrontTarget = drivetrain.rightFront.getCurrentPosition() + moveCounts;
+            newLeftRearTarget = drivetrain.leftRear.getCurrentPosition() + moveCounts;
+            newRightRearTarget = drivetrain.rightRear.getCurrentPosition() + moveCounts;
             // Set Target using the calculated umber of ticks/counts
 
-            drivetrain.leftFront.setTargetPosition(newLeftTarget);
-            drivetrain.rightFront.setTargetPosition(newRightTarget);
+            drivetrain.leftFront.setTargetPosition(newLeftFrontTarget);
+            drivetrain.rightFront.setTargetPosition(newRightFrontTarget);
+            drivetrain.leftRear.setTargetPosition(newLeftRearTarget);
+            drivetrain.rightRear.setTargetPosition(newRightRearTarget);
             // Tell motor control to use encoders to go to target tick count.
 
             drivetrain.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             drivetrain.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            drivetrain.leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            drivetrain.rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // start motion.
             // Up to now this is all the same as a drive by encoder opmode.
             speed = Range.clip(Math.abs(speed), 0.0, 1.0);
             drivetrain.leftFront.setPower(speed);
             drivetrain.rightFront.setPower(speed);
+            drivetrain.leftRear.setPower(speed);
+            drivetrain.rightRear.setPower(speed);
 
             // keep looping while we are still active, and BOTH motors are running.
             // once one motor gets to the target number of ticks it is no longer "busy"
@@ -197,10 +206,12 @@ public class BasicMiniBotMeccanum extends LinearOpMode {
 
                 drivetrain.leftFront.setPower(leftSpeed);
                 drivetrain.rightFront.setPower(rightSpeed);
+                drivetrain.leftRear.setPower(leftSpeed);
+                drivetrain.rightRear.setPower(rightSpeed);
 
                 // Display drive status for the driver.
                 telemetry.addData("Err/St",  "%5.1f/%5.1f",  error, steer);
-                telemetry.addData("Target",  "%7d:%7d",      newLeftTarget,  newRightTarget);
+                telemetry.addData("Target",  "%7d:%7d",      newLeftFrontTarget,  newRightFrontTarget);
                 telemetry.addData("Actual",  "%7d:%7d",      drivetrain.leftFront.getCurrentPosition(),
                         drivetrain.rightFront.getCurrentPosition());
                 telemetry.addData("Speed",   "%5.2f:%5.2f",  leftSpeed, rightSpeed);
@@ -212,103 +223,14 @@ public class BasicMiniBotMeccanum extends LinearOpMode {
             // Stop all motion;
             drivetrain.leftFront.setPower(0);
             drivetrain.rightFront.setPower(0);
+            drivetrain.leftRear.setPower(0);
+            drivetrain.rightRear.setPower(0);
 
             // Turn off RUN_TO_POSITION
             drivetrain.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             drivetrain.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-        drivetime.reset(); // reset the timer for the next function call
-    }
-
-    public void gyroDriveandCollectRings ( double speed,
-                            double distance,
-                            double angle, double timeout) {
-
-        int     newLeftTarget;
-        int     newRightTarget;
-        int     moveCounts;
-        double  max;
-        double  error;
-        double  steer;
-        double  leftSpeed;
-        double  rightSpeed;
-        totalError = 0;
-        lasterror = 0;
-        telemetry.addData("gyroDrive Activated", "Complete");
-        // Ensure that the opmode is still active
-        // Use timeout in case robot gets stuck in mid path.
-        // Also a way to keep integral term from winding up to bad.
-        if (opModeIsActive() & drivetime.time() < timeout) {
-
-
-
-            moveCounts = (int)(distance *  MiniBot_DriveDrain_Tank.COUNTS_PER_INCH);
-            newLeftTarget = drivetrain.leftFront.getCurrentPosition() + moveCounts;
-            newRightTarget = drivetrain.rightFront.getCurrentPosition() + moveCounts;
-
-            // Set Target using the calculated umber of ticks/counts
-
-            drivetrain.leftFront.setTargetPosition(newLeftTarget);
-            drivetrain.rightFront.setTargetPosition(newRightTarget);
-            // Tell motor control to use encoders to go to target tick count.
-
-            drivetrain.leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            drivetrain.rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // start motion.
-            // Up to now this is all the same as a drive by encoder opmode.
-            speed = Range.clip(Math.abs(speed), 0.0, 1.0);
-            drivetrain.leftFront.setPower(speed);
-            drivetrain.rightFront.setPower(speed);
-
-            // keep looping while we are still active, and BOTH motors are running.
-            // once one motor gets to the target number of ticks it is no longer "busy"
-            // and isbusy in false causing the loop to end.
-            while (opModeIsActive() &&
-                    (drivetrain.leftFront.isBusy() && drivetrain.rightFront.isBusy())) {
-
-                // adjust relative speed based on heading error.
-                // Positive angle means drifting to the left so need to steer to the
-                // right to get back on track.
-                error = getError(angle);
-                steer = getSteer(error, Kp_DRIVE, Ki_DRIVE, Kd_DRIVE);
-
-                // if driving in reverse, the motor correction also needs to be reversed
-                if (distance < 0)
-                    steer *= -1.0;
-
-                leftSpeed = speed - steer;
-                rightSpeed = speed + steer;
-
-                // Normalize speeds if either one exceeds +/- 1.0;
-                max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
-                if (max > 1.0)
-                {
-                    leftSpeed /= max;
-                    rightSpeed /= max;
-                }
-
-                drivetrain.leftFront.setPower(leftSpeed);
-                drivetrain.rightFront.setPower(rightSpeed);
-
-                // Display drive status for the driver.
-                telemetry.addData("Err/St",  "%5.1f/%5.1f",  error, steer);
-                telemetry.addData("Target",  "%7d:%7d",      newLeftTarget,  newRightTarget);
-                telemetry.addData("Actual",  "%7d:%7d",      drivetrain.leftFront.getCurrentPosition(),
-                        drivetrain.rightFront.getCurrentPosition());
-                telemetry.addData("Speed",   "%5.2f:%5.2f",  leftSpeed, rightSpeed);
-                telemetry.update();
-
-
-            }
-
-
-            drivetrain.leftFront.setPower(0);
-            drivetrain.rightFront.setPower(0);
-
-            // Turn off RUN_TO_POSITION
-            drivetrain.leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            drivetrain.rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            drivetrain.leftRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            drivetrain.rightRear.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
         drivetime.reset(); // reset the timer for the next function call
     }
