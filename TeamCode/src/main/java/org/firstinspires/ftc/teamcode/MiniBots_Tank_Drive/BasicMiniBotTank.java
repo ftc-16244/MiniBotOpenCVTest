@@ -4,33 +4,16 @@ import android.view.View;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.teamcode.Enums.RingCollectionState;
-import org.firstinspires.ftc.teamcode.Enums.ShooterState;
-import org.firstinspires.ftc.teamcode.Enums.WobbleTargetZone;
-import org.firstinspires.ftc.teamcode.Subsystems.Drivetrain_v3;
-import org.firstinspires.ftc.teamcode.Subsystems.Elevator;
-import org.firstinspires.ftc.teamcode.Subsystems.Intake;
-import org.firstinspires.ftc.teamcode.Subsystems.Ring_Spreader;
-import org.firstinspires.ftc.teamcode.Subsystems.Shooter_VelCtrl_PDIF;
-import org.firstinspires.ftc.teamcode.Subsystems.Wobblegoal;
-
-import java.util.List;
 
 @Autonomous(name="Basic MiniBot OpMode", group="Au@to")
 //@Disabled
