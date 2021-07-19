@@ -15,17 +15,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain;
-import org.firstinspires.ftc.teamcode.Subsystems.Two_Motor_Minibot_Tank_Drivetrain;
+import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain_Nevrest20;
 
-@Autonomous(name="Basic Mecanum  OpMode", group="Auto")
+@Autonomous(name="Basic Mecanum Nevrest 20's", group="Auto")
 //@Disabled
 
 // This opMode is a "common denominator" opmore that can and should be extended to any teleop of autonomus opmde
 // It has all the set-up info that only needs to be created once.
 
-public class BasicMiniBotMeccanum extends LinearOpMode {
+public class BasicMiniBotMeccanum_Nevrest20 extends LinearOpMode {
     /* Declare OpMode members. */
-    public Four_Motor_Minibot_Meccanum_Drivetrain drivetrain  = new Four_Motor_Minibot_Meccanum_Drivetrain(false);   // Use subsystem Drivetrain
+    public Four_Motor_Minibot_Meccanum_Drivetrain_Nevrest20 drivetrain  = new Four_Motor_Minibot_Meccanum_Drivetrain_Nevrest20(false);   // Use subsystem Drivetrain
 
 
     // Timers and time limits for each timer
