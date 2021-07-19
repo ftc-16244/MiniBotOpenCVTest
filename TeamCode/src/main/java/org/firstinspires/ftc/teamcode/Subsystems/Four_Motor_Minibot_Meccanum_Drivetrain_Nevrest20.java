@@ -3,11 +3,10 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class Four_Motor_Minibot_Meccanum_Drivetrain {
+public class Four_Motor_Minibot_Meccanum_Drivetrain_Nevrest20 {
         // Define hardware objects
         public DcMotor leftFront = null;
         public DcMotor rightFront = null;
@@ -16,7 +15,7 @@ public class Four_Motor_Minibot_Meccanum_Drivetrain {
         public BNO055IMU imu = null;
 
         // List constants
-        public static final double COUNTS_PER_DRIVE_MOTOR_REV = 1120;         // Nevrest 40's
+        public static final double COUNTS_PER_DRIVE_MOTOR_REV = 1120/2;         // Nevrest 20's
         public static final double DRIVE_REDUCTION = 1.0; //Stright off the motor
         public static final double WHEEL_DIAMETER_INCHES = 60.0/25.4;      //Nexus 60mm wheels
         public static final double COUNTS_PER_INCH = (COUNTS_PER_DRIVE_MOTOR_REV *DRIVE_REDUCTION) /
@@ -29,7 +28,7 @@ public class Four_Motor_Minibot_Meccanum_Drivetrain {
 
         // Contructor for Drivetrain
         // Passing boolean to automatically config encoders for auto or teleop.
-        public Four_Motor_Minibot_Meccanum_Drivetrain(boolean inTeleOp) {
+        public Four_Motor_Minibot_Meccanum_Drivetrain_Nevrest20(boolean inTeleOp) {
         this.inTeleOp = inTeleOp;
         }
 
