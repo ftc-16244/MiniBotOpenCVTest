@@ -18,11 +18,16 @@ public class Minibot_Tank_Teleop extends BasicMiniBotTank {
     @Override
     public void runOpMode() {
 
-        drivetrain.init(hardwareMap);
-        runtime.reset();
+
 
         waitForStart();
-        // run until the end of the match (driver presses STOP)
+        // the basic op mode sets this to "auto" or not in teleop so we need to set this back to teloep or the robot is expecting
+        //encoder commands
+        Two_Motor_Minibot_Tank_Drivetrain drivetrain  = new Two_Motor_Minibot_Tank_Drivetrain(true);   // Use subsystem Drivetrain
+
+
+        drivetrain.init(hardwareMap);
+        runtime.reset();
         while (opModeIsActive()) {
 
             // Setup a variable for each drive wheel to save power level for telemetry

@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.Autonomous.BasicMiniBotMeccanum;
 import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain;
@@ -14,13 +16,19 @@ public class Minibot_Mecanum_Teleop extends BasicMiniBotMeccanum {
         Four_Motor_Minibot_Meccanum_Drivetrain drivetrain  = new Four_Motor_Minibot_Meccanum_Drivetrain(true);   // Use subsystem Dri
         drivetrain.init(hardwareMap);
 
+        // uncomment for Mecanum #3 Only the motor directions are odd
+        drivetrain.leftFront.setDirection(DcMotor.Direction.REVERSE);
+        drivetrain.rightFront.setDirection(DcMotor.Direction.FORWARD);
+        drivetrain.leftRear.setDirection(DcMotor.Direction.FORWARD);
+       drivetrain.rightRear.setDirection(DcMotor.Direction.REVERSE);
+
 
         waitForStart();
         if (isStopRequested()) return;
         while (opModeIsActive()) {
             double y = -gamepad1.left_stick_y; // Remember, this is reversed!
-            double x = gamepad1.left_stick_x;
-            double rx = gamepad1.right_stick_x;
+            double x = gamepad1.right_stick_x;
+            double rx = gamepad1.left_stick_x;
             double lf, lr, rf, rr;
 
             lf = (y + x + rx);
@@ -46,6 +54,11 @@ public class Minibot_Mecanum_Teleop extends BasicMiniBotMeccanum {
             drivetrain.leftRear.setPower(lr);
             drivetrain.rightFront.setPower(rf);
             drivetrain.rightRear.setPower(rr);
+
+            telemetry.addData("Left Stick Y-Fwd", "%5.2f", y);
+            telemetry.addData("Right  Stick X-Turn", "%5.2f", x);
+            telemetry.addData("Left Stick X-Spin", "%5.2f", rx);
+            telemetry.update();
 
         }
     }
