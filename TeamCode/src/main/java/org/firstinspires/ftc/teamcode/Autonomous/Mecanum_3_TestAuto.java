@@ -67,13 +67,14 @@ public class Mecanum_3_TestAuto extends BasicMiniBotMeccanum_Nevrest20{
 
         drivetime.reset(); // reset because time starts when TF starts and time is up before we can call gyroDrive
         // Drive paths are initially all the same to get to the shooter location
-        gyroDrive(DRIVE_SPEED, 48.0, 0.0, 10);
-        gyroTurn(TURN_SPEED,90,10);
-        gyroDrive(DRIVE_SPEED,48,90,3);
-        gyroTurn(TURN_SPEED,180,3);
-        gyroDrive(DRIVE_SPEED,48,180,3);
-        gyroTurn(TURN_SPEED,-90,3);
-        gyroDrive(DRIVE_SPEED,48,-90,3);
+
+        gyroDrive(DRIVE_SPEED, 24.0, 0.0, 10);
+        //gyroTurn(TURN_SPEED,90,10);
+        //gyroDrive(DRIVE_SPEED,48,90,3);
+        //gyroTurn(TURN_SPEED,180,3);
+        //gyroDrive(DRIVE_SPEED,48,180,3);
+        //gyroTurn(TURN_SPEED,-90,3);
+        //gyroDrive(DRIVE_SPEED,48,-90,3);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();

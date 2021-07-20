@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Two_Motor_Minibot_Tank_Drivetrain;
 
-@Autonomous(name="Basic Mecanum  OpMode", group="Auto")
+@Autonomous(name="Mecanum REctangle Test", group="Auto")
 //@Disabled
 
 // This opMode is a "common denominator" opmore that can and should be extended to any teleop of autonomus opmde
@@ -104,13 +104,13 @@ public class BasicMiniBotMeccanum extends LinearOpMode {
 
         drivetime.reset(); // reset because time starts when TF starts and time is up before we can call gyroDrive
         // Drive paths are initially all the same to get to the shooter location
-        gyroDrive(DRIVE_SPEED, 48.0, 0.0, 10);
+        gyroDrive(DRIVE_SPEED, 36.0, 0.0, 10);
         gyroTurn(TURN_SPEED,90,10);
-        gyroDrive(DRIVE_SPEED,48,90,3);
+        gyroDrive(DRIVE_SPEED,36,90,3);
         gyroTurn(TURN_SPEED,180,3);
-        gyroDrive(DRIVE_SPEED,48,180,3);
+        gyroDrive(DRIVE_SPEED,36,180,3);
         gyroTurn(TURN_SPEED,-90,3);
-        gyroDrive(DRIVE_SPEED,48,-90,3);
+        gyroDrive(DRIVE_SPEED,36,-90,3);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
