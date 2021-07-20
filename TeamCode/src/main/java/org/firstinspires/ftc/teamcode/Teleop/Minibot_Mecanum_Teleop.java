@@ -19,16 +19,16 @@ public class Minibot_Mecanum_Teleop extends BasicMiniBotMeccanum {
         // uncomment for Mecanum #3 Only the motor directions are odd
         drivetrain.leftFront.setDirection(DcMotor.Direction.REVERSE);
         drivetrain.rightFront.setDirection(DcMotor.Direction.FORWARD);
-        drivetrain.leftRear.setDirection(DcMotor.Direction.FORWARD);
-       drivetrain.rightRear.setDirection(DcMotor.Direction.REVERSE);
+        drivetrain.leftRear.setDirection(DcMotor.Direction.REVERSE);
+       drivetrain.rightRear.setDirection(DcMotor.Direction.FORWARD);
 
 
         waitForStart();
         if (isStopRequested()) return;
         while (opModeIsActive()) {
             double y = -gamepad1.left_stick_y; // Remember, this is reversed!
-            double x = gamepad1.right_stick_x;
-            double rx = gamepad1.left_stick_x;
+            double x = gamepad1.left_stick_x;
+            double rx = gamepad1.right_stick_x;
             double lf, lr, rf, rr;
 
             lf = (y + x + rx);
