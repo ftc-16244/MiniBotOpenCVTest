@@ -50,10 +50,11 @@ public class Four_Motor_Minibot_Meccanum_Drivetrain {
             rightRear = hwMap.get(DcMotor.class, "Right_rear");
 
             // For HD Planetary Forward yields CCW rotation when shaft is facing you.
-            leftFront.setDirection(DcMotor.Direction.FORWARD);
+            leftFront.setDirection(DcMotor.Direction.REVERSE);
             rightFront.setDirection(DcMotor.Direction.FORWARD);
             leftRear.setDirection(DcMotor.Direction.REVERSE);
             rightRear.setDirection(DcMotor.Direction.FORWARD);
+
 
             leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
