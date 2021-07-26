@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
@@ -14,10 +15,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Two_Motor_Minibot_Tank_Drivetrain;
 
-@Autonomous(name="Basic MiniBot OpMode", group="Au@to")
-//@Disabled
+@Autonomous(name="Basic Tank Drive OpMode", group="Au@to")
+@Disabled
 
 // This opMode will work if used from the left blue starting line. It's main intent is to be
 //the basis for all other Auto Opmodes. Extend this class to create OpModes with different starting
@@ -153,7 +155,7 @@ public class BasicMiniBotTank extends LinearOpMode {
         if (opModeIsActive() & drivetime.time() < timeout) {
 
             // Determine new target position in ticks/ counts then pass to motor controller
-            moveCounts = (int)(distance *  MiniBot_DriveDrain_Tank.COUNTS_PER_INCH);
+            moveCounts = (int)(distance * Two_Motor_Minibot_Tank_Drivetrain.COUNTS_PER_INCH);
             newLeftTarget = drivetrain.leftFront.getCurrentPosition() + moveCounts;
             newRightTarget = drivetrain.rightFront.getCurrentPosition() + moveCounts;
 
@@ -246,7 +248,7 @@ public class BasicMiniBotTank extends LinearOpMode {
 
 
 
-            moveCounts = (int)(distance *  MiniBot_DriveDrain_Tank.COUNTS_PER_INCH);
+            moveCounts = (int)(distance *  Two_Motor_Minibot_Tank_Drivetrain.COUNTS_PER_INCH);
             newLeftTarget = drivetrain.leftFront.getCurrentPosition() + moveCounts;
             newRightTarget = drivetrain.rightFront.getCurrentPosition() + moveCounts;
 

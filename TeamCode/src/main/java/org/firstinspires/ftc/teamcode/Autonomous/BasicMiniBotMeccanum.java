@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
@@ -15,18 +16,25 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain;
-import org.firstinspires.ftc.teamcode.Subsystems.Two_Motor_Minibot_Tank_Drivetrain;
+import org.firstinspires.ftc.teamcode.Subsystems.SideServo;
 
-@Autonomous(name="Mecanum REctangle Test", group="Auto")
-//@Disabled
+@Autonomous(name="Basic Mecanum Drive ", group="Auto")
+@Disabled
 
-// This opMode is a "common denominator" opmore that can and should be extended to any teleop of autonomus opmde
-// It has all the set-up info that only needs to be created once.
+// This opMode is a "common" or "set-up opmode that is extended by all other opmodes.
+// This keeps all the constants and methocs in once place so work is not duplicated in other opmodes.
+// This one should be disabled so it does not show up on the driver station.
 
 public class BasicMiniBotMeccanum extends LinearOpMode {
     /* Declare OpMode members. */
-    public Four_Motor_Minibot_Meccanum_Drivetrain drivetrain  = new Four_Motor_Minibot_Meccanum_Drivetrain(false);   // Use subsystem Drivetrain
 
+    // When the drivetrain is instatiated from the drivetrain subsystem, it automatically assumes an autonomous opMode.
+
+    public Four_Motor_Minibot_Meccanum_Drivetrain drivetrain  = new Four_Motor_Minibot_Meccanum_Drivetrain();   // Use subsystem Drivetrain
+    // "SideServo is a class in the subsystem package that is used to create "sideServo" it is case sensitive so
+    // the two are not the same. "sideServo" is the object we create ad use.
+
+    public SideServo sideServo = new SideServo();
 
     // Timers and time limits for each timer
     public ElapsedTime          PIDtimer    = new ElapsedTime(); // PID loop timer
@@ -60,7 +68,7 @@ public class BasicMiniBotMeccanum extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        drivetrain.init(hardwareMap); // call the init method in the subsystem. THis saves space here
+        drivetrain.init(hardwareMap, true); // call the init method in the subsystem. THis saves space here
         // Gyro set-up
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
@@ -104,13 +112,13 @@ public class BasicMiniBotMeccanum extends LinearOpMode {
 
         drivetime.reset(); // reset because time starts when TF starts and time is up before we can call gyroDrive
         // Drive paths are initially all the same to get to the shooter location
-        gyroDrive(DRIVE_SPEED, 36.0, 0.0, 10);
-        gyroTurn(TURN_SPEED,90,10);
-        gyroDrive(DRIVE_SPEED,36,90,3);
-        gyroTurn(TURN_SPEED,180,3);
-        gyroDrive(DRIVE_SPEED,36,180,3);
-        gyroTurn(TURN_SPEED,-90,3);
-        gyroDrive(DRIVE_SPEED,36,-90,3);
+        //gyroDrive(DRIVE_SPEED, 36.0, 0.0, 10);
+        //gyroTurn(TURN_SPEED,90,10);
+        //gyroDrive(DRIVE_SPEED,36,90,3);
+        //gyroTurn(TURN_SPEED,180,3);
+        //gyroDrive(DRIVE_SPEED,36,180,3);
+        //gyroTurn(TURN_SPEED,-90,3);
+        //gyroDrive(DRIVE_SPEED,36,-90,3);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -153,7 +161,7 @@ public class BasicMiniBotMeccanum extends LinearOpMode {
         if (opModeIsActive() & drivetime.time() < timeout) {
 
             // Determine new target position in ticks/ counts then pass to motor controller
-            moveCounts = (int)(distance *  MiniBot_DriveDrain_Tank.COUNTS_PER_INCH);
+            moveCounts = (int)(distance *  Four_Motor_Minibot_Meccanum_Drivetrain.COUNTS_PER_INCH);
             newLeftFrontTarget = drivetrain.leftFront.getCurrentPosition() + moveCounts;
             newRightFrontTarget = drivetrain.rightFront.getCurrentPosition() + moveCounts;
             newLeftRearTarget = drivetrain.leftRear.getCurrentPosition() + moveCounts;
