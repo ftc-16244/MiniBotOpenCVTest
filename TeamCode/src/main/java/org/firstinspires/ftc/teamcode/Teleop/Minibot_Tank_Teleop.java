@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Dri
 import org.firstinspires.ftc.teamcode.Subsystems.Two_Motor_Minibot_Tank_Drivetrain;
 
 @TeleOp(name="Tank Drive MiniBot Teleop", group="Teleop")
+@Disabled
 
 public class Minibot_Tank_Teleop extends BasicMiniBotTank {
 

@@ -1,19 +1,21 @@
 package org.firstinspires.ftc.teamcode.Test;
 
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Autonomous.BasicMiniBotMeccanum_Nevrest20;
+import org.firstinspires.ftc.teamcode.Autonomous.BasicMiniBotMeccanum;
+import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain_Nevrest20;
-import org.firstinspires.ftc.teamcode.Subsystems.Two_Motor_Minibot_Tank_Drivetrain;
 
 import static org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain_Nevrest20.COUNTS_PER_INCH;
 
-@TeleOp(name="4 Motor Encoder Test Nevrest 20", group="Auto")
-
-public class MotorEncoderTest extends BasicMiniBotMeccanum_Nevrest20 {
-    public Four_Motor_Minibot_Meccanum_Drivetrain_Nevrest20 drivetrain  = new Four_Motor_Minibot_Meccanum_Drivetrain_Nevrest20(true);
+@Autonomous(name="4 Motor Encoder Test", group="Auto")
+// Disable once robot is working correctly
+//@Disabled
+public class MotorEncoderTest extends BasicMiniBotMeccanum {
+    public Four_Motor_Minibot_Meccanum_Drivetrain drivetrain = new Four_Motor_Minibot_Meccanum_Drivetrain();
 
     ElapsedTime runtime = new ElapsedTime();
     @Override
@@ -23,12 +25,8 @@ public class MotorEncoderTest extends BasicMiniBotMeccanum_Nevrest20 {
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
          */
-        drivetrain.init(hardwareMap);
+        drivetrain.init(hardwareMap, false); //false means auto
         // uncomment for Mecanum #3 Only the motor directions are odd
-        drivetrain.leftFront.setDirection(DcMotor.Direction.REVERSE);
-        drivetrain.rightFront.setDirection(DcMotor.Direction.FORWARD);
-        drivetrain.leftRear.setDirection(DcMotor.Direction.FORWARD);
-        drivetrain.rightRear.setDirection(DcMotor.Direction.REVERSE);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
@@ -59,9 +57,9 @@ public class MotorEncoderTest extends BasicMiniBotMeccanum_Nevrest20 {
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  24,  24, 15.0);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderDrive(DRIVE_SPEED,  36,  36, 15.0);  // S1: Forward 47 Inches with 5 Sec timeout
         //encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
-        encoderDrive(DRIVE_SPEED, -24, -24, 15.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+        encoderDrive(DRIVE_SPEED, -36, -36, 15.0);  // S3: Reverse 24 Inches with 4 Sec timeout
 
 
         telemetry.addData("Path", "Complete");
