@@ -28,9 +28,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.SideServo;
 public class MecanumMiniBotTest extends BasicMiniBotMeccanum {
 
 
-
-
-
     @Override
     public void runOpMode() {
         int squarelength = 24;
@@ -42,10 +39,10 @@ public class MecanumMiniBotTest extends BasicMiniBotMeccanum {
         // Gyro set-up
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
-        parameters.mode                = BNO055IMU.SensorMode.IMU;
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.loggingEnabled      = false;
+        parameters.mode = BNO055IMU.SensorMode.IMU;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.loggingEnabled = false;
 
         // Init gyro parameters then calibrate
         drivetrain.imu.initialize(parameters);
@@ -59,7 +56,7 @@ public class MecanumMiniBotTest extends BasicMiniBotMeccanum {
         telemetry.update();
 
         // make sure the gyro is calibrated before continuing
-        while (!isStopRequested() && !drivetrain.imu.isGyroCalibrated())  {
+        while (!isStopRequested() && !drivetrain.imu.isGyroCalibrated()) {
             sleep(50);
             idle();
         }
@@ -85,13 +82,13 @@ public class MecanumMiniBotTest extends BasicMiniBotMeccanum {
         drivetime.reset(); // reset because time starts when TF starts and time is up before we can call gyroDrive
         //Drive paths are initially all the same to get to the shooter location
         gyroDrive(DRIVE_SPEED, squarelength, 0.0, 10);
-        gyroTurn(TURN_SPEED,90,10);
-        gyroDrive(DRIVE_SPEED,squarelength,90,3);
-        gyroTurn(TURN_SPEED,180,3);
-        gyroDrive(DRIVE_SPEED,squarelength,180,3);
-        gyroTurn(TURN_SPEED,-90,3);
-        gyroDrive(DRIVE_SPEED,squarelength,-90,3);
-        gyroTurn(TURN_SPEED,0,3);
+        gyroTurn(TURN_SPEED, 90, 10);
+        gyroDrive(DRIVE_SPEED, squarelength, 90, 3);
+        gyroTurn(TURN_SPEED, 180, 3);
+        gyroDrive(DRIVE_SPEED, squarelength, 180, 3);
+        gyroTurn(TURN_SPEED, -90, 3);
+        gyroDrive(DRIVE_SPEED, squarelength, -90, 3);
+        gyroTurn(TURN_SPEED, 0, 3);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -103,7 +100,7 @@ public class MecanumMiniBotTest extends BasicMiniBotMeccanum {
         sleep(1000);
         sideServo.moveServoCenter();
         sleep(1000);
+
+
     }
-
-
 }

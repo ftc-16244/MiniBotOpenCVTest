@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Autonomous.BasicMiniBotMeccanum;
 import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain;
-import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain_Nevrest20;
 
-import static org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain_Nevrest20.COUNTS_PER_INCH;
+
+import static org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain.COUNTS_PER_INCH;
 
 @Autonomous(name="4 Motor Encoder Test", group="Auto")
 // Disable once robot is working correctly
@@ -30,7 +30,7 @@ public class MotorEncoderTest extends BasicMiniBotMeccanum {
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");
-        telemetry.addData("Counts per Inch",Four_Motor_Minibot_Meccanum_Drivetrain_Nevrest20.COUNTS_PER_INCH ); //
+        telemetry.addData("Counts per Inch",Four_Motor_Minibot_Meccanum_Drivetrain.COUNTS_PER_INCH ); //
         telemetry.update();
 
         drivetrain.leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
