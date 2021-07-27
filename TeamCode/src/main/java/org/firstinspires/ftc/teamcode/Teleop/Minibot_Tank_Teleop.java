@@ -20,15 +20,16 @@ public class Minibot_Tank_Teleop extends BasicMiniBotTank {
     @Override
     public void runOpMode() {
 
+        drivetrain.init(hardwareMap, true);// initialize as a teleop opmode
+        sideServo.init(hardwareMap);// Initialize the servo also.
+
+        sideServo.moveServoCenter();// set servo to center position when init is pressed on DS
 
 
         waitForStart();
-        // the basic op mode sets this to "auto" or not in teleop so we need to set this back to teloep or the robot is expecting
-        //encoder commands
-        Two_Motor_Minibot_Tank_Drivetrain drivetrain  = new Two_Motor_Minibot_Tank_Drivetrain(true);   // Use subsystem Drivetrain
+        /////////////////////////////////////////////////////////////////////////////////////////
 
 
-        drivetrain.init(hardwareMap);
         runtime.reset();
         while (opModeIsActive()) {
 
@@ -46,10 +47,6 @@ public class Minibot_Tank_Teleop extends BasicMiniBotTank {
             leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
-            // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
 
             // Send calculated power to wheels
             drivetrain.leftFront.setPower(leftPower);
@@ -59,6 +56,13 @@ public class Minibot_Tank_Teleop extends BasicMiniBotTank {
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.update();
+
+            if (gamepad1.x){
+                sideServo.moveServoLeft();
+            }
+            if (gamepad1.b){
+                sideServo.moveServoRight();
+            }
         }
 
     }
