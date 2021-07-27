@@ -26,13 +26,12 @@ public class Two_Motor_Minibot_Tank_Drivetrain {
 
         // Contructor for Drivetrain
         // Passing boolean to automatically config encoders for auto or teleop.
-        public Two_Motor_Minibot_Tank_Drivetrain(boolean inTeleOp) {
-        this.inTeleOp = inTeleOp;
+        public Two_Motor_Minibot_Tank_Drivetrain(){
         }
 
         // initialize drivetrain components, assign names for driver station config, set directions
         // and encoders if needed.
-        public void init(HardwareMap hwMap) {
+        public void init(HardwareMap hwMap, boolean inTeleOp) {
 
             // initialize the imu first.
             // Note this in NOT IMU calibration.
@@ -47,6 +46,7 @@ public class Two_Motor_Minibot_Tank_Drivetrain {
             // For HD Planetary Forward yields CCW rotation when shaft is facing you.
             leftFront.setDirection(DcMotor.Direction.FORWARD);
             rightFront.setDirection(DcMotor.Direction.REVERSE);
+
             leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -54,26 +54,13 @@ public class Two_Motor_Minibot_Tank_Drivetrain {
             // not in teleop means autonomous so encoders are needed
             // IMU us also needed
             if (!inTeleOp) {
-               //BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-
-                //parameters.mode                = BNO055IMU.SensorMode.IMU;
-                //parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-                //parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-                //parameters.loggingEnabled      = false;
-
-                // Initialize here calibrate in Opmode
-                //imu.initialize(parameters);
-
-
 
                 leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
                 leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                // FLOAT allows motors to coast when count is reached. Change to BRAKE
-                // if necessary
-                //leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-                //rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
 
             } else {
                 // for InTeleop we don't need encoders because driver controls
