@@ -16,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain;
+import org.firstinspires.ftc.teamcode.Subsystems.SideServo;
 import org.firstinspires.ftc.teamcode.Subsystems.Two_Motor_Minibot_Tank_Drivetrain;
 
 @Autonomous(name="Basic Tank Drive OpMode", group="Au@to")
@@ -31,8 +32,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.Two_Motor_Minibot_Tank_Drivetra
 
 public class BasicMiniBotTank extends LinearOpMode {
     /* Declare OpMode members. */
-    public Two_Motor_Minibot_Tank_Drivetrain drivetrain  = new Two_Motor_Minibot_Tank_Drivetrain(false);   // Use subsystem Drivetrain
-
+    public Two_Motor_Minibot_Tank_Drivetrain drivetrain  = new Two_Motor_Minibot_Tank_Drivetrain();   // Use subsystem Drivetrain
+    public SideServo sideServo = new SideServo();
 
     // Timers and time limits for each timer
     public ElapsedTime          PIDtimer    = new ElapsedTime(); // PID loop timer
@@ -66,7 +67,10 @@ public class BasicMiniBotTank extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        drivetrain.init(hardwareMap);
+        // If these next two lines are skipped, a null exception error for missing hardware will occur
+        drivetrain.init(hardwareMap, true); // initialize drivetrain
+        sideServo.init(hardwareMap); // initialize the servo
+
         // Gyro set-up
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 

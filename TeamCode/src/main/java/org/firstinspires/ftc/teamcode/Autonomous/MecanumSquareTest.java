@@ -25,7 +25,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.SideServo;
 // This keeps all the constants and methocs in once place so work is not duplicated in other opmodes.
 // This one should be disabled so it does not show up on the driver station.
 
-public class MecanumMiniBotTest extends BasicMiniBotMeccanum {
+public class MecanumSquareTest extends BasicMiniBotMeccanum {
 
 
     @Override
