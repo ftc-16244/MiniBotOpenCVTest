@@ -21,16 +21,18 @@ import org.firstinspires.ftc.teamcode.Subsystems.SideServo;
 @Autonomous(name="Mecanum Square Drive and Servo Test", group="Auto")
 //@Disabled
 
-// This opMode is a "common" or "set-up opmode that is extended by all other opmodes.
-// This keeps all the constants and methocs in once place so work is not duplicated in other opmodes.
-// This one should be disabled so it does not show up on the driver station.
+// This opMode uses the encodes and the IMU to move the robot in a square pattern.
+// Copy this opmode, rename and edit the dyroDrive and gyroTurn lines to create
+// a unique path.
 
 public class MecanumSquareTest extends BasicMiniBotMeccanum {
 
 
     @Override
     public void runOpMode() {
+
         int squarelength = 24;
+
         // init subsystem hardware
         drivetrain.init(hardwareMap, false);
         sideServo.init(hardwareMap);
@@ -74,10 +76,6 @@ public class MecanumSquareTest extends BasicMiniBotMeccanum {
         /////////////////////////////////////////////////////////////////////////////////////////////
         waitForStart();
         ////////////////////////////////////////////////////////////////////////////////////////////
-
-        // Drive in a 3 ft x 3 ft square. The robot should end up close to where it started.
-        // gyroDrive and gyroTurn are located in BasicMiniBotMeanum
-        // BasicMiniBitMecanum is extend by this class so we can use all the stuff inside it.
 
         drivetime.reset(); // reset because time starts when TF starts and time is up before we can call gyroDrive
         //Drive paths are initially all the same to get to the shooter location

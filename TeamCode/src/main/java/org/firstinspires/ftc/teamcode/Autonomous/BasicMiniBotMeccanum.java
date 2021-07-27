@@ -21,9 +21,9 @@ import org.firstinspires.ftc.teamcode.Subsystems.SideServo;
 @Autonomous(name="Basic Mecanum Drive ", group="Auto")
 @Disabled
 
-// This opMode is a "common" or "set-up opmode that is extended by all other opmodes.
-// This keeps all the constants and methocs in once place so work is not duplicated in other opmodes.
-// This one should be disabled so it does not show up on the driver station.
+// This opmode is meant to be extend in teleop and autonomus opmodes.
+// This enables code reuse and a single source to edit the common methods and constants.
+
 
 public class BasicMiniBotMeccanum extends LinearOpMode {
     /* Declare OpMode members. */

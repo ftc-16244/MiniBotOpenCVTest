@@ -22,13 +22,8 @@ import org.firstinspires.ftc.teamcode.Subsystems.Two_Motor_Minibot_Tank_Drivetra
 @Autonomous(name="Basic Tank Drive OpMode", group="Au@to")
 @Disabled
 
-// This opMode will work if used from the left blue starting line. It's main intent is to be
-//the basis for all other Auto Opmodes. Extend this class to create OpModes with different starting
-// positions or different paths or objectives.
-
-// Place robot on the left most blue line when facing the goal. Robot should be placed such that
-// as it drives straight ahead it will not hit the stack of rings. So basically center the robot on
-// the seam between the first and second floor tile. Which is an inch or to to the right of the blue line.
+// This opmode is meant to be extend in teleop and autonomus opmodes.
+// This enables code reuse and a single source to edit the common methods and constants.
 
 public class BasicMiniBotTank extends LinearOpMode {
     /* Declare OpMode members. */
