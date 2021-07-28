@@ -1,19 +1,17 @@
 package org.firstinspires.ftc.teamcode.Teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.teamcode.Autonomous.BasicMiniBotMeccanum;
+import org.firstinspires.ftc.teamcode.Autonomous.BasicMiniBotREVCoreHex;
 import org.firstinspires.ftc.teamcode.Autonomous.BasicMiniBotTank;
-import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain;
-import org.firstinspires.ftc.teamcode.Subsystems.Two_Motor_Minibot_Tank_Drivetrain;
+import org.firstinspires.ftc.teamcode.Subsystems.Two_Motor_REV_Core_HEX_Drivetrain;
 
-@TeleOp(name="Tank Drive MiniBot Teleop", group="Teleop")
+@TeleOp(name="Tank Drive REV Core Hex", group="Teleop")
 //@Disabled
 
-public class Minibot_Tank_Teleop extends BasicMiniBotTank {
+public class Minibot_REV_Core_HEX_Teleop extends BasicMiniBotREVCoreHex {
 
     // Motors not declared here becase they are part of BasicMiniBotTank which is extended
     private ElapsedTime runtime = new ElapsedTime();
@@ -43,7 +41,7 @@ public class Minibot_Tank_Teleop extends BasicMiniBotTank {
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
             double drive = -gamepad1.left_stick_y;
-            double turn  =  gamepad1.right_stick_x;
+            double turn  =  -gamepad1.right_stick_x; // flip sign to get correct turn direction
             leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
@@ -66,5 +64,7 @@ public class Minibot_Tank_Teleop extends BasicMiniBotTank {
         }
 
     }
+
+
 }
 
