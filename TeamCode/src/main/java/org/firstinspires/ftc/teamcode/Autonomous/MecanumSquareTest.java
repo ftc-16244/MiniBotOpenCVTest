@@ -87,6 +87,7 @@ public class MecanumSquareTest extends BasicMiniBotMeccanum {
         gyroTurn(TURN_SPEED, -90, 3);
         gyroDrive(DRIVE_SPEED, squarelength, -90, 3);
         gyroTurn(TURN_SPEED, 0, 3);
+        gyroDrive(DRIVE_SPEED,.5,0,1);
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
