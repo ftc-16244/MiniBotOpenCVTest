@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Two_Motor_REV_Core_HEX_Drivetra
 
 import static org.firstinspires.ftc.teamcode.Subsystems.Two_Motor_REV_Core_HEX_Drivetrain.COUNTS_PER_INCH;
 @Autonomous(name="Basic REV Core Hex OpMode", group="Au@to")
-//@Disabled
+@Disabled
 
 // This opmode is meant to be extend in teleop and autonomus opmodes.
 // This enables code reuse and a single source to edit the common methods and constants.
