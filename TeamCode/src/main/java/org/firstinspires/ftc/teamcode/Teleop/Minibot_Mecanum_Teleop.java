@@ -3,9 +3,11 @@ package org.firstinspires.ftc.teamcode.Teleop;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Autonomous.BasicMiniBotMeccanum;
 import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Drivetrain;
+import org.firstinspires.ftc.teamcode.Subsystems.SideServo;
 
 @TeleOp(name="Mecanum MiniBot Teleop", group="Teleop")
 
@@ -15,8 +17,8 @@ public class Minibot_Mecanum_Teleop extends BasicMiniBotMeccanum {
     public void runOpMode() {
         // All of the drivetrain details are in the subsystems package. This keep the clutter down.
         // Plus all drivetrain details can e reused for all opmodes and never recreated.
-        Four_Motor_Minibot_Meccanum_Drivetrain drivetrain = new Four_Motor_Minibot_Meccanum_Drivetrain();
-        // Add servos or other motors here as needed.
+        //Four_Motor_Minibot_Meccanum_Drivetrain drivetrain = new Four_Motor_Minibot_Meccanum_Drivetrain();
+        //SideServo sideservo = new SideServo();
 
         // The "init" methods below are pointing back to the sybsystems
         // The drivetrain subsystem lets you pick between teleop or auto.
@@ -26,8 +28,12 @@ public class Minibot_Mecanum_Teleop extends BasicMiniBotMeccanum {
         // This line is required for each opmode.
         // Forgetting this lie will lead to a null exception and "missing hardware error"
         drivetrain.init(hardwareMap, true);
+        // motor FWD and REV are set in the drive train subsystem. The newer AndyMark motors on Mecanum #3
+        // appear to have opposite rotation. If wheels turn the wrong way go to "Four_Motor_MiniBot_Mecannum_Drivetrain" in the
+        // subsystems package and flip the directions.
 
-        sideServo.init(hardwareMap);
+        sideServo.init(hardwareMap); // keep track of capital S and lower case s on this one. It is confusing
+        sideServo.moveServoCenter(); // puts servo in the center to simulate starting a match
 
 
         waitForStart();

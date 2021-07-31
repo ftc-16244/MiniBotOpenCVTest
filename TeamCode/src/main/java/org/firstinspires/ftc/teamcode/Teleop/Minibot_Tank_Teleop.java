@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Four_Motor_Minibot_Meccanum_Dri
 import org.firstinspires.ftc.teamcode.Subsystems.Two_Motor_Minibot_Tank_Drivetrain;
 
 @TeleOp(name="Tank Drive MiniBot Teleop", group="Teleop")
-//@Disabled
+@Disabled
 
 public class Minibot_Tank_Teleop extends BasicMiniBotTank {
 
@@ -20,10 +20,8 @@ public class Minibot_Tank_Teleop extends BasicMiniBotTank {
     @Override
     public void runOpMode() {
 
-        drivetrain.init(hardwareMap, true);// initialize as a teleop opmode
-        sideServo.init(hardwareMap);// Initialize the servo also.
+        drivetrain.init(hardwareMap, false);
 
-        sideServo.moveServoCenter();// set servo to center position when init is pressed on DS
 
 
         waitForStart();
