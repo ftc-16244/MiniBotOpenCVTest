@@ -9,26 +9,22 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class  Four_Motor_Minibot_Meccanum_Drivetrain {
         // Define hardware objects
-        public DcMotor leftFront = null;
-        public DcMotor rightFront = null;
-        public DcMotor leftRear = null;
-        public DcMotor rightRear = null;
-        public BNO055IMU imu = null;
+        public DcMotor      leftFront   = null;
+        public DcMotor      rightFront  = null;
+        public DcMotor      leftRear    = null;
+        public DcMotor      rightRear   = null;
+        public BNO055IMU    imu         = null;
 
         // List constants
-        public static final double COUNTS_PER_DRIVE_MOTOR_REV = 1120;         // Nevrest 40's
-        public static final double DRIVE_REDUCTION = 16.0/24.0; // speed up - motor 24T wheel 16T
-        public static final double WHEEL_DIAMETER_INCHES = 60.0/25.4;      //Nexus 60mm wheels
+        public static final double COUNTS_PER_DRIVE_MOTOR_REV   = 1120;         // Nevrest 40's
+        public static final double DRIVE_REDUCTION              = 16.0/24.0; // speed up - motor 24T wheel 16T
+        public static final double WHEEL_DIAMETER_INCHES        = 60.0/25.4;      //Nexus 60mm wheels
         public static final double COUNTS_PER_INCH = (COUNTS_PER_DRIVE_MOTOR_REV *DRIVE_REDUCTION) /
                 (WHEEL_DIAMETER_INCHES * 3.1415);
-        public static final double DRIVE_SPEED = .8;
-        private static final double TURN_SPEED = 0.5;
-        private boolean inTeleOp;
-        private ElapsedTime runtime = new ElapsedTime();
 
 
-        // Contructor for Drivetrain
-        // Passing boolean to automatically config encoders for auto or teleop.
+
+        // Constructor
         public Four_Motor_Minibot_Meccanum_Drivetrain() {
 
         }
