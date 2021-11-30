@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class Four_Motor_Minibot_Meccanum_Drivetrain {
+public class  Four_Motor_Minibot_Meccanum_Drivetrain {
         // Define hardware objects
         public DcMotor leftFront = null;
         public DcMotor rightFront = null;
