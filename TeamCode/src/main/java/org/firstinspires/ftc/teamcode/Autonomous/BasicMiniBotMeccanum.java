@@ -32,7 +32,7 @@ public class BasicMiniBotMeccanum extends LinearOpMode {
 
     public Four_Motor_Minibot_Meccanum_Drivetrain drivetrain  = new Four_Motor_Minibot_Meccanum_Drivetrain();   // Use subsystem Drivetrain
     // "SideServo is a class in the subsystem package that is used to create "sideServo" it is case sensitive so
-    // the two are not the same. "sideServo" is the object we create ad use.
+    // the two are not the same. "sideServo" is the object we create and use.
 
     public SideServo sideServo = new SideServo();
 
